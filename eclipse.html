@@ -2073,6 +2073,7 @@ function paintPortrait(g,s,ex,sc){g.save();g.scale(sc||2,sc||2);if(s.child){g.tr
     if(s.hs==='pony')path([['M',130,56],['Q',198,64,186,200],['Q',174,150,150,122],['Q',146,92,124,80]],H);
     if(s.hs==='bun'){ell(100,36,22,18,H,true);line([88,30,100,22,112,30],HL,3)}}
   // body
+  if(s.hsx&&!s.fullhelm&&!s.hollow)hairBackX(g,s,{path,ell});
   if(s.kit||s.armor)portraitBack(g,s,{path,line});
   const body=[['M',16,240],['Q',24,196,72,184],['L',128,184],['Q',176,196,184,240]];path(body,s.outfit);
   g.save();trace(body);g.clip();g.fillStyle='rgba(0,0,0,.22)';g.fillRect(16,184,52,60);g.fillStyle='rgba(255,255,255,.1)';g.fillRect(120,184,30,60);g.restore();
@@ -2122,7 +2123,7 @@ function paintPortrait(g,s,ex,sc){g.save();g.scale(sc||2,sc||2);if(s.child){g.tr
   if(s.beard)path([['M',62,120],['Q',64,176,100,182],['Q',136,176,138,120],['Q',124,150,100,152],['Q',76,150,62,120]],s.beard);
   // front hair
   if(s.hs==='spiky')path([['M',54,100],['L',14,76],['L',52,64],['L',28,30],['L',70,42],['L',76,6],['L',102,34],['L',130,4],['L',134,40],['L',176,26],['L',150,64],['L',190,80],['L',146,100]],H);
-  if(s.hs==='messy'&&s.kit!=='hero')path([['M',60,72],['L',40,46],['L',72,52],['L',78,26],['L',96,46],['L',114,22],['L',122,48],['L',156,38],['L',140,72]],H);
+  if(s.hs==='messy-classic')path([['M',60,72],['L',40,46],['L',72,52],['L',78,26],['L',96,46],['L',114,22],['L',122,48],['L',156,38],['L',140,72]],H);
   const tips=s.hs==='spiky'?[[142,100],[134,80],[126,104],[116,78],[108,102],[98,74],[88,102],[78,78],[70,104],[62,84],[58,100]]:s.hs==='bob'||s.hs==='long'?[[144,104],[132,94],[120,100],[110,90],[100,98],[86,88],[74,100],[62,92],[56,104]]:[[142,100],[132,86],[124,100],[112,84],[102,98],[90,82],[80,98],[68,86],[58,100]];
   const cap=[['M',50,114],['Q',42,58,72,42],['Q',100,26,128,42],['Q',158,58,150,114]];for(const t of tips)cap.push(['L',t[0],t[1]]);
   if(!s.hollow)path(cap,H);else path([['M',56,90],['Q',60,40,100,38],['Q',140,40,144,90],['Q',100,70,56,90]],H);
@@ -2133,7 +2134,8 @@ function paintPortrait(g,s,ex,sc){g.save();g.scale(sc||2,sc||2);if(s.child){g.tr
   if(s.kemono){const k=[['M',56,62],['L',46,14],['L',88,44]];path(k,H);path(mir(k),H);const ki=[['M',60,54],['L',54,26],['L',78,44]];path(ki,'#ffb6c8',false);path(mir(ki),'#ffb6c8',false)}
   if(s.ribbon){path([['M',132,50],['L',118,36],['L',120,62]],s.ribbon);path([['M',132,50],['L',148,34],['L',150,62]],s.ribbon);ell(134,50,5,5,shade(s.ribbon,.2),2)}
   if(s.veil){g.save();g.globalAlpha=.55;path([['M',50,64],['Q',100,26,150,64],['L',176,236],['L',24,236]],'#ffffff',false);g.restore();for(let i=0;i<7;i++)ell(64+i*12,54-Math.sin(i/6*Math.PI)*12,5,5,i%2?'#ffd6e6':'#ffffff',1.5)}
-  if(s.kit==='hero'&&!s.hollow)portraitBangs(g,s,{path,line});
+  if(s.hs==='messy'&&!s.hollow)portraitBangs(g,s,{path,line});
+  if(s.hsx&&!s.hollow&&!s.helm&&!s.hat)hairFrontX(g,s,{path,ell,line,mir});
   // brows
   if(!s.hollow&&!s.helm){const brow=(x,sd)=>{let iy=92,oy=92;if(ex==='angry'){iy=100;oy=88}else if(ex==='sad'||ex==='blush'){iy=86;oy=95}else if(ex==='surprised'){iy=84;oy=86}const inner=x-sd*12,outer=x+sd*12;g.lineWidth=4;g.strokeStyle=shade(H,-.45);g.beginPath();g.moveTo(outer,oy);g.quadraticCurveTo(x,Math.min(iy,oy)-4,inner,iy);g.stroke()};brow(80,-1);brow(120,1)}
   if(s.glasses){g.lineWidth=2.5;g.strokeStyle='#5a3a24';g.beginPath();g.arc(80,117,16,0,TAU);g.moveTo(136,117);g.arc(120,117,16,0,TAU);g.moveTo(96,114);g.lineTo(104,114);g.stroke();g.save();g.globalAlpha=.18;g.fillStyle='#bfe6ff';g.beginPath();g.arc(80,117,15,0,TAU);g.arc(120,117,15,0,TAU);g.fill();g.restore()}
@@ -2466,7 +2468,7 @@ function renderCreate(){const C=creation,B=$('#createBody');const sw=(arr,k)=>ar
   B.innerHTML=`<div class="cr-prev"><canvas id="crPor" width="400" height="480"></canvas><canvas id="crSpr" width="96" height="140"></canvas></div>
   <div class="cr-opts"><label class="namefld">Name <input id="crName" maxlength="14" value="${esc(C.name)}" autocomplete="off" spellcheck="false"></label>
    <div class="cr-row"><span>Gender</span><div class="seg">${seg('gender',[['male','Male'],['female','Female'],['other','Other']])}</div></div>
-   <div class="cr-row"><span>Hairstyle</span><div class="seg">${seg('hs',[['messy','Messy'],['spiky','Spiky'],['short','Short'],['bob','Bob'],['long','Long'],['pony','Ponytail'],['twin','Twin tails']])}</div></div>
+   <div class="cr-row"><span>Hairstyle</span><div class="seg">${seg('hs',HAIRSTYLES)}</div></div>
    <div class="cr-row"><span>Hair</span><div class="swatches">${sw(LOOK_HAIR,'hair')}</div></div>
    <div class="cr-row"><span>Eyes</span><div class="swatches">${sw(LOOK_EYE,'eye')}</div></div>
    <div class="cr-row"><span>Skin</span><div class="swatches">${sw(LOOK_SKIN,'skin')}</div></div>
@@ -3312,7 +3314,7 @@ renderCreate=function(){const C=creation,B=$('#createBody');
    <div class="cr-opts"><p class="sect">Identity</p><label class="namefld">Name <input id="crName" maxlength="14" value="${esc(C.name)}" autocomplete="off" spellcheck="false"></label>
     <div class="cr-row"><span>Gender</span><div class="seg">${seg('gender',[['male','Male'],['female','Female'],['other','Other']])}</div></div>
     <p class="sect">Appearance<button class="btn ghost sm" id="crRand" type="button">Randomize</button></p>
-    <div class="cr-row"><span>Hairstyle</span><div class="seg">${seg('hs',[['messy','Messy'],['spiky','Spiky'],['short','Short'],['bob','Bob'],['long','Long'],['pony','Ponytail'],['twin','Twin tails']])}</div></div>
+    <div class="cr-row"><span>Hairstyle</span><div class="seg">${seg('hs',HAIRSTYLES)}</div></div>
     <div class="cr-row"><span>Hair</span><div class="swatches">${sw(LOOK_HAIR,'hair')}</div></div>
     <div class="cr-row"><span>Eyes</span><div class="swatches">${sw(LOOK_EYE,'eye')}</div></div>
     <div class="cr-row"><span>Skin</span><div class="swatches">${sw(LOOK_SKIN,'skin')}</div></div>
@@ -3321,7 +3323,7 @@ renderCreate=function(){const C=creation,B=$('#createBody');
     <p class="sect">Calling</p><div class="clscards">${cards}</div></div>`;
   B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{C[b.dataset.k]=b.dataset.v;C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()});
   $('#crName').oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
-  $('#crRand').onclick=()=>{C.hair=pick(LOOK_HAIR);C.eye=pick(LOOK_EYE);C.skin=pick(LOOK_SKIN);C.hs=pick(['messy','spiky','short','bob','long','pony','twin']);C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()};
+  $('#crRand').onclick=()=>{C.hair=pick(LOOK_HAIR);C.eye=pick(LOOK_EYE);C.skin=pick(LOOK_SKIN);C.hs=pick(HAIRSTYLES)[0];C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()};
   B.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>{const ring=[0,3,1,2],cur=crDir==null?0:ring.indexOf(crDir);crDir=ring[(cur+ +b.dataset.rot+4)%4];AudioSys.play('ui')});
   const look={hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,gender:C.gender,band:C.band,outfit:C.outfit};const face=Object.assign({},(C.outfit==='class'?CLASSFACE:FACES)[C.cls],{hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,band:C.band||null,fem:C.gender==='female'});
   const pg=$('#crPor').getContext('2d');pg.clearRect(0,0,400,480);pg.drawImage(getPortrait(face,'happy'),0,0);
@@ -3416,7 +3418,7 @@ const _gp4=gearPass;gearPass=function(P,S,layer,k){_gp4(P,S,layer,k);if(S.kit!==
       arm(6,18+b+aL);arm(16,18+b-aL);
       P.row(24+b,7,16,H.lth);P.r(7,25+b,10,6+flut,H.coat);P.r(7,25+b,1,6+flut,H.red);P.r(16,25+b,1,6+flut,H.red);P.row(30+b+flut,8,15,H.gold);P.r(13,24+b,2,4,H.red)}
     return}
-  if(layer==='top'&&!S.helm&&!S.hood&&!S.hat){const hr=rampOf(S.hair||'#1c1a24'),hy=5+b;
+  if(layer==='top'&&S.hs==='messy'&&!S.helm&&!S.hood&&!S.hat){const hr=rampOf(S.hair||'#1c1a24'),hy=5+b;
     if(front)for(const[x,y0,y1]of[[7,4,6],[11,4,7],[12,4,6],[16,4,6],[15,7,7]])for(let y=y0;y<=y1;y++)P.s(x,hy+y,y===y1?hr.d:hr.m);
     else if(side)for(const[x,y0,y1]of[[13,5,6],[15,5,7]])for(let y=y0;y<=y1;y++)P.s(x,hy+y,hr.m)}};
 
@@ -3515,12 +3517,13 @@ function openWardrobe(){const L=G.look||(G.look=Object.assign({},HEROLOOK,{skin:
   openGen('Wardrobe',`<div class="wardrobe"><div class="wd-left"><canvas id="wdPor" width="400" height="480"></canvas><canvas id="wdSpr" width="120" height="150"></canvas></div><div class="wd-right">
    <p class="sect">Outfits</p><div class="wd-list">${Object.entries(OUTFITS).map(([k,O])=>{const own=O.own();return`<button class="wd-item${k===o?' on':''}${own?'':' locked'}" data-of="${k}" ${own?'':'disabled'}><b>${O.name}</b><small>${own?O.desc:'Locked · '+O.lock}</small></button>`}).join('')}</div>
    ${o==='hero'?`<p class="sect">Dyes</p><div class="cr-row"><span>Coat</span><div class="swatches">${sw('coat',DYE.coat)}</div></div><div class="cr-row"><span>Lining</span><div class="swatches">${sw('lining',DYE.lining)}</div></div><div class="cr-row"><span>Trim</span><div class="swatches">${sw('trim',DYE.trim)}</div></div>`:''}
+   <p class="sect">Hair</p><div class="cr-row"><span>Style</span><div class="seg">${HAIRSTYLES.map(([v,l])=>`<button class="${(L.hs||'messy')===v?'on':''}" data-hs="${v}">${l}</button>`).join('')}</div></div><div class="cr-row"><span>Color</span><div class="swatches">${LOOK_HAIR.map(c=>`<button class="sw${L.hair===c?' on':''}" data-hc="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')}</div></div>
    <p class="sect">Display</p><div class="cr-row"><span>Armor</span><div class="seg"><button class="${L.showArmor!==false?'on':''}" data-sa="1">Show equipped armor</button><button class="${L.showArmor===false?'on':''}" data-sa="0">Outfit only</button></div></div>
    <p class="hint">Outfits are cosmetic. Your equipped armor still sets your stats.</p></div></div>`,B=>{
     const re=()=>{applyLook();AudioSys.play('ui');openWardrobe()};
     B.querySelectorAll('[data-of]').forEach(b=>b.onclick=()=>{L.outfit=b.dataset.of;re()});
     B.querySelectorAll('[data-dye]').forEach(b=>b.onclick=()=>{L[b.dataset.dye]=b.dataset.v;re()});
-    B.querySelectorAll('[data-sa]').forEach(b=>b.onclick=()=>{L.showArmor=b.dataset.sa==='1';re()});
+    B.querySelectorAll('[data-sa]').forEach(b=>b.onclick=()=>{L.showArmor=b.dataset.sa==='1';re()});B.querySelectorAll('[data-hs]').forEach(b=>b.onclick=()=>{L.hs=b.dataset.hs;re()});B.querySelectorAll('[data-hc]').forEach(b=>b.onclick=()=>{L.hair=b.dataset.hc;re()});
     $('#wdPor').getContext('2d').drawImage(getPortrait(playerFace(),'happy'),0,0);
     let fr=0;const sg=$('#wdSpr').getContext('2d');sg.imageSmoothingEnabled=false;clearInterval(openWardrobe.tm);
     const draw=()=>{if(!$('#wdSpr')){clearInterval(openWardrobe.tm);return}sg.clearRect(0,0,120,150);sg.save();sg.scale(3.3,3.3);drawHumanoid(sg,18.2,42,{pal:P?P.pal:lookPal('warden'),dir:[0,3,1,2][Math.floor(fr/12)%4],moving:true,walk:fr*.5,weapon:P?P.weaponKind:'sword',wcol:P?P.wcol:null,time:fr/10});sg.restore();fr++};
@@ -3551,6 +3554,34 @@ function renderBestiary(B){const seen=t=>(G.kills&&G.kills[t]>0)||(ENEMY[t].boss
   B.querySelectorAll('canvas[data-bst]').forEach(c=>{beastDraw(c,c.dataset.bst);if(!seen(c.dataset.bst)){const g=c.getContext('2d');g.globalCompositeOperation='source-atop';g.fillStyle='#070c34';g.fillRect(0,0,96,96);g.globalCompositeOperation='source-over'}})}
 {const tb=document.createElement('button');tb.dataset.tab='bestiary';tb.textContent='Bestiary';$('#cdxTabs').insertBefore(tb,$('#cdxTabs [data-tab=map]'));tb.onclick=()=>{cdxTab='bestiary';AudioSys.play('ui');renderCodex()}}
 const _renderCodex6=renderCodex;renderCodex=function(){if(cdxTab==='bestiary'){tip.hidden=true;$$('#cdxTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===cdxTab));return renderBestiary($('#cdxB'))}return _renderCodex6()};
+
+/* ================= HAIRSTYLES: new styles layered on a base cut ================= */
+const HAIRSTYLES=[['messy','Messy'],['spiky','Spiky'],['short','Short'],['swept','Side-swept'],['slick','Slicked back'],['wolf','Wolf cut'],['curly','Curly'],['bob','Bob'],['hime','Hime cut'],['long','Long'],['pony','Ponytail'],['sidepony','Side ponytail'],['braid','Braid'],['twin','Twin tails'],['buns','Twin buns'],['bun','Top bun']];
+const HAIRX={wolf:'messy',swept:'short',slick:'short',braid:'short',hime:'long',sidepony:'short',buns:'short',curly:'bob'};
+const _buildSprite7=buildSprite;buildSprite=function(S,dir,fr,pose,blink){const b=HAIRX[S.hs];if(b)S=Object.assign({},S,{hs:b,hsx:S.hs});return _buildSprite7(S,dir,fr,pose,blink)};
+const _paintPortrait7=paintPortrait;paintPortrait=function(g,s,ex,sc){const b=HAIRX[s.hs];if(b)s=Object.assign({},s,{hs:b,hsx:s.hs});return _paintPortrait7(g,s,ex,sc)};
+const _gp7=gearPass;gearPass=function(P,S,layer,k){_gp7(P,S,layer,k);const x=S.hsx;if(!x||layer!=='top'||S.helm||S.skull||S.hood||S.hat)return;
+  const hr=rampOf(S.hair||'#3a2a2a'),sk=rampOf(S.skin||'#f6d6c0'),hy=5+k.b,side=k.side,back=k.back,front=!side&&!back,acc=S.acc||'#e3923f',alt=(y,a,b)=>(y-hy)%2?a:b;
+  switch(x){
+    case'wolf':if(front){P.r(5,hy+6,1,7,hr.d);P.r(18,hy+6,1,7,hr.d);P.s(6,hy+12,hr.m);P.s(17,hy+12,hr.m);P.s(5,hy+13,hr.d);P.s(18,hy+13,hr.d)}else if(back){for(let xx=7;xx<=16;xx++)P.r(xx,hy+14,1,xx%3?2:1,xx%2?hr.m:hr.d)}else{P.r(5,hy+6,2,8,hr.d);P.s(6,hy+14,hr.m)}break;
+    case'swept':if(front){P.row(hy+5,7,12,hr.m);P.row(hy+6,7,10,hr.m);P.s(7,hy+7,hr.d);P.s(8,hy+7,hr.d);P.s(11,hy+4,hr.h);P.s(12,hy+4,hr.h);const f=mixC(hr.d,sk.m,.45);P.r(6,hy+6,1,5,f);P.r(17,hy+6,1,5,f)}else if(side){P.row(hy+5,11,16,hr.m);P.s(16,hy+6,hr.d)}break;
+    case'slick':if(front){P.row(hy+5,8,15,sk.d);P.row(hy+6,8,15,sk.m);P.row(hy+4,8,15,hr.m);P.row(hy+3,9,14,hr.l)}else if(side){P.row(hy+5,11,16,sk.m);P.row(hy+4,11,16,hr.m)}break;
+    case'braid':if(front){for(let y=hy+9;y<=hy+20;y++)P.r(16,y,2,1,alt(y,hr.m,hr.d));P.r(16,hy+21,2,1,acc);P.s(16,hy+22,hr.m)}else if(back){for(let y=hy+13;y<=hy+22;y++)P.r(11,y,2,1,alt(y,hr.m,hr.d));P.r(11,hy+23,2,1,acc)}else{for(let y=hy+10;y<=hy+20;y++)P.r(6,y,2,1,alt(y,hr.m,hr.d));P.s(6,hy+21,acc)}break;
+    case'hime':if(front){P.row(hy+5,7,16,hr.m);P.row(hy+6,7,16,hr.d)}else if(side)P.row(hy+5,11,16,hr.m);break;
+    case'sidepony':if(front){P.r(4,hy+2,2,2,acc);for(let y=hy+4;y<=hy+14;y++)P.r(y>hy+9?3:4,y,2,1,(y-hy)%3?hr.m:hr.d)}else if(back){P.r(18,hy+2,2,2,acc);for(let y=hy+4;y<=hy+14;y++)P.r(y>hy+9?19:18,y,2,1,(y-hy)%3?hr.m:hr.d)}else P.r(7,hy+1,2,2,acc);break;
+    case'buns':{const bun=bx=>{P.r(bx,hy-2,3,3,hr.m);P.s(bx,hy-2,hr.h);P.s(bx+2,hy,hr.d)};if(side)bun(8);else{bun(6);bun(15)}break}
+    case'curly':{for(const[a,c]of front||back?[[5,3],[5,6],[5,9],[18,3],[18,6],[18,9],[7,-1],[10,-1],[13,-1],[16,-1],[6,12],[17,12]]:[[5,3],[5,6],[5,9],[8,-1],[11,-1],[14,-1]])P.s(a,hy+c,hr.m);if(front)for(const[a,c]of[[8,1],[11,2],[14,1]])P.s(a,hy+c,hr.h);break}}};
+function hairBackX(g,s,K){const{path,ell}=K,H=s.hair,x=s.hsx;
+  if(x==='wolf')path([['M',50,96],['Q',36,150,44,198],['L',56,186],['L',62,206],['L',76,190],['L',124,190],['L',138,206],['L',144,186],['L',156,198],['Q',164,150,150,96]],shade(H,-.3));
+  if(x==='sidepony'){path([['M',62,72],['Q',2,92,16,214],['Q',30,172,38,142],['Q',46,106,70,90]],H);ell(60,78,9,9,s.trim||'#e0b84a',true)}
+  if(x==='curly')for(let i=0;i<=16;i++){const a=Math.PI*(.9+i*.075);ell(100+Math.cos(a)*56,104+Math.sin(a)*62,11,11,H,2.5)}}
+function hairFrontX(g,s,K){const{path,ell,line,mir}=K,H=s.hair,HL=shade(H,.5),x=s.hsx;
+  if(x==='wolf'){const l=[['M',56,100],['Q',44,150,40,184],['L',52,172],['L',54,188],['Q',62,150,68,108]];path(l,H);path(mir(l),H)}
+  if(x==='swept'){path([['M',144,62],['Q',122,94,72,114],['Q',60,118,54,108],['Q',72,96,86,68]],H);line([132,70,110,92,80,106],HL,2.5)}
+  if(x==='slick'){path([['M',62,104],['Q',60,72,100,66],['Q',140,72,138,104],['Q',100,92,62,104]],shade(s.skin,-.13),false);path([['M',54,102],['Q',52,52,100,44],['Q',148,52,146,102],['Q',140,70,100,62],['Q',60,70,54,102]],H);line([74,56,100,48,126,56],HL,2);line([64,72,68,62,80,54],HL,2)}
+  if(x==='braid'){for(let i=0;i<7;i++)ell(142+i*2,136+i*14,9,8,i%2?H:shade(H,-.15),2);ell(155,236,6,5,s.trim||'#e0b84a',2)}
+  if(x==='hime'){path([['M',58,102],['L',58,64],['Q',100,38,142,64],['L',142,102]],H);line([70,74,100,62,130,74],HL,2.5)}
+  if(x==='buns'){ell(62,46,17,16,H,true);ell(138,46,17,16,H,true);line([52,42,58,34,68,34],HL,2.5);line([148,42,142,34,132,34],HL,2.5)}}
 
 boot();
 </script>

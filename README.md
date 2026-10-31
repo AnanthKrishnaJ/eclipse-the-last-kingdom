@@ -1,6 +1,6 @@
 # Eclipse: The Last Kingdom
 
-A pixel-art action RPG in a single HTML file. Open `eclipse.html` in a browser to play; there is nothing to install or build.
+A pixel-art action RPG in a single HTML file. Open `eclipse.html` in a browser to play; there is nothing to install or build. On Vercel, `vercel.json` serves the game at the site root.
 
 ## Story
 
@@ -15,6 +15,7 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 - Character creation with a live portrait, a turnable sprite, colour swatches, a randomizer and class cards with stat bars.
 - Classic JRPG interface: blue windows with silver edges, a pointing-hand cursor, a pause menu with icons and a hero status panel, a dialogue window with portrait, and a hero medallion on the HUD.
 - The protagonist: messy black hair over dark eyes, a white shirt under a gold-trimmed black coat with red lining and long coat-tails, crossing leather straps, a red sash, a blue-gem pendant and tall gold-cuffed boots. Character creation can swap the coat for class gear.
+- 16 hairstyles, from Messy and Wolf cut to Hime cut, Braid and Twin buns, each drawn for portraits and in-game sprites. Restyle any time at the Wardrobe's barber.
 - Wardrobe: five cosmetic outfits (Protagonist Coat with coat, lining and trim dyes, Class Gear, Kerala Festival Wear, Royal Regalia, Nightstalker Cloak) and a show or hide armor toggle. Open it from the pause menu or your cottage.
 - Lantern network: fast travel between any lanterns you have lit.
 - Bestiary tab recording every monster you meet, with stats, tips and drops.
