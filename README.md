@@ -11,7 +11,9 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 - Real-time combat: three-hit combos, dodge rolls, blocking and parries, four skills, and a Burst art with an anime cut-in.
 - Three classes, Warden, Ranger and Arcanist, each with its own gear on the character.
 - Armor shows on the character: tunic, leather, chainmail, wolfhide or full plate. Portraits change to match.
-- Bag page laid out as an equipment screen (paper doll) with attributes, a 24-slot inventory and item comparison.
+- Bag page laid out as an equipment screen (paper doll) with attributes, a 24-slot inventory, filters, sorting, hover tooltips and item comparison.
+- Character creation with a live portrait, a turnable sprite, colour swatches, a randomizer and class cards with stat bars.
+- Gilded RPG interface: framed panels, a classic dialogue window with portrait, and a hero medallion on the HUD.
 - Companions Mimi, Lyra, Serah and Noelle, with a bond system: gifts, dates, personal quests and marriage.
 - Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
 - Three areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
@@ -22,8 +24,8 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 | Action | Keys |
 | --- | --- |
 | Move / run | WASD or arrow keys, hold Shift to run |
-| Attack, talk | J or Space |
-| Dodge / block | K / L |
+| Attack, talk | Left click (toward the cursor), J or Space |
+| Dodge / block | K / L or hold right click |
 | Skills | 1–4 |
 | Burst | R |
 | Potion | Q |

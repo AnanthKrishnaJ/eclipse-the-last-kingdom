@@ -575,6 +575,87 @@ h2{font:700 28px/1.15 var(--f-dis);color:var(--gold2);letter-spacing:.05em;text-
 .attr img{width:16px;height:16px;image-rendering:pixelated}.attr span{font:15px var(--f-txt);color:#cbb88e}
 .attr b{font:800 13px var(--f-ui);color:#f3e8d0;font-variant-numeric:tabular-nums}.attr i{font-style:normal;color:var(--good);font-size:11px;margin-left:4px}
 .gear2 .inv{max-width:none}
+/* RPG layer 2: gilded frames, framed text window, hero medallion, bag tools, character creation */
+:root{--frame:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><rect x='1.5' y='1.5' width='45' height='45' fill='none' stroke='%23000' stroke-width='3'/><rect x='3.5' y='3.5' width='41' height='41' fill='none' stroke='%23c9a24a' stroke-width='2'/><rect x='7' y='7' width='34' height='34' fill='none' stroke='%235a4220' stroke-width='1'/><g fill='%23f1d48a' stroke='%23000' stroke-width='1'><path d='M1 8L8 1L15 8L8 15Z'/><path d='M33 8L40 1L47 8L40 15Z'/><path d='M1 40L8 33L15 40L8 47Z'/><path d='M33 40L40 33L47 40L40 47Z'/></g><g fill='%23a8322a'><circle cx='8' cy='8' r='2'/><circle cx='40' cy='8' r='2'/><circle cx='8' cy='40' r='2'/><circle cx='40' cy='40' r='2'/></g></svg>");
+  --ptr:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24'><path d='M2 2L2 18L7 13.5L10.5 21L13.5 19.5L10 12.5L16.5 12.5Z' fill='%23f1d48a' stroke='%231a0e06' stroke-width='1.6' stroke-linejoin='round'/><path d='M4 6L4 14' stroke='%23fff6d8' stroke-width='1'/></svg>") 2 2}
+html,body{cursor:var(--ptr),auto}button,.slot,.choice,[data-k]{cursor:var(--ptr),pointer}
+.pnl,.vn-box,#tip{border:12px solid transparent;border-image:var(--frame) 16 / 16px / 4px stretch;border-radius:0}
+.pnl{box-shadow:0 20px 60px #000d}
+.pnl::before{top:-20px}
+.pnl::after{display:none}
+.create-pnl,.cls-pnl,.slots-pnl,.set-pnl,.pause-pnl,.help-pnl,.win{padding:14px 18px}
+.screen{padding-top:calc(var(--st) + 22px)}
+/* text window */
+#dlg{width:min(920px,calc(100% - 20px));bottom:calc(var(--sb) + 10px)}
+.vn-box{padding:16px 22px 14px;min-height:140px;background:linear-gradient(180deg,#2a1d14f4,#170f0af7);box-shadow:0 0 0 1px #000,0 14px 40px #000c}
+.vn-box::after{display:none}
+#dlg:not(.narr):not(.scene) #dlgPor{left:14px;right:auto;bottom:14px;height:150px;width:125px;aspect-ratio:auto;z-index:2;border:2px solid var(--gold);box-shadow:0 0 0 2px #000,0 0 0 4px #5a4220,inset 0 0 20px #000;background:radial-gradient(circle at 50% 75%,#6a4a22,#140d08 75%);filter:none}
+#dlg:not(.narr):not(.scene) .vn-box{padding-left:168px;min-height:180px}
+#dlg:not(.narr):not(.scene) #dlgWho{left:156px}
+#dlgWho{top:-24px;padding:7px 18px 6px;font-size:16px}
+#dlgTxt{font-size:20px;line-height:1.5;text-shadow:0 1px 0 #000}
+.choices{gap:2px;margin-top:8px}
+.choice{position:relative;background:transparent;border:1px solid transparent;border-radius:2px;padding:5px 12px 5px 30px;font:600 18px/1.3 var(--f-txt);color:#e8dcc0}
+.choice::before{content:"";position:absolute;left:10px;top:50%;border:6px solid transparent;border-left:9px solid var(--gold);transform:translateY(-50%);opacity:.22}
+.choice:hover,.choice:focus-visible{background:linear-gradient(90deg,#c9a24a38,transparent 80%);border-color:transparent;color:#fff6d8}
+.choice:hover::before,.choice:focus-visible::before{opacity:1;animation:nudge .55s ease-in-out infinite alternate}
+@keyframes nudge{to{transform:translate(4px,-50%)}}
+#dlgNext{right:22px;bottom:10px;font-size:14px}
+@media (max-width:520px){#dlg:not(.narr):not(.scene) #dlgPor{height:104px;width:87px;bottom:12px;left:12px}#dlg:not(.narr):not(.scene) .vn-box{padding-left:116px;min-height:134px}#dlg:not(.narr):not(.scene) #dlgWho{left:108px}#dlgTxt{font-size:17px}}
+/* HUD plate and medallion */
+.hud-tl{gap:12px;align-items:center;padding:8px 44px 8px 8px;background:linear-gradient(90deg,#140d08ee,#140d08b0 70%,#140d0800);box-shadow:inset 0 1px 0 #c9a24a66,inset 0 -1px 0 #c9a24a33}
+#hPor{width:62px;height:62px;flex:none;border-radius:50%;border:2px solid var(--gold);box-shadow:0 0 0 2px #000,0 0 14px #c9a24a55;background:radial-gradient(circle,#5a3a1a,#140d08);image-rendering:pixelated}
+.hud-tl .lvb{position:absolute;left:46px;top:46px;width:32px;height:32px}
+.hud-tl .lvb small{top:4px;font-size:6px}.hud-tl .lvb b{font-size:12px;margin-top:5px}
+.tracker{top:calc(var(--st) + 104px)}#partyHud{top:calc(var(--st) + 190px)}
+#hotbar{gap:6px;padding:7px 9px;background:linear-gradient(#1c130de8,#140d08e8);border:1px solid var(--gold3);box-shadow:0 0 0 2px #000a,inset 0 1px 0 #c9a24a44}
+.hk{width:50px;height:50px;box-shadow:0 0 0 1px #000,inset 0 0 12px #000}.hk .key{color:var(--gold2);font-family:var(--f-dis)}
+.mm-col{position:relative}
+.mm-col::before{content:"N";position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:17px;height:17px;line-height:15px;text-align:center;font:700 10px var(--f-dis);color:var(--gold2);background:#140d08;border:1px solid var(--gold);border-radius:50%;z-index:1}
+#prompt{font:700 12px/1 var(--f-dis);letter-spacing:.06em;background:#140d08ee;border:1px solid var(--gold);border-radius:2px;box-shadow:0 0 0 2px #000a}
+#prompt kbd{color:var(--gold2)}
+/* bag tools and tooltip */
+.bagbar{display:flex;flex-wrap:wrap;gap:4px;margin:-2px 0 8px}
+.bagbar button{font:700 10px var(--f-dis);letter-spacing:.1em;text-transform:uppercase;padding:5px 9px;border:1px solid #4a3a28;border-radius:2px;background:#170f0a;color:#a8926a}
+.bagbar button.on{border-color:var(--gold);color:var(--gold2);background:#3a2814}
+.bagbar .sort{margin-left:auto}
+.slot{transition:transform .1s,border-color .1s}
+.slot.dim{opacity:.2}
+.slot:not(:empty):hover{transform:translateY(-2px);border-color:var(--gold2)}
+#tip{position:fixed;z-index:70;max-width:270px;pointer-events:none;padding:8px 12px;background:linear-gradient(#2a1d14f8,#140d08f8);font:600 13px/1.5 var(--f-ui);color:#e8dcc0;box-shadow:0 10px 30px #000c}
+#tip b{display:block;font:700 16px/1.2 var(--f-dis)}#tip small{display:block;font:italic 13px var(--f-txt);color:#a8926a;margin-bottom:4px}#tip em{font-style:normal;color:#fff6d8}
+.srow{grid-template-columns:46px minmax(0,1fr) auto}
+.srow img{width:42px;height:42px;padding:4px;border:1px solid #4a3a28;border-radius:3px;background:radial-gradient(circle,#2e241c,#120c08)}
+/* character creation */
+.create-pnl{width:min(1000px,100%)}
+.create{grid-template-columns:300px minmax(0,1fr);gap:22px}
+.cr-left{display:grid;gap:12px;align-content:start}
+.cr-frame{padding:10px 10px 12px;border:1px solid var(--gold3);background:radial-gradient(ellipse at 50% 70%,#c9a24a33,#140d08 70%);box-shadow:inset 0 0 0 3px #140d08,inset 0 0 0 4px #c9a24a44,inset 0 0 30px #000}
+.cr-frame #crPor{width:100%;aspect-ratio:200/240;border:0;background:none;border-radius:0}
+.cr-name{margin-top:-4px;text-align:center;font:700 22px/1 var(--f-dis);color:var(--gold2);text-shadow:0 2px 0 #000}
+.cr-title{text-align:center;font:italic 15px var(--f-txt);color:#a8926a}
+.cr-stage{display:grid;grid-template-columns:34px 1fr 34px;align-items:center;justify-items:center;padding:6px;border:1px solid #4a3a28;background:radial-gradient(ellipse at 50% 85%,#c9a24a22,transparent 60%),linear-gradient(#140d08,#1f150e)}
+.cr-stage #crSpr{width:144px;height:168px;image-rendering:pixelated}
+.rot{width:32px;height:32px;border:1px solid var(--gold3);background:linear-gradient(#3a281a,#1c130d);color:var(--gold2);border-radius:2px;font-size:12px}
+.rot:hover{border-color:var(--gold2)}
+.cr-opts{gap:8px}
+.cr-row{grid-template-columns:96px 1fr}
+.cr-opts .sect{margin-top:6px}
+.sect .btn.sm{order:4;padding:5px 9px;font-size:10px}
+.sw{width:22px;height:22px;margin:4px 5px;border-radius:2px;transform:rotate(45deg);background:var(--c);border:2px solid #000;box-shadow:0 0 0 1px var(--gold3)}
+.sw.on{box-shadow:0 0 0 2px var(--gold2),0 0 12px #f1d48a99}
+.clscards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.clscard{display:grid;grid-template-rows:auto 1fr;justify-items:center;gap:6px;text-align:left;padding:10px;border:1px solid #4a3a28;border-radius:3px;background:linear-gradient(#24180f,#140d08);color:var(--bone)}
+.clscard>div{width:100%}
+.clscard.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),inset 0 0 24px #c9a24a22}
+.clscard canvas{width:60px;height:80px;image-rendering:pixelated}
+.clscard h4{margin:0 0 2px;font:700 16px var(--f-dis);color:var(--gold2);text-align:center}
+.clscard p{margin:0 0 6px;font:13.5px/1.3 var(--f-txt);color:#cbb88e;text-align:center}
+.clscard small{display:block;margin-top:5px;font:italic 13px var(--f-txt);color:#a8926a;text-align:center}
+.sbar{display:grid;grid-template-columns:30px 1fr;align-items:center;gap:6px;margin:2px 0}
+.sbar span{font:700 9px var(--f-dis);color:#a8926a;letter-spacing:.08em}
+.sbar i{height:5px;background:#0a0604;border:1px solid #000;box-shadow:0 0 0 1px #3a2c1e}.sbar b{display:block;height:100%}
+@media (max-width:820px){.create{grid-template-columns:1fr}.cr-left{grid-template-columns:1fr 1fr}.clscards{grid-template-columns:1fr}.clscard{grid-template-columns:60px 1fr;grid-template-rows:auto}}
 </style>
 
 <canvas id="cv"></canvas>
@@ -1697,7 +1778,7 @@ function newGame(cls,name,slot){buildWorld();G.slot=slot;const P=new Player(cls,
   G.quests={};G.flags={};G.chests={};G.harv={};G.disc={};G.kills={};G.time=7.5*60;G.day=1;G.playTime=0;G.lantern={map:'eldoria',x:26*T+8,y:22*T+8,name:'Plaza Lantern'};
   invAdd('health_potion',3);invAdd('mana_potion',1);qStart('fading_light',true);G.tracked='fading_light';
   enterPlay();loadMap('eldoria',24*T+8,12*T+8);saveGame(slot,true);
-  setTimeout(()=>say({name:'',por:'sun'},['You wake on warm cobblestones. No rain. No horns. Birdsong, and the smell of bread instead of filter coffee. A sky with a sun that looks just slightly too small.',`Reborn in Aurel as ${P.name}. A white-haired woman on the hall steps to the north is waving at you, looking very surprised.`],null,()=>{if(!settings.seenHelp){settings.seenHelp=true;saveSettings();toast(isTouch()?'Left side: move. ATK attacks and talks. ROLL dodges.':'WASD move · J/Space attack · K roll · L block · 1-4 skills · E talk');}}),700)}
+  setTimeout(()=>say({name:'',por:'sun'},['You wake on warm cobblestones. No rain. No horns. Birdsong, and the smell of bread instead of filter coffee. A sky with a sun that looks just slightly too small.',`Reborn in Aurel as ${P.name}. A white-haired woman on the hall steps to the north is waving at you, looking very surprised.`],null,()=>{if(!settings.seenHelp){settings.seenHelp=true;saveSettings();toast(isTouch()?'Left side: move. ATK attacks and talks. ROLL dodges.':'WASD move · Left click attack · Right click block · K roll · 1-4 skills · E talk');}}),700)}
 
 /* ---------- Render ---------- */
 function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);G.dpr=dpr;const w=Math.floor(innerWidth*dpr),h=Math.floor(innerHeight*dpr);cv.width=w;cv.height=h;
@@ -2795,7 +2876,7 @@ function renderSettings(){const B=$('#setBody');const seg=(key,opts)=>`<div clas
   $('#rstB').onclick=()=>{Input.bind=Object.assign({},DEF_BIND);settings.bind=null;saveSettings();buildHotbar();renderSettings()}}
 $('#setBack').onclick=()=>{Input.rebind=null;AudioSys.play('ui');showScreen(setBack)};
 function openHelp(back){const b=$('#helpBody');const K=a=>esc(Input.bind[a].map(keyName).join(' / '));
-  b.innerHTML=`<kbd>${K('up')} ${K('left')} ${K('down')} ${K('right')}</kbd><span>Move (hold ${K('run')} to run)</span><kbd>${K('attack')}</kbd><span>Attack. Press again for a three-hit combo. Also talks.</span><kbd>${K('dodge')}</kbd><span>Dodge roll with brief invulnerability</span><kbd>${K('block')}</kbd><span>Block. Block just before a hit lands to parry and stagger the attacker.</span><kbd>1 2 3 4</kbd><span>Ember Bolt, Lunar Arrow, Whirlwind, Frost Nova</span><kbd>${K('potion')}</kbd><span>Drink the best potion for the moment</span><kbd>${K('interact')}</kbd><span>Talk, open, gather, rest at lanterns</span><kbd>${K('inventory')} ${K('skills')} ${K('journal')} ${K('map')}</kbd><span>Bag, skill tree, journal, map</span><kbd>Touch</kbd><span>Drag on the left half to move. Buttons on the right fight. ATK also talks.</span><kbd>Gamepad</kbd><span>Left stick move, A attack, B roll, X/Y/LB/RB skills, LT block, Start pause</span>`;
+  b.innerHTML=`<kbd>${K('up')} ${K('left')} ${K('down')} ${K('right')}</kbd><span>Move (hold ${K('run')} to run)</span><kbd>${K('attack')}</kbd><span>Attack. Press again for a three-hit combo. Also talks.</span><kbd>Mouse</kbd><span>Left click attacks toward the cursor. Hold right click to block.</span><kbd>${K('dodge')}</kbd><span>Dodge roll with brief invulnerability</span><kbd>${K('block')}</kbd><span>Block. Block just before a hit lands to parry and stagger the attacker.</span><kbd>1 2 3 4</kbd><span>Ember Bolt, Lunar Arrow, Whirlwind, Frost Nova</span><kbd>${K('potion')}</kbd><span>Drink the best potion for the moment</span><kbd>${K('interact')}</kbd><span>Talk, open, gather, rest at lanterns</span><kbd>${K('inventory')} ${K('skills')} ${K('journal')} ${K('map')}</kbd><span>Bag, skill tree, journal, map</span><kbd>Touch</kbd><span>Drag on the left half to move. Buttons on the right fight. ATK also talks.</span><kbd>Gamepad</kbd><span>Left stick move, A attack, B roll, X/Y/LB/RB skills, LT block, Start pause</span>`;
   showScreen('sHelp');$('#helpBack').onclick=()=>{AudioSys.play('ui');showScreen(back)}}
 
 /* ================= TITLE & FLOW ================= */
@@ -3046,6 +3127,78 @@ const _drawScene=drawScene;drawScene=function(g,bg,t){if(bg!=='city')return _dra
   g.fillStyle='rgba(255,250,220,.16)';g.beginPath();g.moveTo(bx,159);g.lineTo(bx-130,148);g.lineTo(bx-130,180);g.closePath();g.fill();
   if(Math.sin(t*1.3)>.992){g.fillStyle='rgba(210,220,255,.3)';g.fillRect(0,0,W,Hh)}
   g.strokeStyle='rgba(170,190,255,.35)';g.lineWidth=1;g.beginPath();for(let i=0;i<120;i++){const x=(hash2(i,9,1)*W+t*-40)%W,y=(hash2(i,10,1)*Hh+t*260)%Hh;g.moveTo((x+W)%W,y);g.lineTo((x+W)%W-2,y+7)}g.stroke()};
+
+/* ================= HUD: hero medallion ================= */
+const hPor=mkCanvas(116,116);hPor.id='hPor';$('.hud-tl').prepend(hPor);
+const _hudUpd3=hudUpdate;hudUpdate=function(){_hudUpd3();const P=G.player;if(!P||G.state!=='play')return;const f=playerFace(),k=JSON.stringify(f);
+  if(hudCache.por!==k){hudCache.por=k;const g=hPor.getContext('2d');g.clearRect(0,0,116,116);g.imageSmoothingEnabled=false;g.drawImage(getPortrait(f,'n'),90,50,220,220,0,0,116,116)}};
+
+/* ================= BAG: filters, sorting, hover tooltips ================= */
+const tip=document.createElement('div');tip.id='tip';tip.hidden=true;document.body.appendChild(tip);
+function moveTip(e){const w=tip.offsetWidth,h=tip.offsetHeight;tip.style.left=Math.max(8,Math.min(innerWidth-w-8,e.clientX+18))+'px';tip.style.top=Math.max(8,Math.min(innerHeight-h-8,e.clientY+18))+'px'}
+function bindTips(B){if(isTouch())return;const P=G.player;B.querySelectorAll('.slot').forEach(el=>{
+  el.addEventListener('pointerenter',e=>{const it=el.dataset.eq?P.eq[el.dataset.eq]:P.inv[+el.dataset.i];if(!it||drag){tip.hidden=true;return}const d=ITEMS[it.id];
+    tip.innerHTML=`<b style="color:${RCOL[d.r]}">${esc(d.name)}${it.plus?' +'+it.plus:''}</b><small>${RARITY[d.r]} ${TYPE_NAME[d.type]}</small>${statLines(it.id,it.plus).map(r=>`<div>${r[1]} <em>${r[2]}</em></div>`).join('')}${el.dataset.eq?'':compareHTML(it.id,it.plus)}`;tip.hidden=false;moveTip(e)});
+  el.addEventListener('pointermove',moveTip);el.addEventListener('pointerleave',()=>tip.hidden=true);el.addEventListener('pointerdown',()=>tip.hidden=true)})}
+function sortBag(){const P=G.player,ord={weapon:0,armor:1,acc:2,use:3,gift:4,mat:5,key:6};const items=P.inv.filter(Boolean).sort((a,b)=>{const A=ITEMS[a.id],Bb=ITEMS[b.id];return ord[A.type]-ord[Bb.type]||Bb.r-A.r||A.name.localeCompare(Bb.name)});P.inv=items.concat(new Array(Math.max(0,24-items.length)).fill(null))}
+const bagCat=id=>{const t=ITEMS[id].type;return t==='weapon'||t==='armor'||t==='acc'?'gear':t==='use'||t==='gift'?'use':t==='key'?'key':'mat'};
+const _renderGear2=renderGear;renderGear=function(B){tip.hidden=true;_renderGear2(B);const P=G.player,f=G.bagFilter||'all',inv=B.querySelector('.inv');
+  const bar=document.createElement('div');bar.className='bagbar';bar.innerHTML=[['all','All'],['gear','Gear'],['use','Supplies'],['mat','Materials'],['key','Key items']].map(([k,l])=>`<button class="${f===k?'on':''}" data-bf="${k}">${l}</button>`).join('')+'<button class="sort" data-sort>Sort</button>';inv.before(bar);
+  inv.querySelectorAll('.slot[data-i]').forEach(el=>{const it=P.inv[+el.dataset.i];if(f!=='all'&&(!it||bagCat(it.id)!==f))el.classList.add('dim')});
+  bar.querySelectorAll('[data-bf]').forEach(b=>b.onclick=()=>{G.bagFilter=b.dataset.bf;AudioSys.play('ui');renderCodex()});
+  bar.querySelector('[data-sort]').onclick=()=>{sortBag();selInv=null;AudioSys.play('ui');renderCodex()};
+  bindTips(B)};
+const _closeCodex=closeCodex;closeCodex=function(){tip.hidden=true;_closeCodex()};
+const _renderCodex3=renderCodex;renderCodex=function(){tip.hidden=true;return _renderCodex3()};
+
+/* ================= CHARACTER CREATION ================= */
+let crDir=null;
+renderCreate=function(){const C=creation,B=$('#createBody');
+  const sw=(arr,k)=>arr.map(c=>`<button class="sw${C[k]===c?' on':''}" data-k="${k}" data-v="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('');
+  const seg=(k,opts)=>opts.map(([v,l])=>`<button class="${C[k]===v?'on':''}" data-k="${k}" data-v="${v}">${l}</button>`).join('');
+  const bar=(l,v,m,c)=>`<div class="sbar"><span>${l}</span><i><b style="width:${Math.round(Math.min(1,v/m)*100)}%;background:${c}"></b></i></div>`;
+  const cards=Object.keys(CLASSES).map(k=>{const c=CLASSES[k],b=c.base;return`<button class="clscard${C.cls===k?' on':''}" data-k="cls" data-v="${k}"><canvas width="48" height="64" data-cs="${k}"></canvas><div><h4>${c.name}</h4><p>${esc(c.blurb)}</p>${bar('HP',b.hp,130,'#c8302a')}${bar('MP',b.mp,85,'#2f6ad0')}${bar('ATK',b.atk,10,'#e0962a')}${bar('MAG',b.mag,11,'#8a5ac8')}${bar('SPD',b.spd,70,'#4f8a46')}<small>Starting art: ${esc(SKILLS[c.skill].name)}</small></div></button>`}).join('');
+  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Kael')}</div><div class="cr-title">${CLASSES[C.cls].name} of Eldoria</div></div>
+    <div class="cr-stage"><button class="rot" data-rot="-1" aria-label="Turn left">◀</button><canvas id="crSpr" width="144" height="168"></canvas><button class="rot" data-rot="1" aria-label="Turn right">▶</button></div></div>
+   <div class="cr-opts"><p class="sect">Identity</p><label class="namefld">Name <input id="crName" maxlength="14" value="${esc(C.name)}" autocomplete="off" spellcheck="false"></label>
+    <div class="cr-row"><span>Gender</span><div class="seg">${seg('gender',[['male','Male'],['female','Female'],['other','Other']])}</div></div>
+    <p class="sect">Appearance<button class="btn ghost sm" id="crRand" type="button">Randomize</button></p>
+    <div class="cr-row"><span>Hairstyle</span><div class="seg">${seg('hs',[['spiky','Spiky'],['short','Short'],['bob','Bob'],['long','Long'],['pony','Ponytail'],['twin','Twin tails']])}</div></div>
+    <div class="cr-row"><span>Hair</span><div class="swatches">${sw(LOOK_HAIR,'hair')}</div></div>
+    <div class="cr-row"><span>Eyes</span><div class="swatches">${sw(LOOK_EYE,'eye')}</div></div>
+    <div class="cr-row"><span>Skin</span><div class="swatches">${sw(LOOK_SKIN,'skin')}</div></div>
+    <p class="sect">Calling</p><div class="clscards">${cards}</div></div>`;
+  B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{C[b.dataset.k]=b.dataset.v;C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()});
+  $('#crName').oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
+  $('#crRand').onclick=()=>{C.hair=pick(LOOK_HAIR);C.eye=pick(LOOK_EYE);C.skin=pick(LOOK_SKIN);C.hs=pick(['spiky','short','bob','long','pony','twin']);C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()};
+  B.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>{const ring=[0,3,1,2],cur=crDir==null?0:ring.indexOf(crDir);crDir=ring[(cur+ +b.dataset.rot+4)%4];AudioSys.play('ui')});
+  const look={hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,gender:C.gender};const face=Object.assign({},FACES[C.cls],{hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,fem:C.gender==='female'});
+  const pg=$('#crPor').getContext('2d');pg.clearRect(0,0,400,480);pg.drawImage(getPortrait(face,'happy'),0,0);
+  const wk=k=>[ITEMS[CLASSES[k].weapon].wk,ITEMS[CLASSES[k].weapon].icon[1]];
+  B.querySelectorAll('canvas[data-cs]').forEach(c=>{const k=c.dataset.cs,g=c.getContext('2d'),[w,wc]=wk(k);g.imageSmoothingEnabled=false;g.save();g.scale(1.6,1.6);drawHumanoid(g,15,38,{pal:Object.assign(lookPal(k,look),{gear:'tunic'}),dir:0,weapon:w,wcol:wc,time:0});g.restore()});
+  const pal=Object.assign(lookPal(C.cls,look),{gear:'tunic'}),[w,wc]=wk(C.cls);clearInterval(renderCreate.tm);let k=0;const sg=$('#crSpr').getContext('2d');sg.imageSmoothingEnabled=false;
+  const draw=()=>{if(!$('#crSpr')){clearInterval(renderCreate.tm);return}sg.clearRect(0,0,144,168);const gr=sg.createRadialGradient(72,160,2,72,160,46);gr.addColorStop(0,'rgba(241,212,138,.45)');gr.addColorStop(1,'rgba(241,212,138,0)');sg.fillStyle=gr;sg.beginPath();sg.ellipse(72,160,46,10,0,0,TAU);sg.fill();
+    sg.save();sg.scale(4,4);drawHumanoid(sg,18,40,{pal,dir:crDir==null?[0,3,1,2][Math.floor(k/12)%4]:crDir,moving:true,walk:k*.5,weapon:w,wcol:wc,time:k/10});sg.restore();k++};
+  draw();renderCreate.tm=setInterval(draw,110)};
+
+/* ================= MOVEMENT: eased acceleration, running lean, dust ================= */
+const _axis=Input.axis.bind(Input);Input.axis=function(){const r=_axis(),s=this._sm||(this._sm={x:0,y:0}),k=r.m>.1?.34:.5;s.x+=(r.x*r.m-s.x)*k;s.y+=(r.y*r.m-s.y)*k;const m=Math.hypot(s.x,s.y);if(m<.06){s.x=s.y=0;return{x:0,y:0,m:0}}return{x:s.x/m,y:s.y/m,m:Math.min(1,m)}};
+Player.prototype.draw=function(g,t){const atk=this.atkT>0?1-this.atkT/this.atkDur:null;let alpha=1;if(this.iframe>0&&this.dodgeT<=0&&Math.floor(t*20)%2)alpha=.55;if(this.dodgeT>0)alpha=.75;
+  const aimL=(this.dir===2)?Math.PI-this.aim:this.aim;
+  if(this.dead){drawHumanoid(g,this.x,this.y,{pal:this.pal,dir:0,rot:Math.min(1.5,this.deadT*4),alpha:Math.max(0,1-Math.max(0,this.deadT-1)),weapon:null});return}
+  const side=this.dir===3?1:this.dir===2?-1:0,lean=this.dodgeT>0?(.3-this.dodgeT)*21*(this.fx>=0?1:-1):this.moving&&this.atkT<=0&&!this.blocking?side*(this.running?.14:.05):0;
+  drawHumanoid(g,this.x,this.y,{pal:this.pal,dir:this.dir,moving:this.moving,walk:this.walk,weapon:this.weaponKind,wcol:this.wcol,atk,aimL,combo:this.combo,block:this.blocking,flash:this.flash>0,alpha,tint:this.status.chill?'#9fd3ff':this.status.poison?'#8fe070':null,time:t,rot:lean});
+  if(this.blocking){g.save();g.globalAlpha=.55+Math.sin(t*10)*.15;g.strokeStyle=this.blockT<.2?'#f6c46d':'#bfe6ff';g.lineWidth=1.5;g.beginPath();g.arc(this.x,this.y-12,13,this.aim-1,this.aim+1);g.stroke();g.restore()}
+  if(this.castT>0){g.save();g.globalCompositeOperation='lighter';const c=this.castK==='ember'?'#e3723a':this.castK==='nova'?'#8fd0ff':this.castK==='arrow'?'#c9d8ff':'#f3e2c2';g.fillStyle=c;g.globalAlpha=this.castT*2;g.beginPath();g.arc(this.x+this.fx*7,this.y-13+this.fy*5,3+this.castT*6,0,TAU);g.fill();g.restore()}};
+const _pUpdate=Player.prototype.update;Player.prototype.update=function(dt){_pUpdate.call(this,dt);if(this.moving&&this.running&&this.dodgeT<=0&&Math.random()<dt*16){const m=G.map;G.part(this.x-this.fx*4+rnd(-2,2),this.y-1,-this.fx*rnd(10,25),-rnd(4,12),.35,m&&m.cave?'#5a5070':m&&m.id==='woods'?'#4a5a3a':'#a8916a',1.5,0,'smoke')}};
+
+/* ================= MOUSE: left click attacks toward the cursor, right click blocks ================= */
+const mouse={x:0,y:0,t:-9};
+cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||G.state!=='play'||G.ui||!G.player)return;const r=cv.getBoundingClientRect(),d=G.dpr||1;mouse.x=G.cx+(e.clientX-r.left)*d/G.S;mouse.y=G.cy+(e.clientY-r.top)*d/G.S;mouse.t=G.t;
+  if(e.button===0){Input.hit.attack=true;if(!G.near)G.player.buffer=.22}else if(e.button===2)Input.v.block=true});
+addEventListener('pointerup',e=>{if(e.button===2)Input.v.block=false});
+cv.addEventListener('contextmenu',e=>e.preventDefault());
+const _startAttack=Player.prototype.startAttack;Player.prototype.startAttack=function(ax){if(G.t-mouse.t<.35){this.setFacing(mouse.x-this.x,mouse.y-(this.y-8));ax={x:0,y:0,m:0}}_startAttack.call(this,ax)};
 
 boot();
 </script>
