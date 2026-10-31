@@ -2190,7 +2190,7 @@ function burstFx(P){G.shake=12;G.flashT=.3;AudioSys.play('slam');AudioSys.play('
     for(const e of G.enemies){const d=dist(e.x,e.y,P.x,P.y);if(d<105+e.r){hitE(e,P.mag*4.8+P.atk,200);if(!e.dead)e.status.burn={t:4,dps:P.mag*.8,tick:.5}}}}}
 const _play=AudioSys.play;
 AudioSys.play=function(n){if(!this.ctx)return;if(n==='cutin'){this.noise(.5,.22,'bandpass',400,1.2,4000);[523,784,1047].forEach((f,i)=>this.tone(f,.5,'triangle',.08,1,.08+i*.05));return}return _play.call(this,n)};
-function paintTitleHero(){const c=$('#titleHero');if(!c)return;const l=Store.get('eclipse.last',null),d=l&&slotInfo(l),k=d?d.cls:'warden',g=c.getContext('2d');g.clearRect(0,0,400,480);g.drawImage(getPortrait(FACES[k],'n'),0,0)}
+function paintTitleHero(){const c=$('#titleHero');if(!c)return;const l=Store.get('eclipse.last',null),d=l&&slotInfo(l),k=d?d.cls:'warden',g=c.getContext('2d');g.clearRect(0,0,400,480);g.drawImage(getPortrait(d&&d.look?lookFace(k,d.look):FACES[k],'n'),0,0)}
 /* ================= SPRITE FORGE (pixel anime sprites) ================= */
 class Px{constructor(w,h){this.w=w;this.h=h;this.c=new Array(w*h).fill(null)}
   s(x,y,col){x=Math.round(x);y=Math.round(y);if(col&&x>=0&&y>=0&&x<this.w&&y<this.h)this.c[y*this.w+x]=col}
@@ -3447,13 +3447,13 @@ const _portraitFront4=portraitFront;portraitFront=function(g,s,K){_portraitFront
   both([['M',6,240],['Q',8,194,58,180],['L',82,186],['L',74,214],['L',64,240]],HC.coat);
   lineB([82,188,76,214,66,240],HC.red,4);lineB([58,182,28,188,12,226],HC.coatL,4);lineB([60,180,84,184,82,188],HC.gold,2.5);
   for(const x of[34,166])path([['M',x,196],['L',x+7,203],['L',x,210],['L',x-7,203]],HC.gold,true,1.5)};
-function portraitBangs(g,s,K){const H=s.hair,HL=shade(H,.5),O='#2a1626';
+function portraitBangs(g,s,K){const H=s.hair,HL=shade(H,.5),HS=shade(H,-.25),O='#2a1626';
   const lock=(q,f)=>{g.beginPath();g.moveTo(q[0],q[1]);g.quadraticCurveTo(q[2],q[3],q[4],q[5]);g.quadraticCurveTo(q[6],q[7],q[8],q[9]);g.fillStyle=f;g.fill();g.lineWidth=2.5;g.strokeStyle=O;g.lineJoin='round';g.stroke()};
-  for(let i=0;i<12;i++){const a=Math.PI*(1.04+i*.08),r=50,cx=100+Math.cos(a)*r,cy=98+Math.sin(a)*r*1.08,len=16+((i*7)%5)*5,ax=Math.cos(a+.35),ay=Math.sin(a+.35),px=-Math.sin(a)*10,py=Math.cos(a)*10;
-    lock([cx+px,cy+py,cx+ax*len*.5+px*.3,cy+ay*len*.5+py*.3,cx+ax*len,cy+ay*len,cx+ax*len*.4-px*.4,cy+ay*len*.4-py*.4,cx-px,cy-py],H)}
-  for(const q of[[64,64,56,92,58,114,68,90,80,70],[78,58,78,96,84,118,92,92,98,64],[96,58,100,92,106,116,110,88,116,62],[112,60,124,90,132,112,132,86,136,68],[128,64,142,88,146,106,144,84,146,74]])lock(q,H);
-  K.line([84,70,86,92,84,110],HL,2);K.line([118,72,124,92,128,106],HL,2)}
-
+  /* soft layered volume over the crown */
+  g.beginPath();g.moveTo(46,112);g.quadraticCurveTo(38,46,100,34);g.quadraticCurveTo(162,46,154,112);g.quadraticCurveTo(150,78,100,68);g.quadraticCurveTo(50,78,46,112);g.fillStyle=H;g.fill();g.lineWidth=2.5;g.strokeStyle=O;g.stroke();
+  for(const q of[[66,64,60,90,62,106,70,88,82,72],[80,60,80,94,86,108,92,92,98,66],[98,60,102,92,106,106,110,88,116,64],[114,62,124,90,130,104,130,86,134,70]])lock(q,H);
+  lock([134,70,144,92,146,108,142,90,148,80],HS);lock([56,80,50,96,52,110,58,96,64,84],HS);
+  K.line([70,48,100,40,130,48],HL,3);K.line([86,72,88,88,86,100],HL,2)}
 /* looks: the protagonist coat by default, class gear on request */
 const CLASSFACE={};for(const k of['warden','ranger','arcanist'])CLASSFACE[k]=Object.assign({},FACES[k]);
 const HEROLOOK={hair:'#1c1a24',hs:'messy',eye:'#4a2e22',band:'',outfit:'hero'};
