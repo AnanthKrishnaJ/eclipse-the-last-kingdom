@@ -14,7 +14,7 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 - Bag page laid out as an equipment screen (paper doll) with attributes, a 24-slot inventory, filters, sorting, hover tooltips and item comparison.
 - Character creation with a live portrait, a turnable sprite, colour swatches, a randomizer and class cards with stat bars.
 - Classic JRPG interface: blue windows with silver edges, a pointing-hand cursor, a pause menu with icons and a hero status panel, a dialogue window with portrait, and a hero medallion on the HUD.
-- A black-haired swordsman hero with a red headband by default, fully customisable in character creation.
+- The protagonist: messy black hair over dark eyes, a white shirt under a gold-trimmed black coat with red lining and long coat-tails, crossing leather straps, a red sash, a blue-gem pendant and tall gold-cuffed boots. Character creation can swap the coat for class gear.
 - Companions Mimi, Lyra, Serah and Noelle, with a bond system: gifts, dates, personal quests and marriage.
 - Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
 - Three areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
