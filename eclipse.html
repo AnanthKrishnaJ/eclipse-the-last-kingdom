@@ -777,6 +777,34 @@ h2{font:400 26px/1.15 var(--f-dis);color:var(--sel);letter-spacing:.04em;text-sh
 .tb.big{background:radial-gradient(circle at 35% 30%,#5a78f0,#1a2878 72%);border-color:var(--edge);box-shadow:0 0 0 2px #04061a,0 4px 0 #04061a}
 .tb.dn{background:linear-gradient(#4a68e0,#22348e);border-color:var(--sel)}
 #joy{border-color:#e8eefc66;background:#101a5c55}#joy i{background:#e8eefc44;border-color:#e8eefcaa}
+/* controls screen */
+.help-pnl{width:min(780px,100%)}
+.ctrl .sect{margin-top:12px}
+.crow{display:grid;grid-template-columns:minmax(0,1fr) repeat(3,minmax(0,124px));gap:6px;align-items:center;padding:3px 0;border-bottom:1px solid #3a4ca055}
+.crow span{font:15px var(--f-txt);color:#dfe6ff}
+.kslot{font:400 13px var(--f-dis);padding:6px;border:2px solid #6c80d8;border-radius:5px;background:linear-gradient(#1a2878,#0c1450);color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;box-shadow:0 0 0 1px #04061a;text-shadow:2px 2px 0 #04061a}
+.kslot.none{color:#6c80d8;border-style:dashed}.kslot:hover{border-color:#fff}
+.kslot.wait{border-color:var(--sel);color:var(--sel);animation:kblink .8s steps(2) infinite}
+@keyframes kblink{50%{background:#2c43a8}}
+#ctrlFoot{margin-top:10px}
+/* wardrobe and bestiary */
+.wardrobe{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px}
+.wd-left{display:grid;gap:8px;justify-items:center;align-content:start}
+#wdPor{width:180px;aspect-ratio:200/240;border:2px solid var(--edge);border-radius:5px;background:radial-gradient(circle at 50% 75%,#3a55c8,#070c34 70%);image-rendering:pixelated}
+#wdSpr{width:120px;height:150px;image-rendering:pixelated;border:1px solid var(--line);border-radius:5px;background:radial-gradient(ellipse at 50% 85%,#3a55c866,transparent 60%),#070c34}
+.wd-list{display:grid;gap:5px;margin-bottom:6px}
+.wd-item{text-align:left;padding:8px 10px;border:1px solid var(--line);border-radius:5px;background:#0c1450;color:#fff}
+.wd-item b{display:block;font:400 15px var(--f-dis);color:var(--sel)}.wd-item small{font:13px var(--f-txt);color:#bcc8f0}
+.wd-item:hover{border-color:#fff}.wd-item.on{border-color:#fff;box-shadow:0 0 0 1px #fff,inset 3px 0 0 var(--sel)}
+.wd-item.locked{opacity:.5;cursor:not-allowed}
+.wd-right .cr-row{margin:4px 0}
+@media (max-width:620px){.wardrobe{grid-template-columns:1fr}}
+.beasts{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:10px}
+.beast{display:grid;grid-template-columns:96px 1fr;gap:10px;padding:10px;border:1px solid var(--line);border-radius:6px;background:linear-gradient(#1a2878,#0c1450)}
+.beast canvas{width:96px;height:96px;image-rendering:pixelated;border:2px solid #6c80d8;border-radius:5px;background:radial-gradient(circle at 50% 70%,#3a55c8,#070c34 70%)}
+.beast h4{margin:0 0 3px;font:400 16px var(--f-dis);color:var(--sel)}.beast p{margin:3px 0;font:13.5px/1.35 var(--f-txt);color:#dfe6ff}.beast small{display:block;font:12.5px/1.4 var(--f-txt);color:var(--sub)}
+.beast.unseen h4{color:#6c80d8}
+@media (max-width:560px){.crow{grid-template-columns:1fr repeat(3,minmax(0,1fr))}.kslot{font-size:11px}}
 </style>
 
 <canvas id="cv"></canvas>
@@ -831,7 +859,6 @@ h2{font:400 26px/1.15 var(--f-dis);color:var(--sel);letter-spacing:.04em;text-sh
       <div class="sun"></div>
       <h1 class="sh">Eclipse</h1>
       <p class="sub sh">The Last Kingdom</p>
-      <p class="jp sh">エクリプス ― 最後の王国 ―</p>
     </div>
     <nav class="mmenu sh">
       <button id="mCont">Continue</button>
@@ -1026,7 +1053,7 @@ function keyName(c){if(!c)return'—';return c.replace(/^Key/,'').replace(/^Digi
 const Input={keys:{},hit:{},v:{},bind:null,joy:{x:0,y:0,on:false},gpPrev:[],gpAxis:{x:0,y:0},gpHeld:{},rebind:null,rebindCb:null,
   init(){this.bind=Object.assign({},DEF_BIND,settings.bind||{});
     addEventListener('keydown',e=>{AudioSys.init();AudioSys.resume();
-      if(this.rebind){e.preventDefault();if(e.code!=='Escape'){this.bind[this.rebind]=[e.code];settings.bind=this.bind;saveSettings()}const cb=this.rebindCb;this.rebind=null;cb&&cb();return}
+      if(this.rebind){e.preventDefault();this.finishRebind(e.code);return}
       if(e.target&&e.target.tagName==='INPUT')return;
       if((e.code==='Enter'||e.code==='Space')&&document.activeElement&&document.activeElement.tagName==='BUTTON'&&(G.ui&&G.ui!=='dialog'||G.state!=='play'||document.activeElement.classList.contains('choice')))return;
       this.keys[e.code]=true;const as=this.actionsOf(e.code);if(as.length){if(!e.repeat)as.forEach(a=>this.hit[a]=true);e.preventDefault()}});
@@ -1820,7 +1847,7 @@ function loadMap(id,px,py,silent){const m=G.maps[id];G.map=m;G.enemies=[];G.proj
   const P=G.player;P.x=px;P.y=py;if(boxHits(m,P.x,P.y,P.hw,P.hh)){const[a,b]=openSpot(m,Math.floor(px/T),Math.floor(py/T));P.x=a*T+8;P.y=b*T+12}
   G.cam.x=P.x;G.cam.y=P.y-8;Music.play(m.music);
   if(!G.disc[m.region]){G.disc[m.region]=true;if(!silent)setTimeout(()=>toast('Discovered: '+m.name,'q'),3600)}
-  if(!silent)showArea(m.name,(MAPJP[m.id]||'')+'  ·  '+m.sub);
+  if(!silent)showArea(m.name,m.sub);
   for(const o of m.objs)if(o.kind==='lantern')o.lit=G.lantern&&G.lantern.map===id&&Math.abs(G.lantern.x-o.x)<2;
   G.mmTick=0}
 function travel(ex){if(G.trans)return;if(ex.need&&!G.flags[ex.need])return;G.trans={t:0,ex,done:false};$('#fade').style.opacity=1;AudioSys.play('door');
@@ -2023,10 +2050,10 @@ for(const k in PALX)Object.assign(NPCDEF[k].pal,PALX[k]);
 Object.assign(CLASSES.warden.pal,{hair:'#e2e8f4',hs:'spiky',eye:'#d8343c',scarf:'#d23a40',top:'#4a6aa0',top2:'#2e4470',cape:null});
 Object.assign(CLASSES.ranger.pal,{hair:'#5fb85a',hs:'pony',eye:'#e8a628',hood:null,top:'#3f7a44',cape:'#244a30'});
 Object.assign(CLASSES.arcanist.pal,{hair:'#a684f0',hs:'twin',eye:'#3ad0f0',circlet:true,acc:'#e8c66a',top:'#5a46a0'});
-const MAPJP={eldoria:'エルドリア村',woods:'囁きの森',caverns:'水晶洞窟'};
-const SKILL_JP={ember:'焔弾',arrow:'月光矢',whirl:'旋風斬',nova:'氷華陣'};
-const BOSS_JP={grukk:'小鬼の将',sentinel:'蝕の番人',sovereign:'空ろなる王'};
-const BURSTS={warden:{name:'Crimson Dawn',jp:'紅蓮一閃',c1:'#b81e2e',c2:'#ff9a4a'},ranger:{name:'Moonfall Barrage',jp:'月影乱舞',c1:'#14604a',c2:'#8fe0ff'},arcanist:{name:'Eclipse Nova',jp:'日蝕崩界',c1:'#2a1470',c2:'#ffcf6a'}};
+const MAPJP={};
+const SKILL_JP={ember:'Fire Art',arrow:'Moon Art',whirl:'Blade Art',nova:'Frost Art'};
+const BOSS_JP={grukk:'Goblin Warlord',sentinel:'Eclipse Guardian',sovereign:'The Hollow King'};
+const BURSTS={warden:{name:'Crimson Dawn',jp:'Burst Art',c1:'#b81e2e',c2:'#ff9a4a'},ranger:{name:'Moonfall Barrage',jp:'Burst Art',c1:'#14604a',c2:'#8fe0ff'},arcanist:{name:'Eclipse Nova',jp:'Burst Art',c1:'#2a1470',c2:'#ffcf6a'}};
 
 /* ---------- Portraits ---------- */
 const PORT={};
@@ -2127,7 +2154,7 @@ function cutin(o){const el=$('#cutin');el.hidden=false;el.className=o.vs?'vs':''
   G.freezeT=o.dur||1;AudioSys.play('cutin');clearTimeout(cutin.tm);cutin.tm=setTimeout(()=>{el.hidden=true},(o.dur||1)*1000+60)}
 function callout(k){const el=$('#callout');el.innerHTML=`<small>${SKILL_JP[k]}</small>${esc(SKILLS[k].name)}`;el.classList.remove('go');void el.offsetWidth;el.classList.add('go')}
 function comboHit(){const c=G.combo||(G.combo={n:0,last:-9});c.n=G.t-c.last<1.8?c.n+1:1;c.last=G.t;if(c.n>=3){const el=$('#combo');el.hidden=false;el.innerHTML=`<b>${c.n}</b><span>HITS${c.n>=25?'!!':c.n>=10?'!':''}</span>`;el.classList.remove('pop');void el.offsetWidth;el.classList.add('pop')}}
-function lvBanner(n){const el=$('#lvup');el.innerHTML=`<b>LEVEL UP!</b><small>レベルアップ · Level ${n}</small>`;el.hidden=false;el.classList.remove('go');void el.offsetWidth;el.classList.add('go');clearTimeout(lvBanner.t);lvBanner.t=setTimeout(()=>el.hidden=true,2400)}
+function lvBanner(n){const el=$('#lvup');el.innerHTML=`<b>LEVEL UP!</b><small>Level ${n}</small>`;el.hidden=false;el.classList.remove('go');void el.offsetWidth;el.classList.add('go');clearTimeout(lvBanner.t);lvBanner.t=setTimeout(()=>el.hidden=true,2400)}
 function bubble(g,x,y,ch,col){x=Math.round(x);y=Math.round(y);g.fillStyle='#1c1222';g.fillRect(x-4,y-1,9,11);g.fillRect(x-3,y-2,7,13);g.fillStyle='#ffffff';g.fillRect(x-3,y,7,9);g.fillRect(x-2,y-1,5,11);g.fillRect(x-1,y+10,2,2);g.fillStyle=col;if(ch==='!'){g.fillRect(x,y+1,1,5);g.fillRect(x,y+7,1,1)}else{g.fillRect(x-1,y+1,3,1);g.fillRect(x+1,y+2,1,2);g.fillRect(x,y+4,1,1);g.fillRect(x,y+7,1,1)}}
 
 /* ---------- Burst ---------- */
@@ -2743,7 +2770,7 @@ const _endBoss=G.endBoss.bind(G);G.endBoss=function(b){_endBoss(b);for(const c o
 const _harvest=harvest;harvest=function(o){if(o.kind==='herb'&&herbReady(o)&&Math.random()<.5)dropItem(o.x,o.y-4,'berries',1);_harvest(o)};
 const _dropGold=dropGold;dropGold=function(x,y,n){_dropGold(x,y,Math.round(n*(G.blessing==='fortune'?1.5:1)))};
 const _recalc=Player.prototype.recalc;Player.prototype.recalc=function(){_recalc.call(this);if(G.blessing==='sun'){this.maxHp=Math.round(this.maxHp*1.25)}if(G.blessing==='mana'){this.maxMp=Math.round(this.maxMp*1.3)}if(G.blessing==='fortune')this.crit+=.08};
-const _die=Player.prototype.die;Player.prototype.die=function(){if(G.rewindDay!==G.day&&G.state==='play'){G.rewindDay=G.day;this.dead=false;this.hp=Math.round(this.maxHp*.5);this.iframe=2.5;G.flashT=.8;cutin({face:GODDESS,expr:'happy',name:"Dawn's Grace",jp:'暁の加護',sub:'Aurelia lifts you up · once per day',c1:'#ffb347',c2:'#fff3c0',dur:1.1});AudioSys.play('heal');return}_die.call(this)};
+const _die=Player.prototype.die;Player.prototype.die=function(){if(G.rewindDay!==G.day&&G.state==='play'){G.rewindDay=G.day;this.dead=false;this.hp=Math.round(this.maxHp*.5);this.iframe=2.5;G.flashT=.8;cutin({face:GODDESS,expr:'happy',name:"Dawn's Grace",jp:'Divine Grace',sub:'Aurelia lifts you up · once per day',c1:'#ffb347',c2:'#fff3c0',dur:1.1});AudioSys.play('heal');return}_die.call(this)};
 const _doBurst=Player.prototype.doBurst;Player.prototype.doBurst=function(){const was=this.burst;_doBurst.call(this);if(was>=100&&(G.party||[]).length){const af=G.afterFreeze;G.afterFreeze=()=>{af&&af();(G.party||[]).forEach((c,i)=>{if(c.dead)return;G.timed.push({t:.25+i*.18,f:()=>{const tg=G.enemies.filter(e=>!e.dead&&e.type!=='dummy').sort((a,b)=>dist(a.x,a.y,c.x,c.y)-dist(b.x,b.y,c.x,c.y))[0];if(!tg)return;c.say('Link!',1);G.fx.push({k:'spark',x:tg.x,y:tg.y-10,a:0,s:22,col:'#ff9cc2',t:0,dur:.3});tg.hurt(rollDmg(c.atk*3*c.bonus,tg.def,1,.5),true,0,0,{src:c,sx:c.x,sy:c.y,bypass:true,burst:true})}})})}}};
 const _gainXp=Player.prototype.gainXp;Player.prototype.gainXp=function(n){_gainXp.call(this,n);partyXp(n*.9)};
 const _renderCodex=renderCodex;renderCodex=function(){if(cdxTab==='party'||cdxTab==='bonds'){$$('#cdxTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===cdxTab));const B=$('#cdxB');return cdxTab==='party'?renderParty(B):renderBonds(B)}return _renderCodex()};
@@ -3044,7 +3071,7 @@ function frame(now){requestAnimationFrame(frame);let dt=Math.min(.1,(now-last)/1
   if(G.state==='cine'){G.t+=dt;if(G.ui==='dialog')Dlg.tick(dt)}
   sceneTick();render();Music.update();hudUpdate();
   }catch(err){console.error(err)}
-  if(!stepped||G.state!=='play'||G.ui)Input.end()}
+  if(G.state!=='play'||G.ui)Input.end()}
 
 /* ================= BOOT ================= */
 function boot(){genTiles();genTrees();genFringe();G.fogC=genFog();Input.init();resize();buildHotbar();buildTouch();toTitle();requestAnimationFrame(frame);
@@ -3318,9 +3345,10 @@ const _pUpdate=Player.prototype.update;Player.prototype.update=function(dt){_pUp
 
 /* ================= MOUSE: left click attacks toward the cursor, right click blocks ================= */
 const mouse={x:0,y:0,t:-9};
-cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||G.state!=='play'||G.ui||!G.player)return;const r=cv.getBoundingClientRect(),d=G.dpr||1;mouse.x=G.cx+(e.clientX-r.left)*d/G.S;mouse.y=G.cy+(e.clientY-r.top)*d/G.S;mouse.t=G.t;
-  if(e.button===0){Input.hit.attack=true;if(!G.near)G.player.buffer=.22}else if(e.button===2)Input.v.block=true});
-addEventListener('pointerup',e=>{if(e.button===2)Input.v.block=false});
+cv.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'||Input.rebind)return;if(e.button===1)e.preventDefault();if(G.state!=='play'||G.ui||!G.player)return;const code='Mouse'+e.button,as=Input.actionsOf(code);Input.keys[code]=true;if(!as.length)return;
+  if(as.includes('attack')){const r=cv.getBoundingClientRect(),d=G.dpr||1;mouse.x=G.cx+(e.clientX-r.left)*d/G.S;mouse.y=G.cy+(e.clientY-r.top)*d/G.S;mouse.t=G.t;if(!G.near)G.player.buffer=.22}
+  as.forEach(a=>Input.hit[a]=true)});
+addEventListener('pointerup',e=>{if(e.pointerType!=='touch')Input.keys['Mouse'+e.button]=false});
 cv.addEventListener('contextmenu',e=>e.preventDefault());
 const _startAttack=Player.prototype.startAttack;Player.prototype.startAttack=function(ax){if(G.t-mouse.t<.35){this.setFacing(mouse.x-this.x,mouse.y-(this.y-8));ax={x:0,y:0,m:0}}_startAttack.call(this,ax)};
 
@@ -3358,7 +3386,7 @@ const _gearPass=gearPass;gearPass=function(P,S,layer,k){_gearPass(P,S,layer,k);i
 /* ================= PROTAGONIST: black coat, red lining, gold trim ================= */
 const HC={coat:'#24222c',coatL:'#3e3a4a',coatD:'#141218',red:'#a8222a',redD:'#6a141a',gold:'#c9a24a',shirt:'#ece6dc',shirtD:'#c8beb0',lth:'#6a4428',lthD:'#4a2e1a',glove:'#1c1a20',gem:'#4a8ae8'};
 const _gp4=gearPass;gearPass=function(P,S,layer,k){_gp4(P,S,layer,k);if(S.kit!=='hero')return;
-  const b=k.b,aL=k.aL,atk=k.atk,flut=k.flut,side=k.side,back=k.back,front=!side&&!back,H=HC,armored=['plate','chain','leather','fur'].includes(S.gear),mantle=S.gear!=='plate';
+  const b=k.b,aL=k.aL,atk=k.atk,flut=k.flut,side=k.side,back=k.back,front=!side&&!back,H=S.hc||HC,armored=['plate','chain','leather','fur'].includes(S.gear),mantle=S.gear!=='plate';
   const arm=(x,y)=>{P.r(x,y,2,2,H.coat);P.r(x,y+2,2,1,H.shirt);P.r(x,y+3,2,1,H.glove);P.s(x,y+3,H.gold)};
   if(layer==='back'){
     if(front){P.r(6,21+b,12,11+flut,H.coat);P.r(6,21+b,1,11+flut,H.red);P.r(17,21+b,1,11+flut,H.red);P.row(31+b+flut,7,16,H.redD)}
@@ -3420,6 +3448,109 @@ const _lookPal4=lookPal;lookPal=function(cls,look){const p=_lookPal4(cls,look),L
 playerFace=function(){const P=G.player,cls=P?P.cls:'warden',L=G.look,f=Object.assign({},L&&L.outfit==='class'?CLASSFACE[cls]:FACES[cls]);
   if(L)Object.assign(f,{hair:L.hair,hs:L.hs,eye:L.eye,skin:L.skin,fem:L.gender==='female',band:L.band||null});const a=P&&P.eq&&P.eq.armor&&GEARLOOK[P.eq.armor.id];if(a&&a!=='tunic')f.armor=a;return f};
 const _startFrom4=startFrom;startFrom=function(d,slot){const L=d.look;if(L&&((L.hair==='#e2e8f4'&&L.hs==='spiky')||(L.hair==='#1c1a24'&&L.hs==='messy'&&L.band==='#b8302a')))d.look=Object.assign({},L,HEROLOOK);return _startFrom4(d,slot)};
+
+/* ================= CONTROLS: rebind any action to keys or mouse buttons ================= */
+DEF_BIND.attack=['Mouse0','KeyJ','Space'];DEF_BIND.block=['Mouse2','KeyL'];
+if(settings.bind&&(settings.bindV||0)<2){const b=settings.bind;if(b.attack&&!b.attack.includes('Mouse0'))b.attack=['Mouse0',...b.attack].slice(0,3);if(b.block&&!b.block.includes('Mouse2'))b.block=['Mouse2',...b.block].slice(0,3)}
+settings.bindV=2;saveSettings();
+const _keyName=keyName;keyName=function(c){if(!c)return'—';const M={Mouse0:'Left click',Mouse1:'Middle click',Mouse2:'Right click',Mouse3:'Mouse 4',Mouse4:'Mouse 5',ArrowUp:'↑',ArrowDown:'↓',ArrowLeft:'←',ArrowRight:'→',Backquote:'`',Minus:'-',Equal:'=',Comma:',',Period:'.',Slash:'/',Semicolon:';',Quote:"'",BracketLeft:'[',BracketRight:']',Backslash:'\\'};
+  if(M[c])return M[c];if(c.startsWith('Numpad'))return'Num '+c.slice(6);return _keyName(c).replace('ControlLeft','L-Ctrl').replace('ControlRight','R-Ctrl').replace('AltLeft','L-Alt').replace('AltRight','R-Alt')};
+function refreshBindLabels(){const em=$('#hBurstBar em');if(em)em.textContent='BURST · '+keyName((Input.bind.burst||[])[0]);hudCache={}}
+const _buildHotbar=buildHotbar;buildHotbar=function(){_buildHotbar();refreshBindLabels()};
+Input.finishRebind=function(code){const R=this.rebind;this.rebind=null;if(!R)return;
+  if(code!=='Escape'){const list=(this.bind[R.a]||[]).slice();
+    if(code==='Backspace'||code==='Delete')list.splice(R.i,1);
+    else{for(const a of ACTIONS){if(a===R.a)continue;const l=this.bind[a]||[];if(l.includes(code)){this.bind[a]=l.filter(c=>c!==code);toast(`${keyName(code)} moved from ${ACT_LABEL[a]} to ${ACT_LABEL[R.a]}`,'bad')}}
+      const k=list.indexOf(code);if(k>=0)list.splice(k,1);list.splice(Math.min(R.i,list.length),k>=0||R.i>=list.length?0:1,code)}
+    this.bind[R.a]=list.filter(Boolean).slice(0,3);settings.bind=this.bind;saveSettings();buildHotbar()}
+  AudioSys.play('ui');if(!$('#sHelp').hidden)renderControls()};
+/* a mouse press while waiting binds that button; the click that follows it is swallowed */
+addEventListener('pointerdown',e=>{if(!Input.rebind||e.pointerType==='touch')return;e.preventDefault();e.stopPropagation();addEventListener('click',ev=>{ev.stopPropagation();ev.preventDefault()},{capture:true,once:true});Input.finishRebind('Mouse'+e.button)},{capture:true});
+addEventListener('contextmenu',e=>{if(Input.rebind||!$('#sHelp').hidden)e.preventDefault()});
+const CTRL_GROUPS=[['Movement',['up','down','left','right','run']],['Combat',['attack','dodge','block','burst','potion','interact']],['Skills',['skill1','skill2','skill3','skill4']],['Menus',['inventory','skills','journal','map','pause']]];
+function renderControls(){const B=$('#helpBody'),R=Input.rebind;B.className='ctrl';
+  B.innerHTML=CTRL_GROUPS.map(([g,as])=>`<p class="sect">${g}</p>${as.map(a=>`<div class="crow"><span>${esc(ACT_LABEL[a])}</span>${[0,1,2].map(i=>{const c=(Input.bind[a]||[])[i],w=R&&R.a===a&&R.slot===i;return`<button class="kslot${w?' wait':''}${c?'':' none'}" data-slot="${a}:${i}">${w?'Press a key…':esc(c?keyName(c):'—')}</button>`}).join('')}</div>`).join('')}`).join('')+
+   `<p class="sect">Gamepad</p><p class="hint">Left stick moves. A attack, B roll, X / Y / LB / RB skills, LT block, RT run, Start pause, Select map.</p>`;
+  B.querySelectorAll('[data-slot]').forEach(b=>b.onclick=e=>{e.stopPropagation();const[a,i]=b.dataset.slot.split(':');Input.rebind={a,i:Math.min(+i,(Input.bind[a]||[]).length),slot:+i};AudioSys.play('ui');renderControls()})}
+openHelp=function(back){Input.rebind=null;showScreen('sHelp');renderControls();
+  let ft=$('#ctrlFoot');if(!ft){ft=document.createElement('p');ft.id='ctrlFoot';ft.className='hint';$('#helpBody').after(ft)}ft.textContent='Click a slot, then press any key or mouse button. Esc cancels, Backspace clears the slot. A key already in use moves to the new action.';
+  const rb=$('#helpBack');rb.onclick=()=>{Input.rebind=null;AudioSys.play('ui');showScreen(back)};
+  let rs=$('#ctrlReset');if(!rs){rs=document.createElement('button');rs.id='ctrlReset';rs.className='btn ghost';rs.textContent='Reset to defaults';rb.before(rs)}
+  rs.onclick=()=>{Input.rebind=null;Input.bind=JSON.parse(JSON.stringify(DEF_BIND));settings.bind=null;saveSettings();buildHotbar();AudioSys.play('ui');renderControls();toast('Controls reset to defaults')}};
+const _renderSettings=renderSettings;renderSettings=function(){_renderSettings();const B=$('#setBody'),bl=B.querySelector('.binds');if(!bl)return;const lab=bl.previousElementSibling;if(lab&&lab.tagName==='LABEL')lab.remove();const rs=$('#rstB');if(rs)rs.parentElement.remove();
+  bl.outerHTML='<label>Controls</label><div><button class="btn sm" id="openCtrl">Customize controls</button></div>';$('#openCtrl').onclick=()=>{AudioSys.play('ui');openHelp('sSet')}};
+
+/* ================= WARDROBE: cosmetic outfits and coat dyes ================= */
+const DYE={coat:{Black:'#24222c',Navy:'#1e2a4a',Crimson:'#4a161c',Forest:'#1c3426',Ivory:'#d8d2c4'},lining:{Crimson:'#a8222a',Royal:'#2f5aa8',Gold:'#c9a24a',Violet:'#6a3a9a'},trim:{Gold:'#c9a24a',Silver:'#c8d0dc'}};
+function heroHC(L){if(!L||!(L.coat||L.lining||L.trim))return null;const c=L.coat||HC.coat,l=L.lining||HC.red;return Object.assign({},HC,{coat:c,coatL:shade(c,.18),coatD:shade(c,-.4),red:l,redD:shade(l,-.35),gold:L.trim||HC.gold})}
+Object.assign(ITEMS,{outfit_shadow:{name:'Nightstalker Cloak',type:'key',r:2,price:250,icon:['cloak','#3a3446'],desc:'A hooded black cloak for moving unseen. Wear it from the Wardrobe.'}});
+SHOPS.odile.sells.push('outfit_shadow');
+const OUTFITS={
+  hero:{name:'Protagonist Coat',desc:'Your black traveling coat. Dye the coat, lining and trim below.',own:()=>true},
+  class:{name:'Class Gear',desc:'The traditional garb of your calling.',own:()=>true},
+  kasavu:{name:'Kerala Festival Wear',desc:'A white mundu with a gold kasavu border and a matching shawl, like the ones worn back home for Onam.',own:()=>true,
+    pal:{kit:'kasavu',robe:true,top:'#f4efe2',top2:'#ece2cc',legs:'#ece2cc',boots:'#8a6a4a',cape:null,hood:null,circlet:null,scarf:null,sash:'#e0b84a'},face:{kit:'kasavu',outfit:'#f4efe2',trim:'#e0b84a',cloak:null,metal:null}},
+  knight:{name:'Royal Regalia',desc:'Silvered plate, a blue tabard and a white cape.',own:()=>!!G.flags.sentinelDead,lock:'Defeat the Eclipsed Sentinel.',
+    pal:{kit:'warden',cape:'#e8eefc',steel:'#c8d0dc',top:'#2f5aa8',top2:'#1e3a78',legs:'#2a2e40',boots:'#3a3a48',robe:false,hood:null,circlet:null,scarf:null},face:{kit:'warden',armor:'plate',metal:'#c8d0dc',outfit:'#2f5aa8',trim:'#e0b84a',cloak:null}},
+  shadow:{name:'Nightstalker Cloak',desc:'A hooded black cloak for moving unseen.',own:()=>invCount('outfit_shadow')>0,lock:"Sold at Odile's Wares.",
+    pal:{kit:'ranger',cape:'#1c1a24',leather:'#2a2630',top:'#2a2630',top2:'#1c1a24',legs:'#1c1a24',boots:'#141218',hood:'#1c1a24',robe:false,circlet:null,scarf:null},face:{kit:'ranger',cloak:'#1c1a24',outfit:'#2a2630',trim:'#8a8aa0',metal:null}}};
+const _lookPal5=lookPal;lookPal=function(cls,look){const L=look||G.look,o=(L&&L.outfit)||'hero';
+  if(o==='hero'){const p=_lookPal5(cls,look),h=heroHC(L);if(h)p.hc=h;return p}
+  const p=_lookPal5(cls,Object.assign({},L||{},{outfit:'class'})),O=OUTFITS[o];if(O&&O.pal)Object.assign(p,O.pal);return p};
+const _playerFace5=playerFace;playerFace=function(){const f=_playerFace5(),L=G.look,o=(L&&L.outfit)||'hero',O=OUTFITS[o];
+  if(o==='hero'){const h=heroHC(L);if(h)f.hc=h}else if(O&&O.face)Object.assign(f,O.face);if(L&&L.showArmor===false&&o!=='knight')delete f.armor;return f};
+{const dyed=fn=>function(g,s,K){const keep=Object.assign({},HC);if(s.hc)Object.assign(HC,s.hc);try{fn(g,s,K)}finally{Object.assign(HC,keep)}};portraitBack=dyed(portraitBack);portraitFront=dyed(portraitFront)}
+Object.defineProperty(Player.prototype,'pal',{get(){const base=this._pal||(this._pal=lookPal(this.cls)),L=G.look,a=this.eq&&this.eq.armor;let gk=a&&GEARLOOK[a.id]||null;if(L&&L.showArmor===false)gk=null;if(!gk&&L&&L.outfit==='knight')gk='plate';
+  const c=this._pg;if(c&&c.base===base&&c.gk===gk)return c.p;const p=Object.assign({},base,{gear:gk});this._pg={base,gk,p};return p},configurable:true});
+/* the kasavu outfit: gold-bordered mundu and shawl */
+const _gp6=gearPass;gearPass=function(P,S,layer,k){_gp6(P,S,layer,k);if(S.kit!=='kasavu'||layer!=='body')return;const b=k.b,G1='#e0b84a',CR='#f4efe2';
+  for(let x=5;x<19;x++){if(P.g(x,30+b))P.s(x,30+b,G1);if(P.g(x,31))P.s(x,31,shade(G1,-.25))}
+  if(!k.side&&!k.back){for(let y=24+b;y<30+b;y++)if(P.g(12,y))P.s(12,y,G1);for(let i=0;i<6;i++){P.s(8+i,18+b+i,CR);P.s(8+i,19+b+i,G1)}P.r(5,17+b,4,2,CR);P.row(19+b,5,8,G1)}
+  else if(k.side){for(let i=0;i<5;i++)P.s(9+i,18+b+i,G1)}else{P.row(18+b,6,17,CR);P.row(19+b,6,17,G1)}};
+const _portraitFront6=portraitFront;portraitFront=function(g,s,K){_portraitFront6(g,s,K);if(s.kit!=='kasavu')return;const{path,line}=K;
+  path([['M',14,236],['Q',30,192,70,184],['Q',96,194,104,206],['L',156,240],['L',112,240],['Q',70,212,40,240]],'#f4efe2');line([18,232,34,196,70,186],'#e0b84a',4);line([104,208,130,224,152,240],'#e0b84a',4)};
+function applyLook(){if(G.player){G.player._pal=null;G.player._pg=null}hudCache={}}
+function openWardrobe(){const L=G.look||(G.look=Object.assign({},HEROLOOK,{skin:'#f2cbaa',gender:'male'}));const o=L.outfit||'hero',P=G.player;
+  const sw=(k,set)=>Object.entries(set).map(([n,c],i)=>`<button class="sw${(L[k]||(i===0?c:''))===c?' on':''}" data-dye="${k}" data-v="${c}" style="--c:${c}" title="${n}" aria-label="${n}"></button>`).join('');
+  openGen('Wardrobe',`<div class="wardrobe"><div class="wd-left"><canvas id="wdPor" width="400" height="480"></canvas><canvas id="wdSpr" width="120" height="150"></canvas></div><div class="wd-right">
+   <p class="sect">Outfits</p><div class="wd-list">${Object.entries(OUTFITS).map(([k,O])=>{const own=O.own();return`<button class="wd-item${k===o?' on':''}${own?'':' locked'}" data-of="${k}" ${own?'':'disabled'}><b>${O.name}</b><small>${own?O.desc:'Locked · '+O.lock}</small></button>`}).join('')}</div>
+   ${o==='hero'?`<p class="sect">Dyes</p><div class="cr-row"><span>Coat</span><div class="swatches">${sw('coat',DYE.coat)}</div></div><div class="cr-row"><span>Lining</span><div class="swatches">${sw('lining',DYE.lining)}</div></div><div class="cr-row"><span>Trim</span><div class="swatches">${sw('trim',DYE.trim)}</div></div>`:''}
+   <p class="sect">Display</p><div class="cr-row"><span>Armor</span><div class="seg"><button class="${L.showArmor!==false?'on':''}" data-sa="1">Show equipped armor</button><button class="${L.showArmor===false?'on':''}" data-sa="0">Outfit only</button></div></div>
+   <p class="hint">Outfits are cosmetic. Your equipped armor still sets your stats.</p></div></div>`,B=>{
+    const re=()=>{applyLook();AudioSys.play('ui');openWardrobe()};
+    B.querySelectorAll('[data-of]').forEach(b=>b.onclick=()=>{L.outfit=b.dataset.of;re()});
+    B.querySelectorAll('[data-dye]').forEach(b=>b.onclick=()=>{L[b.dataset.dye]=b.dataset.v;re()});
+    B.querySelectorAll('[data-sa]').forEach(b=>b.onclick=()=>{L.showArmor=b.dataset.sa==='1';re()});
+    $('#wdPor').getContext('2d').drawImage(getPortrait(playerFace(),'happy'),0,0);
+    let fr=0;const sg=$('#wdSpr').getContext('2d');sg.imageSmoothingEnabled=false;clearInterval(openWardrobe.tm);
+    const draw=()=>{if(!$('#wdSpr')){clearInterval(openWardrobe.tm);return}sg.clearRect(0,0,120,150);sg.save();sg.scale(3.3,3.3);drawHumanoid(sg,18.2,42,{pal:P?P.pal:lookPal('warden'),dir:[0,3,1,2][Math.floor(fr/12)%4],moving:true,walk:fr*.5,weapon:P?P.weaponKind:'sword',wcol:P?P.wcol:null,time:fr/10});sg.restore();fr++};
+    draw();openWardrobe.tm=setInterval(draw,110)})}
+{const pm=$('.pause-pnl .pmenu'),b=document.createElement('button');b.dataset.p='wardrobe';b.innerHTML=`<img src="${iconUrl('pm_wardrobe','cloak','#a8222a')}" alt="">Wardrobe`;pm.insertBefore(b,pm.querySelector('[data-p=journal]'));b.onclick=()=>{AudioSys.play('ui');closePause();openWardrobe()}}
+const _enterHome6=enterHome;enterHome=function(){_enterHome6();const d=$('#hDeco');if(d){d.insertAdjacentHTML('afterend','<button class="btn sm" id="hWard">Wardrobe</button>');$('#hWard').onclick=()=>{closeGen();openWardrobe()}}};
+
+/* ================= LANTERN NETWORK: fast travel between lanterns you have lit ================= */
+const _restAtLantern6=restAtLantern;restAtLantern=function(o){_restAtLantern6(o);(G.lit||(G.lit={}))[o.id]={map:G.map.id,x:o.x,y:o.y+10,name:o.name}};
+const _interactObj6=interactObj;interactObj=function(o){if(o.kind!=='lantern')return _interactObj6(o);const lit=Object.entries(G.lit||{}).filter(([id])=>id!==o.id&&G.maps[G.lit[id].map]);
+  const opts=[{t:'Rest here',f:()=>restAtLantern(o)}];
+  if(lit.length)opts.push({t:'Travel to another lantern',f:()=>say({name:'Lantern network',por:'sun'},['Choose a lantern you have lit. Its flame will carry you there.'],lit.map(([id,L])=>({t:`${L.name} · ${G.maps[L.map].name}`,f:()=>travel({to:L.map,px:L.x,py:L.y})})).concat([{t:'Stay here'}]))});
+  opts.push({t:'Leave'});
+  say({name:o.name||'Lantern',por:'sun'},[lit.length?'The flame leans toward the other lanterns you have lit, as if listening.':'Rest here to recover and remember this place. Light more lanterns to travel between them.'],opts)};
+const _objLabel6=objLabel;objLabel=function(o){return o.kind==='lantern'?'Lantern: '+(o.name||'rest or travel'):_objLabel6(o)};
+const _loadMap6=loadMap;loadMap=function(id,px,py,silent){_loadMap6(id,px,py,silent);for(const o of G.map.objs)if(o.kind==='lantern'&&G.lit&&G.lit[o.id])o.lit=true};
+const _newGame6=newGame;newGame=function(cls,name,slot){G.lit={L_village:{map:'eldoria',x:26*T+8,y:22*T+8,name:'Plaza Lantern'}};_newGame6(cls,name,slot)};
+const _startFrom6=startFrom;startFrom=function(d,slot){G.lit=d.lit||{L_village:{map:'eldoria',x:26*T+8,y:22*T+8,name:'Plaza Lantern'}};_startFrom6(d,slot)};
+const _serialize6=serialize;serialize=function(){return Object.assign(_serialize6(),{lit:G.lit||{}})};
+
+/* ================= BESTIARY ================= */
+const BEASTS={slime:['Gelatinous scavengers of the forest bogs. They squash down before they leap.','Strike just as it lands.'],venom:['A slime that drank from eclipse-tainted pools. Its touch poisons.','Carry antidotes.'],wolf:['Hunters turned ashen by the eclipse. They lunge from a distance.','Roll aside, then counter.'],goblin:['Gloomfang raiders loyal to Grukk. They flee when badly hurt.','Finish them before they run.'],skeleton:['Soldiers of the Third Company who never stopped marching.','Their heavy swings can be parried.'],mage:['Cultists of the Hollow Sovereign who blink away when cornered.','Close the distance quickly.'],grukk:['Warlord of the Whispering Woods and keeper of the Sanctum Key.','Make him charge into a wall, then strike.'],sentinel:['An ancient guardian whose shield meets every blow from the front.','Hit it from the side, or freeze it.'],sovereign:['The crown of the fading sun, feeding on stolen daylight.','Keep moving through its rings of light.']};
+function beastDraw(c,type){const g=c.getContext('2d'),d=ENEMY[type],sc=d.boss?1.55:2.6,W=c.width/sc,Hh=c.height/sc;g.clearRect(0,0,c.width,c.height);g.imageSmoothingEnabled=false;g.save();g.scale(sc,sc);let e;const base={x:W/2,y:Hh-6,z:0,st:'choose',dir:0,anim:1,t:0,ay:1,ax:0,flash:0,status:{},dead:false,moving:false,d,type,phase:1,combo:0,alpha:1};
+  if(type==='grukk')e=Object.assign(Object.create(Grukk.prototype),base);else if(type==='sentinel')e=Object.assign(Object.create(Sentinel.prototype),base);else if(type==='sovereign')e=Object.assign(Object.create(Sovereign.prototype),base,{y:Hh-4});else{e=new Enemy(type,W/2,Hh-6,1);e.anim=1;e.face=1}
+  e.draw(g,1);g.restore()}
+function renderBestiary(B){const seen=t=>(G.kills&&G.kills[t]>0)||(ENEMY[t].boss&&G.flags['met_'+t]);const ids=Object.keys(BEASTS),n=ids.filter(seen).length;
+  B.innerHTML=`<p class="sect">Bestiary<em>${n} / ${ids.length} recorded</em></p><div class="beasts">${ids.map(t=>{const d=ENEMY[t],s=seen(t),k=(G.kills&&G.kills[t])||0;return`<div class="beast${s?'':' unseen'}"><canvas width="96" height="96" data-bst="${t}"></canvas><div><h4>${s?esc(d.name):'???'}</h4>${s?`<small>${d.boss?esc(d.title)+' · ':''}HP ${d.hp} · ATK ${d.atk} · DEF ${d.def}</small><p>${BEASTS[t][0]}</p><small>Tip: ${BEASTS[t][1]}</small><small>Defeated: ${k}${d.loot&&d.loot.length?' · Drops: '+d.loot.map(l=>esc(ITEMS[l[0]].name)).join(', '):''}</small>`:'<p>Not yet encountered.</p>'}</div></div>`}).join('')}</div>`;
+  B.querySelectorAll('canvas[data-bst]').forEach(c=>{beastDraw(c,c.dataset.bst);if(!seen(c.dataset.bst)){const g=c.getContext('2d');g.globalCompositeOperation='source-atop';g.fillStyle='#070c34';g.fillRect(0,0,96,96);g.globalCompositeOperation='source-over'}})}
+{const tb=document.createElement('button');tb.dataset.tab='bestiary';tb.textContent='Bestiary';$('#cdxTabs').insertBefore(tb,$('#cdxTabs [data-tab=map]'));tb.onclick=()=>{cdxTab='bestiary';AudioSys.play('ui');renderCodex()}}
+const _renderCodex6=renderCodex;renderCodex=function(){if(cdxTab==='bestiary'){tip.hidden=true;$$('#cdxTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab===cdxTab));return renderBestiary($('#cdxB'))}return _renderCodex6()};
 
 boot();
 </script>
