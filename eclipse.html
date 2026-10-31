@@ -787,6 +787,17 @@ h2{font:400 26px/1.15 var(--f-dis);color:var(--sel);letter-spacing:.04em;text-sh
 .kslot.wait{border-color:var(--sel);color:var(--sel);animation:kblink .8s steps(2) infinite}
 @keyframes kblink{50%{background:#2c43a8}}
 #ctrlFoot{margin-top:10px}
+/* boss cinematics */
+.lbox{position:fixed;left:0;right:0;height:0;background:#000;z-index:6;pointer-events:none;transition:height .45s ease}
+#lbTop{top:0}#lbBot{bottom:0}body.cine .lbox{height:9vh}
+#bossBanner{position:fixed;left:50%;top:21%;transform:translate(-50%,-50%);z-index:8;pointer-events:none;text-align:center;opacity:0;white-space:nowrap}
+#bossBanner b{display:block;font:400 clamp(32px,6.4vw,68px)/1 var(--f-dis);color:#fff;letter-spacing:.06em;text-shadow:3px 3px 0 #04061a,0 0 26px #ff5a3a}
+#bossBanner small{display:block;margin-bottom:6px;font:400 14px var(--f-dis);letter-spacing:.24em;color:var(--sel);text-shadow:2px 2px 0 #04061a}
+#bossBanner.go{animation:bban 2.2s ease-out forwards}
+@keyframes bban{0%{opacity:0;transform:translate(-50%,-50%) scale(1.7)}12%{opacity:1;transform:translate(-50%,-50%) scale(1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-62%)}}
+#bossbar.hit .bb{animation:bbshake .25s}
+@keyframes bbshake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.pips{display:flex;gap:7px;justify-content:center;margin:0 0 5px}.pips i{width:9px;height:9px;transform:rotate(45deg);border:1px solid #fff;background:#04061a}.pips i.on{background:#ff5a3a;box-shadow:0 0 8px #ff5a3a}
 .crtabs{margin:0 0 10px}.crtabs button{font-size:13px;padding:7px 12px}
 .cr-pane{display:grid;gap:8px;align-content:start;min-height:300px}
 .cr-left #crRand{justify-self:center}
@@ -3639,6 +3650,67 @@ renderCreate=function(){const C=creation,B=$('#createBody');
   const draw=()=>{if(!$('#crSpr')){clearInterval(renderCreate.tm);return}sg.clearRect(0,0,144,168);const gr=sg.createRadialGradient(72,160,2,72,160,46);gr.addColorStop(0,'rgba(232,238,252,.4)');gr.addColorStop(1,'rgba(232,238,252,0)');sg.fillStyle=gr;sg.beginPath();sg.ellipse(72,160,46,10,0,0,TAU);sg.fill();
     sg.save();sg.scale(4,4);drawHumanoid(sg,18,40,{pal,dir:crDir==null?[0,3,1,2][Math.floor(k/12)%4]:crDir,moving:true,walk:k*.5,weapon:w,wcol:wc,time:k/10});sg.restore();k++};
   draw();renderCreate.tm=setInterval(draw,110)};
+
+/* ================= BOSS CINEMATICS ================= */
+G.fx2=[];
+function fx2(o){o.t=0;G.fx2.push(o)}
+const lbT=document.createElement('div'),lbB=document.createElement('div');lbT.className=lbB.className='lbox';lbT.id='lbTop';lbB.id='lbBot';document.body.append(lbT,lbB);
+const bossBan=document.createElement('div');bossBan.id='bossBanner';document.body.appendChild(bossBan);
+const pipsEl=document.createElement('div');pipsEl.className='pips';$('#bossbar .bn').after(pipsEl);
+let bannerAt=-9;const _lvBanner10=lvBanner;lvBanner=function(n){const wait=2300-(performance.now()-bannerAt);if(wait>0)setTimeout(()=>_lvBanner10(n),wait);else _lvBanner10(n)};
+function banner(main,sub){bannerAt=performance.now();bossBan.innerHTML=`<small>${esc(sub||'')}</small><b>${esc(main)}</b>`;bossBan.classList.remove('go');void bossBan.offsetWidth;bossBan.classList.add('go')}
+function cinematic(ms){document.body.classList.add('cine');clearTimeout(cinematic.tm);cinematic.tm=setTimeout(()=>document.body.classList.remove('cine'),ms)}
+function setPips(b){const n=b.type==='sovereign'?3:2;pipsEl.innerHTML=Array.from({length:n},(_,i)=>`<i class="${i<(b.phase||1)?'on':''}"></i>`).join('')}
+function crater(x,y,r){if(G.map)G.map.objs.push({kind:'crater',x,y:y-3,r,t0:G.t,hide:()=>true,tx:Math.floor(x/T),ty:Math.floor(y/T)})}
+const bossTint=b=>b.type==='sovereign'?'#9fd3ff':b.type==='sentinel'?'#ffb35a':'#ff5a3a';
+/* overlay effects drawn in world space above the scene */
+const _render10=render;render=function(){_render10();if(!G.map||!G.fx2.length)return;const g=ctx,S=G.S;g.save();g.setTransform(S,0,0,S,-G.cx*S,-G.cy*S);
+  for(const f of G.fx2){const k=f.t/f.dur;g.save();g.globalCompositeOperation='lighter';
+    if(f.k==='beam'){const w=f.w*(1-k*.6);g.globalAlpha=(1-k)*.85;const gr=g.createLinearGradient(f.x-w,0,f.x+w,0);gr.addColorStop(0,'rgba(255,240,200,0)');gr.addColorStop(.5,f.col);gr.addColorStop(1,'rgba(255,240,200,0)');g.fillStyle=gr;g.fillRect(f.x-w,f.y-240,w*2,244)}
+    else if(f.k==='glow'){g.globalAlpha=f.a*(1-k)*(.7+Math.sin(G.t*20)*.3);const r=f.r*(1+k*.4),gr=g.createRadialGradient(f.x,f.y,0,f.x,f.y,r);gr.addColorStop(0,f.col);gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.beginPath();g.arc(f.x,f.y,r,0,TAU);g.fill()}
+    else if(f.k==='shock'){const e=easeOut(k);g.globalAlpha=1-k;g.strokeStyle=f.col;g.lineWidth=4*(1-k)+1;g.beginPath();g.ellipse(f.x,f.y,f.r*e,f.r*e*.6,0,0,TAU);g.stroke()}
+    g.restore()}g.restore()};
+/* slow motion, effect ageing and crater cleanup */
+const _update10=update;update=function(dt){if(G.slowT>0){G.slowT-=dt;dt*=G.slowScale||.3;if(G.slowT<=0)G.slowScale=.3}_update10(dt);
+  for(const f of G.fx2){f.t+=dt;if(f.follow){f.x=f.follow.x;f.y=f.follow.y-14}}G.fx2=G.fx2.filter(f=>f.t<f.dur);
+  if(G.map&&G.map.objs.some(o=>o.kind==='crater'&&G.t-o.t0>6))G.map.objs=G.map.objs.filter(o=>o.kind!=='crater'||G.t-o.t0<=6)};
+const _loadMap10=loadMap;loadMap=function(id,px,py,silent){G.fx2=[];G.slowT=0;document.body.classList.remove('cine');_loadMap10(id,px,py,silent)};
+const _drawObj10=drawObj;drawObj=function(g,o,t,nf){if(o.kind!=='crater')return _drawObj10(g,o,t,nf);const a=clamp(1-(G.t-o.t0-4)/2,0,1);if(a<=0)return;
+  g.save();g.globalAlpha=a*.85;g.fillStyle='#1a1410';g.beginPath();g.ellipse(o.x,o.y+3,o.r*.7,o.r*.28,0,0,TAU);g.fill();g.strokeStyle='#2a2018';g.lineWidth=1;g.beginPath();
+  for(let i=0;i<8;i++){const an=i/8*TAU+o.r,r1=o.r*.55,r2=o.r*(.9+((i*37)%10)/22);g.moveTo(o.x+Math.cos(an)*r1,o.y+3+Math.sin(an)*r1*.4);g.lineTo(o.x+Math.cos(an)*r2,o.y+3+Math.sin(an)*r2*.4)}g.stroke();g.restore()};
+/* intro: letterbox, roar shockwaves and a dust burst once the cut-in ends */
+const _wake10=Boss.prototype.wake;Boss.prototype.wake=function(){_wake10.call(this);cinematic(3200);setPips(this);
+  for(let i=0;i<3;i++)G.timed.push({t:.05+i*.18,f:()=>{fx2({k:'shock',x:this.x,y:this.y,r:90+i*30,col:i%2?'#ffffff':bossTint(this),dur:.6});G.shake=Math.max(G.shake,6)}});
+  G.timed.push({t:.1,f:()=>{for(let i=0;i<30;i++){const a=rnd(0,TAU);G.part(this.x,this.y-4,Math.cos(a)*rnd(60,150),Math.sin(a)*rnd(30,80),.7,pick(['#8a7a6a','#5a4a3a']),2,120)}fx2({k:'glow',x:this.x,y:this.y-14,r:50,col:bossTint(this),a:.7,dur:1,follow:this})}})};
+function bossPhaseFx(b){G.slowT=.9;G.slowScale=.3;G.flashT=Math.max(G.flashT,.5);G.shake=10;cinematic(1800);
+  for(let i=0;i<3;i++)fx2({k:'shock',x:b.x,y:b.y,r:70+i*40,col:i%2?'#ffffff':bossTint(b),dur:.7+i*.15});fx2({k:'glow',x:b.x,y:b.y-16,r:60,col:bossTint(b),a:.8,dur:1.4,follow:b});
+  for(let i=0;i<40;i++){const a=rnd(0,TAU),s=rnd(60,200);G.part(b.x,b.y-14,Math.cos(a)*s,Math.sin(a)*s,.8,pick([bossTint(b),'#ffd27a','#ffffff']),2,0,'glow')}
+  banner(b.phase>=3?'FINAL PHASE':'PHASE '+b.phase,b.type==='grukk'?'Grukk flies into a rage':b.type==='sentinel'?'The visor blazes':'The crown splits');setPips(b)}
+/* per-boss: after-images on fast moves, wind-up auras, craters, Grukk's breath */
+const FASTMOVE={charge:1,bash:1,leap:1,spin:1,blink_out:1,blink_in:1};
+for(const C of[Grukk,Sentinel,Sovereign]){
+  const ai=C.prototype.ai;C.prototype.ai=function(dt){const ph=this.phase,st0=this.st;ai.call(this,dt);if(!this.trail)this.trail=[];
+    if(FASTMOVE[this.st]){this._trT=(this._trT||0)-dt;if(this._trT<=0){this._trT=.035;this.trail.push({x:this.x,y:this.y,z:this.z||0,t:G.t,dir:this.dir})}}
+    this.trail=this.trail.filter(p=>G.t-p.t<.3);
+    if(this.phase>ph)bossPhaseFx(this);
+    if(/_w$/.test(this.st)&&Math.random()<dt*30){const a=rnd(0,TAU),r=rnd(18,30);G.part(this.x+Math.cos(a)*r,this.y-14+Math.sin(a)*r*.6,-Math.cos(a)*r*3,-Math.sin(a)*r*1.8,.3,bossTint(this),1.5,0,'glow')}
+    if(st0!==this.st&&/_w$/.test(this.st))fx2({k:'glow',x:this.x,y:this.y-14,r:26,col:bossTint(this),a:.6,dur:.5,follow:this});
+    if(st0==='leap'&&this.st!=='leap'){crater(this.x,this.y,26);fx2({k:'shock',x:this.x,y:this.y,r:60,col:'#e8d8b0',dur:.45})}
+    if((st0==='charge'||st0==='bash')&&this.st==='stun'){crater(this.x+(this.ax||0)*10,this.y,16);fx2({k:'shock',x:this.x,y:this.y,r:40,col:'#ffffff',dur:.35})}
+    if(this.type==='grukk'&&this.st==='choose'&&Math.random()<dt*1.2)for(let i=0;i<3;i++)G.part(this.x+(this.face||1)*6,this.y-30,(this.face||1)*rnd(10,20),-rnd(5,12),.8,'#d8d8e0',1.5,0,'smoke')};
+  const dr=C.prototype.draw;C.prototype.draw=function(g,t){if(this.dead)this.flash=Math.floor(t*24)%2;
+    if(!this._ghost&&this.trail&&this.trail.length&&!this.dead)for(const p of this.trail){const a=1-(G.t-p.t)/.3;if(a<=0)continue;const keep={x:this.x,y:this.y,z:this.z,dir:this.dir};Object.assign(this,{x:p.x,y:p.y,z:p.z,dir:p.dir,_ghost:1});g.save();g.globalAlpha*=a*.32;dr.call(this,g,t);g.restore();Object.assign(this,keep,{_ghost:0})}
+    dr.call(this,g,t)}}
+/* hits shake the boss bar */
+const _ehurt10=Enemy.prototype.hurt;Enemy.prototype.hurt=function(dmg,crit,kx,ky,o){const was=this.hp;_ehurt10.call(this,dmg,crit,kx,ky,o);if(this.boss&&this.hp<was){const bb=$('#bossbar');bb.classList.remove('hit');void bb.offsetWidth;bb.classList.add('hit')}};
+/* the finisher: slow motion, light pillars, the boss flickers and shatters */
+const _bdie10=Boss.prototype.die;Boss.prototype.die=function(){G.slowT=1.4;G.slowScale=.25;cinematic(2800);this.trail=[];
+  const shard=this.type==='grukk'?'#6f9a4a':this.type==='sentinel'?'#6f6890':'#9fd3ff';
+  for(let i=0;i<5;i++)fx2({k:'beam',x:this.x+rnd(-14,14),y:this.y,w:rnd(5,10),col:'rgba(255,240,200,.9)',dur:1.4+i*.1});
+  for(let i=0;i<3;i++)fx2({k:'shock',x:this.x,y:this.y,r:80+i*50,col:'#ffe7a8',dur:.9+i*.2});
+  fx2({k:'glow',x:this.x,y:this.y-14,r:80,col:'#fff3c0',a:.9,dur:1.6});
+  for(let i=0;i<60;i++){const a=rnd(0,TAU),s=rnd(40,180);G.part(this.x+rnd(-8,8),this.y-rnd(4,30),Math.cos(a)*s,Math.sin(a)*s-60,1.2,pick(['#ffffff','#ffd27a',shard]),2.5,160)}
+  _bdie10.call(this);banner('VICTORY',this.d.name+' defeated')};
 
 boot();
 </script>

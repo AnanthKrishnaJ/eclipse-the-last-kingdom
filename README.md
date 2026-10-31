@@ -22,6 +22,7 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 - Fully rebindable keyboard and mouse controls, up to three inputs per action.
 - Companions Mimi, Lyra, Serah and Noelle, with a bond system: gifts, dates, personal quests and marriage.
 - Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
+- Cinematic boss fights: letterboxed intros with roar shockwaves, glowing wind-ups, after-image trails on charges, leaps and blinks, impact craters, slow-motion phase changes with banners and phase pips, a shaking boss bar on hits, and a victory finisher with light pillars and shattering.
 - Three areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
 - Three save slots kept in the browser, gamepad support and touch controls.
 
