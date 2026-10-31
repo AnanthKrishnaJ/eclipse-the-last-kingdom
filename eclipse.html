@@ -787,6 +787,9 @@ h2{font:400 26px/1.15 var(--f-dis);color:var(--sel);letter-spacing:.04em;text-sh
 .kslot.wait{border-color:var(--sel);color:var(--sel);animation:kblink .8s steps(2) infinite}
 @keyframes kblink{50%{background:#2c43a8}}
 #ctrlFoot{margin-top:10px}
+.crtabs{margin:0 0 10px}.crtabs button{font-size:13px;padding:7px 12px}
+.cr-pane{display:grid;gap:8px;align-content:start;min-height:300px}
+.cr-left #crRand{justify-self:center}
 /* wardrobe and bestiary */
 .wardrobe{display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px}
 .wd-left{display:grid;gap:8px;justify-items:center;align-content:start}
@@ -2100,7 +2103,7 @@ function paintPortrait(g,s,ex,sc){g.save();g.scale(sc||2,sc||2);if(s.child){g.tr
     const eye=(x,y,sd)=>{const ec=s.eye;
       if(ex==='happy'||ex==='love'){g.lineWidth=4.5;g.strokeStyle=O;g.beginPath();g.moveTo(x-12,y+4);g.quadraticCurveTo(x,y-11,x+12,y+4);g.stroke();return}
       if(s.old){g.lineWidth=4;g.strokeStyle=O;g.beginPath();g.moveTo(x-12,y+1);g.quadraticCurveTo(x,y-6,x+12,y+1);g.stroke();ell(x,y+4,5,4,ec,false);ell(x-1,y+3,1.5,1.5,'#fff');line([x-10,y+12,x-4,y+14,x+2,y+12],shade(skin,-.3),1.5);return}
-      const ry=ex==='surprised'?15:13.5,rx=11.5;ell(x,y,rx,ry,'#ffffff');
+      const es=s.eyeShape,ry=(ex==='surprised'?15:13.5)*(es==='narrow'?.66:es==='sharp'?.84:es==='gentle'?1.08:1),rx=11.5*(es==='sharp'?1.08:1);ell(x,y,rx,ry,'#ffffff');
       const ir=ex==='surprised'?6.5:9,gr=g.createLinearGradient(0,y-ry,0,y+ry);gr.addColorStop(0,shade(ec,-.6));gr.addColorStop(.5,ec);gr.addColorStop(1,shade(ec,.5));
       g.beginPath();g.ellipse(x+sd,y+1.5,ir,ry-2,0,0,TAU);g.fillStyle=gr;g.fill();
       ell(x+sd,y+2,ir*.42,ry*.38,shade(ec,-.75));ell(x-3.5,y-5,4,4.6,'#ffffff');ell(x+4,y+6.5,2,2,'#ffffff');
@@ -2138,6 +2141,7 @@ function paintPortrait(g,s,ex,sc){g.save();g.scale(sc||2,sc||2);if(s.child){g.tr
   if(s.hsx&&!s.hollow&&!s.helm&&!s.hat)hairFrontX(g,s,{path,ell,line,mir});
   // brows
   if(!s.hollow&&!s.helm){const brow=(x,sd)=>{let iy=92,oy=92;if(ex==='angry'){iy=100;oy=88}else if(ex==='sad'||ex==='blush'){iy=86;oy=95}else if(ex==='surprised'){iy=84;oy=86}const inner=x-sd*12,outer=x+sd*12;g.lineWidth=4;g.strokeStyle=shade(H,-.45);g.beginPath();g.moveTo(outer,oy);g.quadraticCurveTo(x,Math.min(iy,oy)-4,inner,iy);g.stroke()};brow(80,-1);brow(120,1)}
+  if(s.scar&&!s.hollow)line([66,92,74,112,88,134],'#b05050',3);
   if(s.glasses){g.lineWidth=2.5;g.strokeStyle='#5a3a24';g.beginPath();g.arc(80,117,16,0,TAU);g.moveTo(136,117);g.arc(120,117,16,0,TAU);g.moveTo(96,114);g.lineTo(104,114);g.stroke();g.save();g.globalAlpha=.18;g.fillStyle='#bfe6ff';g.beginPath();g.arc(80,117,15,0,TAU);g.arc(120,117,15,0,TAU);g.fill();g.restore()}
   if(s.band)path([['M',52,80],['Q',100,62,148,80],['L',148,90],['Q',100,72,52,90]],s.band,true,2.5);
   if(s.circlet){path([['M',56,78],['Q',100,62,144,78],['L',144,82],['Q',100,68,56,82]],s.trim,true,2);ell(100,72,6,7,'#7ff0ff',2);ell(98,70,2,2,'#fff')}
@@ -2491,7 +2495,7 @@ $('#blGo').onclick=()=>{AudioSys.play('quest');hideScreens();const C=creation;
     {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'n',t:"One more gift, one I give to no one else. Dawn's Grace: once each day, when you fall, my light will lift you back up."},
     {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'sad',t:'Use it, but do not rely on it. The people you meet down there will be your real strength.'},
     {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'happy',t:'Now go. Find the village with the last lantern still burning. Find Eldoria.',cg:'goddess',cgt:'Meeting Aurelia'}
-  ],()=>{G.look={hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,gender:C.gender,band:C.band,outfit:C.outfit};G.blessing=C.blessing;newGame(C.cls,C.name,pendingSlot)})};
+  ],()=>{G.look=lookFromCreation();G.blessing=C.blessing;newGame(C.cls,C.name,pendingSlot)})};
 
 /* ================= COMPANIONS ================= */
 class Companion{
@@ -3391,8 +3395,8 @@ const _gp4=gearPass;gearPass=function(P,S,layer,k){_gp4(P,S,layer,k);if(S.kit!==
   const b=k.b,aL=k.aL,atk=k.atk,flut=k.flut,side=k.side,back=k.back,front=!side&&!back,H=S.hc||HC,armored=['plate','chain','leather','fur'].includes(S.gear),mantle=S.gear!=='plate';
   const arm=(x,y)=>{P.r(x,y,2,2,H.coat);P.r(x,y+2,2,1,H.shirt);P.r(x,y+3,2,1,H.glove);P.s(x,y+3,H.gold)};
   if(layer==='back'){
-    if(front){P.r(6,21+b,12,11+flut,H.coat);P.r(6,21+b,1,11+flut,H.red);P.r(17,21+b,1,11+flut,H.red);P.row(31+b+flut,7,16,H.redD)}
-    else if(side){P.r(5-flut,21+b,5,11,H.coat);P.r(5-flut,21+b,1,11,H.red);P.row(31+b,5-flut,9-flut,H.redD)}
+    if(front){const l=aL<0?-1:0,r=aL>0?1:0;P.r(6,20+b,2,7,H.coat);P.r(16,20+b,2,7,H.coat);P.r(6+l,27+b,2,2,H.coat);P.r(16+r,27+b,2,2,H.coat);P.r(7,21+b,1,7,H.red);P.r(16,21+b,1,7,H.red);P.s(6+l,29+b,H.redD);P.s(17+r,29+b,H.redD)}
+    else if(side){const sw=Math.abs(aL);P.r(6,21+b,3,6,H.coat);P.r(6-sw,27+b,3,2,H.coat);P.s(8,22+b,H.red);P.row(29+b,6-sw,8-sw,H.redD)}
     return}
   if(layer==='legs'){if(S.robe)return;const cuff=shade(S.boots||'#2a2019',.32);for(let x=5;x<19;x++)if(P.g(x,28)===cuff)P.s(x,28,H.gold);return}
   if(layer==='body'){
@@ -3416,7 +3420,7 @@ const _gp4=gearPass;gearPass=function(P,S,layer,k){_gp4(P,S,layer,k);if(S.kit!==
       P.r(7,17+b,10,8,H.coat);P.row(17+b,7,16,H.coatL);for(const[x,y]of[[11,19],[12,19],[11,20],[12,20],[10,20],[13,20],[11,21],[12,21]])P.s(x,y+b,H.gold);
       if(mantle){P.r(5,17+b,4,3,H.coat);P.r(15,17+b,4,3,H.coat);P.s(6,18+b,H.gold);P.s(17,18+b,H.gold)}
       arm(6,18+b+aL);arm(16,18+b-aL);
-      P.row(24+b,7,16,H.lth);P.r(7,25+b,10,6+flut,H.coat);P.r(7,25+b,1,6+flut,H.red);P.r(16,25+b,1,6+flut,H.red);P.row(30+b+flut,8,15,H.gold);P.r(13,24+b,2,4,H.red)}
+      P.row(24+b,7,16,H.lth);{const l=aL>0?-1:0,r=aL<0?1:0;P.r(7,25+b,4,2,H.coat);P.r(13,25+b,4,2,H.coat);P.r(7+l,27+b,4,1,H.coat);P.r(13+r,27+b,4,1,H.coat);P.row(28+b,7+l,10+l,H.gold);P.row(28+b,13+r,16+r,H.gold);P.s(7+l,27+b,H.red);P.s(16+r,27+b,H.red)}P.r(13,24+b,2,3,H.red)}
     return}
   if(layer==='top'&&S.hs==='messy'&&!S.helm&&!S.hood&&!S.hat){const hr=rampOf(S.hair||'#1c1a24'),hy=5+b;
     if(front)for(const[x,y0,y1]of[[7,4,6],[11,4,7],[12,4,6],[16,4,6],[15,7,7]])for(let y=y0;y<=y1;y++)P.s(x,hy+y,y===y1?hr.d:hr.m);
@@ -3442,7 +3446,7 @@ function portraitBangs(g,s,K){const H=s.hair,HL=shade(H,.5),O='#2a1626';
 /* looks: the protagonist coat by default, class gear on request */
 const CLASSFACE={};for(const k of['warden','ranger','arcanist'])CLASSFACE[k]=Object.assign({},FACES[k]);
 const HEROLOOK={hair:'#1c1a24',hs:'messy',eye:'#4a2e22',band:'',outfit:'hero'};
-const HEROPAL={kit:'hero',cape:null,scarf:null,band:null,hood:null,circlet:null,robe:false,top:'#ece6dc',top2:'#2a2630',legs:'#24222c',boots:'#4a3020',buckle:'#c9a24a',leather:'#6a4428'};
+const HEROPAL={kit:'hero',cape:null,scarf:null,band:null,hood:null,circlet:null,robe:false,top:'#ece6dc',top2:'#2a2630',legs:'#3a3652',boots:'#5a3a22',buckle:'#c9a24a',leather:'#6a4428'};
 const HEROFACE={kit:'hero',outfit:'#ece6dc',trim:'#f8f4ec',band:null,scarf:null,cloak:null,circlet:null,metal:null,hair:HEROLOOK.hair,hs:'messy',eye:HEROLOOK.eye};
 for(const k of['warden','ranger','arcanist'])Object.assign(FACES[k],HEROFACE);
 LOOK_EYE[0]=HEROLOOK.eye;Object.assign(creation,HEROLOOK);
@@ -3517,13 +3521,13 @@ function openWardrobe(){const L=G.look||(G.look=Object.assign({},HEROLOOK,{skin:
   openGen('Wardrobe',`<div class="wardrobe"><div class="wd-left"><canvas id="wdPor" width="400" height="480"></canvas><canvas id="wdSpr" width="120" height="150"></canvas></div><div class="wd-right">
    <p class="sect">Outfits</p><div class="wd-list">${Object.entries(OUTFITS).map(([k,O])=>{const own=O.own();return`<button class="wd-item${k===o?' on':''}${own?'':' locked'}" data-of="${k}" ${own?'':'disabled'}><b>${O.name}</b><small>${own?O.desc:'Locked · '+O.lock}</small></button>`}).join('')}</div>
    ${o==='hero'?`<p class="sect">Dyes</p><div class="cr-row"><span>Coat</span><div class="swatches">${sw('coat',DYE.coat)}</div></div><div class="cr-row"><span>Lining</span><div class="swatches">${sw('lining',DYE.lining)}</div></div><div class="cr-row"><span>Trim</span><div class="swatches">${sw('trim',DYE.trim)}</div></div>`:''}
-   <p class="sect">Hair</p><div class="cr-row"><span>Style</span><div class="seg">${HAIRSTYLES.map(([v,l])=>`<button class="${(L.hs||'messy')===v?'on':''}" data-hs="${v}">${l}</button>`).join('')}</div></div><div class="cr-row"><span>Color</span><div class="swatches">${LOOK_HAIR.map(c=>`<button class="sw${L.hair===c?' on':''}" data-hc="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')}</div></div>
+   <p class="sect">Hair</p><div class="cr-row"><span>Style</span><div class="seg">${HAIRSTYLES.map(([v,l])=>`<button class="${(L.hs||'messy')===v?'on':''}" data-hs="${v}">${l}</button>`).join('')}</div></div><div class="cr-row"><span>Color</span><div class="swatches">${LOOK_HAIR.map(c=>`<button class="sw${L.hair===c?' on':''}" data-hc="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')}</div></div><p class="sect">Face</p><div class="cr-row"><span>Eye color</span><div class="swatches">${LOOK_EYE.map(c=>`<button class="sw${L.eye===c?' on':''}" data-lk="eye" data-v="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')}</div></div>${[['eyeShape','Eye shape',EYESHAPES],['mark','Marks',MARKS],['glasses','Glasses',ONOFF],['earrings','Earrings',ONOFF]].map(([k,l,o])=>`<div class="cr-row"><span>${l}</span><div class="seg">${o.map(([v,t])=>`<button class="${(L[k]||(k==='eyeShape'?'round':k==='mark'?'none':''))===v?'on':''}" data-lk="${k}" data-v="${v}">${t}</button>`).join('')}</div></div>`).join('')}
    <p class="sect">Display</p><div class="cr-row"><span>Armor</span><div class="seg"><button class="${L.showArmor!==false?'on':''}" data-sa="1">Show equipped armor</button><button class="${L.showArmor===false?'on':''}" data-sa="0">Outfit only</button></div></div>
    <p class="hint">Outfits are cosmetic. Your equipped armor still sets your stats.</p></div></div>`,B=>{
     const re=()=>{applyLook();AudioSys.play('ui');openWardrobe()};
     B.querySelectorAll('[data-of]').forEach(b=>b.onclick=()=>{L.outfit=b.dataset.of;re()});
     B.querySelectorAll('[data-dye]').forEach(b=>b.onclick=()=>{L[b.dataset.dye]=b.dataset.v;re()});
-    B.querySelectorAll('[data-sa]').forEach(b=>b.onclick=()=>{L.showArmor=b.dataset.sa==='1';re()});B.querySelectorAll('[data-hs]').forEach(b=>b.onclick=()=>{L.hs=b.dataset.hs;re()});B.querySelectorAll('[data-hc]').forEach(b=>b.onclick=()=>{L.hair=b.dataset.hc;re()});
+    B.querySelectorAll('[data-sa]').forEach(b=>b.onclick=()=>{L.showArmor=b.dataset.sa==='1';re()});B.querySelectorAll('[data-hs]').forEach(b=>b.onclick=()=>{L.hs=b.dataset.hs;re()});B.querySelectorAll('[data-hc]').forEach(b=>b.onclick=()=>{L.hair=b.dataset.hc;re()});B.querySelectorAll('[data-lk]').forEach(b=>b.onclick=()=>{L[b.dataset.lk]=b.dataset.v;re()});
     $('#wdPor').getContext('2d').drawImage(getPortrait(playerFace(),'happy'),0,0);
     let fr=0;const sg=$('#wdSpr').getContext('2d');sg.imageSmoothingEnabled=false;clearInterval(openWardrobe.tm);
     const draw=()=>{if(!$('#wdSpr')){clearInterval(openWardrobe.tm);return}sg.clearRect(0,0,120,150);sg.save();sg.scale(3.3,3.3);drawHumanoid(sg,18.2,42,{pal:P?P.pal:lookPal('warden'),dir:[0,3,1,2][Math.floor(fr/12)%4],moving:true,walk:fr*.5,weapon:P?P.weaponKind:'sword',wcol:P?P.wcol:null,time:fr/10});sg.restore();fr++};
@@ -3582,6 +3586,59 @@ function hairFrontX(g,s,K){const{path,ell,line,mir}=K,H=s.hair,HL=shade(H,.5),x=
   if(x==='braid'){for(let i=0;i<7;i++)ell(142+i*2,136+i*14,9,8,i%2?H:shade(H,-.15),2);ell(155,236,6,5,s.trim||'#e0b84a',2)}
   if(x==='hime'){path([['M',58,102],['L',58,64],['Q',100,38,142,64],['L',142,102]],H);line([70,74,100,62,130,74],HL,2.5)}
   if(x==='buns'){ell(62,46,17,16,H,true);ell(138,46,17,16,H,true);line([52,42,58,34,68,34],HL,2.5);line([148,42,142,34,132,34],HL,2.5)}}
+
+/* ================= WALKING: feet alternate under robes; face extras on the sprite ================= */
+const _gp8=gearPass;gearPass=function(P,S,layer,k){_gp8(P,S,layer,k);const front=!k.side&&!k.back;
+  if(layer==='legs'&&S.robe&&front&&k.aL){const lift=k.aL>0?9:13;P.c[32*P.w+lift]=null;P.c[32*P.w+lift+1]=null;P.s(k.aL>0?8:15,31,shade(S.top2||S.top,-.3));return}
+  if(layer!=='top'||k.back)return;const hy=5+k.b;
+  if(S.glasses){const fc='#3a2a20';if(front){P.row(hy+7,7,10,fc);P.row(hy+7,13,16,fc);P.s(11,hy+8,fc);P.s(12,hy+8,fc);P.s(7,hy+9,fc);P.s(16,hy+9,fc)}else{P.row(hy+7,13,16,fc);P.s(12,hy+8,fc)}}
+  if(S.scar){if(front){P.s(9,hy+6,'#b85a5a');P.s(8,hy+10,'#b85a5a')}else P.s(15,hy+6,'#b85a5a')}
+  if(S.earrings&&!S.helm){if(front){P.s(6,hy+11,'#e0b84a');P.s(17,hy+11,'#e0b84a')}else P.s(9,hy+11,'#e0b84a')}};
+const _lookPal8=lookPal;lookPal=function(cls,look){const p=_lookPal8(cls,look),L=look||G.look;if(L){p.glasses=!!L.glasses;p.scar=L.mark==='scar';if(L.mark==='paint')p.marks=true;p.earrings=!!L.earrings}return p};
+
+/* ================= LOOKS: one place that turns a look into a portrait spec ================= */
+function lookFace(cls,L){L=L||{};const o=L.outfit||'hero',O=OUTFITS[o],f=Object.assign({},o==='class'?CLASSFACE[cls]:FACES[cls]);
+  Object.assign(f,{hair:L.hair||f.hair,hs:L.hs||f.hs,eye:L.eye||f.eye,skin:L.skin||f.skin,fem:L.gender==='female',band:L.band||null});
+  if(o==='hero'){const h=heroHC(L);if(h)f.hc=h}else if(O&&O.face)Object.assign(f,O.face);
+  Object.assign(f,{glasses:!!L.glasses,earrings:!!L.earrings,marks:L.mark==='paint',scar:L.mark==='scar',eyeShape:L.eyeShape||'round'});return f}
+playerFace=function(){const P=G.player,cls=P?P.cls:'warden',L=G.look,f=lookFace(cls,L),a=P&&P.eq&&P.eq.armor&&GEARLOOK[P.eq.armor.id];
+  if(a&&a!=='tunic'&&!(L&&L.showArmor===false))f.armor=a;if(L&&L.outfit==='knight')f.armor='plate';return f};
+const LOOK_KEYS=['hair','hs','eye','skin','gender','band','outfit','eyeShape','mark','glasses','earrings','coat','lining','trim'];
+function lookFromCreation(){const o={};for(const k of LOOK_KEYS)if(creation[k]!==undefined)o[k]=creation[k];return o}
+Object.assign(creation,{eyeShape:'round',mark:'none',glasses:'',earrings:''});
+const EYESHAPES=[['round','Round'],['gentle','Gentle'],['sharp','Sharp'],['narrow','Narrow']],MARKS=[['none','None'],['paint','War paint'],['scar','Scar']],ONOFF=[['','Off'],['1','On']];
+
+/* ================= CHARACTER CREATION: tabs for body, hair, face, outfit, calling ================= */
+let crTab='body';
+renderCreate=function(){const C=creation,B=$('#createBody');
+  const sw=(arr,k)=>arr.map(c=>`<button class="sw${C[k]===c?' on':''}" data-k="${k}" data-v="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('');
+  const dye=(k,set)=>Object.entries(set).map(([n,c],i)=>`<button class="sw${(C[k]||(i===0?c:''))===c?' on':''}" data-k="${k}" data-v="${c}" style="--c:${c}" title="${n}" aria-label="${n}"></button>`).join('');
+  const seg=(k,opts)=>opts.map(([v,l])=>`<button class="${(C[k]||'')===v?'on':''}" data-k="${k}" data-v="${v}">${l}</button>`).join('');
+  const row=(l,h)=>`<div class="cr-row"><span>${l}</span><div class="${h.startsWith('<button class="sw')?'swatches':'seg'}">${h}</div></div>`;
+  const bar=(l,v,m,c)=>`<div class="sbar"><span>${l}</span><i><b style="width:${Math.round(Math.min(1,v/m)*100)}%;background:${c}"></b></i></div>`;
+  const tabs=[['body','Body'],['hair','Hair'],['face','Face'],['outfit','Outfit'],['calling','Calling']];
+  let pane='';
+  if(crTab==='body')pane=`<label class="namefld">Name <input id="crName" maxlength="14" value="${esc(C.name)}" autocomplete="off" spellcheck="false"></label>${row('Gender',seg('gender',[['male','Male'],['female','Female'],['other','Other']]))}${row('Skin',sw(LOOK_SKIN,'skin'))}${row('Eye color',sw(LOOK_EYE,'eye'))}${row('Eye shape',seg('eyeShape',EYESHAPES))}`;
+  else if(crTab==='hair')pane=`${row('Style',seg('hs',HAIRSTYLES))}${row('Color',sw(LOOK_HAIR,'hair'))}${row('Headband',seg('band',[['#b8302a','Red'],['#2f5aa8','Blue'],['#e8e0d0','White'],['','None']]))}`;
+  else if(crTab==='face')pane=`${row('Marks',seg('mark',MARKS))}${row('Glasses',seg('glasses',ONOFF))}${row('Earrings',seg('earrings',ONOFF))}`;
+  else if(crTab==='outfit')pane=`<div class="wd-list">${Object.entries(OUTFITS).map(([k,O])=>{const own=k==='hero'||k==='class'||k==='kasavu';return`<button class="wd-item${(C.outfit||'hero')===k?' on':''}${own?'':' locked'}" data-k="outfit" data-v="${k}" ${own?'':'disabled'}><b>${O.name}</b><small>${own?O.desc:'Unlock later · '+O.lock}</small></button>`}).join('')}</div>${(C.outfit||'hero')==='hero'?`${row('Coat',dye('coat',DYE.coat))}${row('Lining',dye('lining',DYE.lining))}${row('Trim',dye('trim',DYE.trim))}`:''}`;
+  else pane=`<div class="clscards">${Object.keys(CLASSES).map(k=>{const c=CLASSES[k],b=c.base;return`<button class="clscard${C.cls===k?' on':''}" data-k="cls" data-v="${k}"><canvas width="48" height="64" data-cs="${k}"></canvas><div><h4>${c.name}</h4><p>${esc(c.blurb)}</p>${bar('HP',b.hp,130,'#c8302a')}${bar('MP',b.mp,85,'#2f6ad0')}${bar('ATK',b.atk,10,'#e0962a')}${bar('MAG',b.mag,11,'#8a5ac8')}${bar('SPD',b.spd,70,'#4f8a46')}<small>Starting art: ${esc(SKILLS[c.skill].name)}</small></div></button>`}).join('')}</div>`;
+  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Kael')}</div><div class="cr-title">${CLASSES[C.cls].name} of Eldoria</div></div>
+    <div class="cr-stage"><button class="rot" data-rot="-1" aria-label="Turn left">◀</button><canvas id="crSpr" width="144" height="168"></canvas><button class="rot" data-rot="1" aria-label="Turn right">▶</button></div>
+    <button class="btn ghost sm" id="crRand" type="button">Randomize look</button></div>
+   <div class="cr-opts"><div class="bagbar crtabs">${tabs.map(([k,l])=>`<button class="${crTab===k?'on':''}" data-crt="${k}">${l}</button>`).join('')}</div><div class="cr-pane">${pane}</div></div>`;
+  B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{C[b.dataset.k]=b.dataset.v;const n=$('#crName');if(n)C.name=n.value||C.name;AudioSys.play('ui');renderCreate()});
+  B.querySelectorAll('[data-crt]').forEach(b=>b.onclick=()=>{const n=$('#crName');if(n)C.name=n.value||C.name;crTab=b.dataset.crt;AudioSys.play('ui');renderCreate()});
+  const nm=$('#crName');if(nm)nm.oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
+  $('#crRand').onclick=()=>{Object.assign(C,{hair:pick(LOOK_HAIR),eye:pick(LOOK_EYE),skin:pick(LOOK_SKIN),hs:pick(HAIRSTYLES)[0],eyeShape:pick(EYESHAPES)[0],mark:Math.random()<.75?'none':pick(MARKS)[0],glasses:Math.random()<.2?'1':'',earrings:Math.random()<.3?'1':'',band:Math.random()<.3?pick(['#b8302a','#2f5aa8','#e8e0d0']):'',coat:pick(Object.values(DYE.coat)),lining:pick(Object.values(DYE.lining)),trim:pick(Object.values(DYE.trim))});AudioSys.play('ui');renderCreate()};
+  B.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>{const ring=[0,3,1,2],cur=crDir==null?0:ring.indexOf(crDir);crDir=ring[(cur+ +b.dataset.rot+4)%4];AudioSys.play('ui')});
+  const look=lookFromCreation();$('#crPor').getContext('2d').drawImage(getPortrait(lookFace(C.cls,look),'happy'),0,0);
+  const wk=k=>[ITEMS[CLASSES[k].weapon].wk,ITEMS[CLASSES[k].weapon].icon[1]];
+  B.querySelectorAll('canvas[data-cs]').forEach(c=>{const k=c.dataset.cs,g=c.getContext('2d'),[w,wc]=wk(k);g.imageSmoothingEnabled=false;g.save();g.scale(1.6,1.6);drawHumanoid(g,15,38,{pal:Object.assign(lookPal(k,look),{gear:'tunic'}),dir:0,weapon:w,wcol:wc,time:0});g.restore()});
+  const pal=Object.assign(lookPal(C.cls,look),{gear:'tunic'}),[w,wc]=wk(C.cls);clearInterval(renderCreate.tm);let k=0;const sg=$('#crSpr').getContext('2d');sg.imageSmoothingEnabled=false;
+  const draw=()=>{if(!$('#crSpr')){clearInterval(renderCreate.tm);return}sg.clearRect(0,0,144,168);const gr=sg.createRadialGradient(72,160,2,72,160,46);gr.addColorStop(0,'rgba(232,238,252,.4)');gr.addColorStop(1,'rgba(232,238,252,0)');sg.fillStyle=gr;sg.beginPath();sg.ellipse(72,160,46,10,0,0,TAU);sg.fill();
+    sg.save();sg.scale(4,4);drawHumanoid(sg,18,40,{pal,dir:crDir==null?[0,3,1,2][Math.floor(k/12)%4]:crDir,moving:true,walk:k*.5,weapon:w,wcol:wc,time:k/10});sg.restore();k++};
+  draw();renderCreate.tm=setInterval(draw,110)};
 
 boot();
 </script>
