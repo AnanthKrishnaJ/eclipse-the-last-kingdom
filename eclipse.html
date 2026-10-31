@@ -2,7 +2,7 @@
 <title>Eclipse: The Last Kingdom</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Zen+Antique&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;800&family=Zen+Antique&family=Cinzel:wght@500;700;900&family=Cinzel+Decorative:wght@700&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
 /* Layout: full-bleed pixel world on a canvas; anime JRPG UI: rounded twilight panels, sakura-pink and ember accents, visual-novel dialogue with large portraits */
 :root{
@@ -458,6 +458,123 @@ h2{font-family:var(--f-dis);font-weight:400}
 .gthumb{display:grid;gap:4px;background:none;border:1.5px solid #ffffff22;border-radius:10px;padding:6px;color:var(--bone);font:800 11px var(--f-ui);text-align:left}
 .gthumb canvas{width:100%;aspect-ratio:16/9;image-rendering:pixelated;border-radius:6px}
 @media (prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* RPG layer: dark leather panels, gilded frames, Cinzel headings, parchment pages */
+:root{--f-dis:'Cinzel','Zen Antique',Georgia,serif;--f-txt:'EB Garamond','M PLUS Rounded 1c',Georgia,serif;--gold:#c9a24a;--gold2:#f1d48a;--gold3:#8a6a2e;--ink:#2e2014}
+.screen.dim{background:radial-gradient(ellipse at center,#120a06b0,#050302ee);backdrop-filter:blur(2px)}
+.pnl{border-radius:6px;border:2px solid var(--gold3);background:radial-gradient(ellipse at 50% 0,#4a3220 0,transparent 60%),linear-gradient(180deg,#33241a,#1c130d);box-shadow:inset 0 0 0 1px #0008,inset 0 0 0 4px #1c130d,inset 0 0 0 5px #c9a24a55,inset 0 0 40px #000a,0 0 0 1px #000,0 20px 60px #000d}
+.pnl::before{left:50%;right:auto;top:-8px;width:14px;height:14px;transform:translateX(-50%) rotate(45deg);background:linear-gradient(135deg,var(--gold2),var(--gold3));border:1px solid #000;box-shadow:0 0 10px #c9a24a88;z-index:2}
+h2{font:700 28px/1.15 var(--f-dis);color:var(--gold2);letter-spacing:.05em;text-shadow:0 2px 0 #000,0 0 18px #c9a24a44}
+.hint{font:15px/1.4 var(--f-txt);color:#a8926a}
+.empty{font:italic 16px var(--f-txt);color:#8a7a5a}
+.btn{border-radius:3px;font:700 12px/1 var(--f-dis);letter-spacing:.14em;background:linear-gradient(#6a4a24,#3a2410 55%,#2a1a0c);border:1px solid var(--gold);color:var(--gold2);text-shadow:0 1px 0 #000;box-shadow:inset 0 1px 0 #ffe7a855,inset 0 -2px 0 #0006,0 0 0 1px #000,0 3px 6px #0008}
+.btn:hover{background:linear-gradient(#8a6230,#4a2e14 55%,#33200e);color:#fff6d8}
+.btn.ghost{background:linear-gradient(#2a1d14,#1a120c);border:1px solid #5a4630;color:#cbb88e;box-shadow:inset 0 1px 0 #ffffff12,0 0 0 1px #000}
+.x{color:var(--gold)}.x:hover{color:#fff6d8}
+.cdx-h{border-bottom:1px solid #c9a24a55;background:linear-gradient(#3a281a,#24180f)}
+.tabs button{font:700 14px/1 var(--f-dis);letter-spacing:.1em;color:#a8926a;text-transform:uppercase}
+.tabs button.on{color:var(--gold2);border-color:var(--gold);text-shadow:0 0 10px #c9a24a66}
+.cdx-b{scrollbar-color:#8a6a2e #1c130d}
+.sect{display:flex;align-items:center;gap:8px;font:700 11px var(--f-dis);letter-spacing:.2em;color:var(--gold);margin:0 0 8px}
+.sect::before{content:"";width:6px;height:6px;transform:rotate(45deg);background:var(--gold);flex:none}
+.sect::after{content:"";flex:1;height:1px;background:linear-gradient(90deg,#c9a24a66,transparent)}
+.sect em{font:600 12px var(--f-ui);font-style:normal;color:#cbb88e;letter-spacing:0;order:2}.sect .gold{order:3;font:800 12px var(--f-ui);letter-spacing:0}
+.slot{border-radius:4px;background:radial-gradient(circle at 50% 40%,#2e241c,#120c08);border:1px solid #4a3a28;box-shadow:inset 0 2px 6px #000c,inset 0 0 0 1px #ffffff08}
+.slot.r1{border-color:#4f8a46;box-shadow:inset 0 2px 6px #000c,inset 0 0 9px #4f8a4666}
+.slot.r2{border-color:#3f78b8;box-shadow:inset 0 2px 6px #000c,inset 0 0 9px #3f78b877}
+.slot.r3{border-color:#8a5ac8;box-shadow:inset 0 2px 6px #000c,inset 0 0 10px #8a5ac888}
+.slot.r4{border-color:#e0962a;box-shadow:inset 0 2px 6px #000c,inset 0 0 12px #e0962aaa,0 0 8px #e0962a55}
+.slot.sel{outline:2px solid var(--gold2);outline-offset:1px}
+.slot.over{background:#3a2a18}
+.detail{border-radius:4px;border:1px solid var(--gold3);background:linear-gradient(#1f150e,#140d08);box-shadow:inset 0 0 0 3px #140d08,inset 0 0 0 4px #c9a24a44}
+.detail h4{font:700 19px/1.15 var(--f-dis);letter-spacing:.03em}
+.detail .ty{font:600 11px var(--f-dis);letter-spacing:.14em;color:#a8926a}
+.detail p{font:italic 16px/1.4 var(--f-txt);color:#d9c9a6}
+.detail .sts{font:600 13px/1.6 var(--f-ui);color:#e8dcc0}
+.statl span{color:#a8926a}
+.qi{border-radius:3px;border-color:#4a3a28;background:linear-gradient(#24180f,#170f0a)}
+.qi.on{border-color:var(--gold);box-shadow:inset 3px 0 0 var(--gold)}
+.qi b{font:600 17px/1.2 var(--f-txt);color:#f0e4c8}
+.qi small{font-family:var(--f-dis)}
+.qd{background:linear-gradient(#efe3c2,#dccb9f);color:var(--ink);padding:18px 22px;border-radius:3px;border:1px solid #b89a5a;box-shadow:inset 0 0 36px #8a6a2e66,0 0 0 1px #000,0 6px 18px #000a;min-height:200px}
+.qd h3{font:700 26px/1.15 var(--f-dis);color:#4a2410}.qd ol{font:17px/1.45 var(--f-txt)}
+.qd li.past{color:#8a7a5a}.qd li.cur{color:var(--ink);font-weight:600}.qd .rw{font:italic 15px var(--f-txt);color:#6a5030}
+.qd .badge-Main{color:#9a3a10!important}.qd .badge-Side{color:#2a4a7a!important}.qd .badge-Hidden{color:#5a2a7a!important}
+.srow{border-radius:3px;border-color:#4a3a28;background:linear-gradient(90deg,#24180f,#170f0a)}
+.srow b{font:600 17px/1.15 var(--f-txt)}
+.shop-t{font:700 24px/1 var(--f-dis);color:var(--gold2);letter-spacing:.04em}.shop-k{font:italic 14px var(--f-txt);color:#a8926a}
+.shop-f{border-top:1px solid #c9a24a55;background:#170f0a}
+.node{border-color:var(--gold3)}.node.has{background:radial-gradient(circle,#7a4a1a,#2a160a)}.node.avail{background:radial-gradient(circle,#3a2a1a,#140d08)}.node.sel{background:radial-gradient(circle,#b07a2a,#3a200c)}
+.nodelbl{font:700 10px/1.15 var(--f-dis);color:#cbb88e}.spbox{font:700 13px var(--f-dis);color:#cbb88e}.spbox b{color:var(--gold2)}
+.slot-row{border-radius:3px;border-color:#4a3a28;background:#170f0a}.slot-row b{font:700 18px var(--f-dis);color:#f0e4c8}
+.seg button{border-radius:3px;font:700 11px var(--f-dis);letter-spacing:.08em;border-color:#4a3a28;background:#170f0a;color:#a8926a}
+.seg button.on{border-color:var(--gold);color:var(--gold2);background:#3a2814}
+.set-grid label{font-family:var(--f-dis)}.bind{border-radius:3px;border-color:#4a3a28;background:#170f0a}.bind button{border-radius:3px;background:#2a1d14;border-color:#5a4630}
+.pmenu button{font:600 20px/1.3 var(--f-dis);border-radius:3px;background:linear-gradient(90deg,#2a1d14,#170f0a);border-color:#4a3a28;letter-spacing:.06em;color:#f0e4c8}
+.pmenu button:hover{border-color:var(--gold);color:var(--gold2)}
+.keys{font:15px var(--f-txt)}.keys kbd{font:700 11px var(--f-dis);color:var(--gold2)}
+.logo h1{font:700 clamp(52px,12vw,116px)/.95 'Cinzel Decorative',var(--f-dis);letter-spacing:.03em;background:linear-gradient(180deg,#fff6d8 20%,#f1d48a 50%,#a8782a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 #1a0e06) drop-shadow(0 0 22px #c9a24a66)}
+.logo .sub{font:700 clamp(15px,3vw,24px)/1 var(--f-dis);color:var(--gold2);letter-spacing:.32em}
+.mmenu button{font:600 23px/1.3 var(--f-dis);letter-spacing:.08em;color:#b8a27a}
+.mmenu button:hover,.mmenu button:focus-visible{color:#fff6d8;text-shadow:0 0 12px #c9a24a88}
+.mmenu button:hover::before,.mmenu button:focus-visible::before,.mmenu button:hover::after,.mmenu button:focus-visible::after{background:var(--gold)}
+.ver{font-family:var(--f-dis);color:#8a7a5a}
+.vn-box{border-radius:6px;border:2px solid var(--gold3);background:linear-gradient(180deg,#2e2016f2,#1a120cf5);box-shadow:inset 0 0 0 4px #1a120c,inset 0 0 0 5px #c9a24a55,0 0 0 1px #000,0 12px 40px #000c}
+.vn-box::after{border-color:#c9a24a22;border-radius:3px}
+#dlgWho{border-radius:3px;background:linear-gradient(#6a4a24,#3a2410);color:var(--gold2);border:1px solid var(--gold);font:700 15px/1 var(--f-dis);letter-spacing:.08em;box-shadow:0 0 0 1px #000,0 3px 0 #0008;text-shadow:0 1px 0 #000}
+#dlgWho small{color:#d9c9a6;font-family:var(--f-dis)}
+#dlgTxt{font:500 19px/1.5 var(--f-txt);color:#f3e8d0}#dlg.narr #dlgTxt{font:italic 20px/1.5 var(--f-txt);color:#e8dcc0}
+.choice{border-radius:3px;font:600 17px/1.3 var(--f-txt);border-color:#5a4630;background:#ffffff08;color:#f3e8d0}
+.choice::before{content:"◆ ";color:var(--gold)}.choice:hover,.choice:focus-visible{border-color:var(--gold);background:#c9a24a22}
+#dlgNext{color:var(--gold)}
+.hname{font:700 16px/1 var(--f-dis);color:var(--gold2);letter-spacing:.06em}
+.bar{transform:none;border-radius:2px;border:1px solid #000;box-shadow:0 0 0 1px var(--gold3)}
+.bar em{transform:translateY(-50%)}
+.bar.hp i{background:linear-gradient(#ff8a7a,#c8302a 55%,#7a1410)}
+.bar.hp.low i:not(.lag){background:linear-gradient(#ffb0a0,#e0383a 55%,#901a20)}
+.bar.mp i{background:linear-gradient(#9fc4ff,#2f6ad0 60%,#183a80)}
+#bossbar .bb{transform:none;box-shadow:0 0 0 1px var(--gold)}#bossbar .bn{font:700 22px/1.1 var(--f-dis);color:#fff6d8}#bossbar .bt{color:var(--gold);font-family:var(--f-dis)}
+.lvb::before{border:2px solid var(--gold2);background:linear-gradient(135deg,#7a4a1a,#2a160a);box-shadow:0 0 0 2px #000a,0 0 14px #c9a24a55}
+.mbtn{border-radius:3px;font:700 10px/1 var(--f-dis);background:linear-gradient(#3a281a,#1c130d);border:1px solid var(--gold3);color:var(--gold2)}
+.mbtn:hover{border-color:var(--gold2);color:#fff6d8}
+#mini{box-shadow:0 0 0 2px #000,0 0 0 4px var(--gold),0 0 0 5px #000,0 0 14px #000}
+.loc{color:var(--gold2);font-family:var(--f-dis)}
+.toast{border-radius:3px;font:600 15px/1.3 var(--f-txt);background:#1c130dee;border:1px solid var(--gold3);color:#f0e4c8}
+.toast.q{background:linear-gradient(90deg,#3a2410ee,#1c130dee);border-color:var(--gold);color:var(--gold2)}
+.toast.lv{background:linear-gradient(90deg,#5a3a10ee,#1c130dee);border-color:var(--gold2);color:#fff3c0}
+.hk{border-radius:4px;border:1px solid var(--gold3);background:radial-gradient(circle,#2e241c,#120c08)}
+.tracker{border-left:3px solid var(--gold)}.tracker .tq{color:var(--gold);font-family:var(--f-dis)}.tracker .tn{font:700 15px/1.2 var(--f-dis)}.tracker .td{font:15px/1.3 var(--f-txt)}
+#areaT small{color:var(--gold2);font-family:var(--f-dis)}#areaT span{font-family:var(--f-dis);font-weight:700;color:#fff6d8}
+.ccard,.bless,.pcard{border-radius:4px;border:1px solid #4a3a28;background:linear-gradient(#24180f,#140d08)}
+.ccard.on,.bless.on,.pcard.on{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold),0 0 22px #c9a24a33}
+.ccard canvas,.charcard canvas,#crPor,.pcard canvas,.bhead canvas{border-radius:4px;background:radial-gradient(circle at 50% 75%,#c9a24a33,#1c130d 70%);border:1px solid var(--gold3)}
+.ccard h3,.pcard h3,.bhead h3,.charcard h3{font-family:var(--f-dis);font-weight:700;color:var(--gold2)}
+.ccard p,.pcard p,.bless span,.cr-cls,.bdet p{font-family:var(--f-txt);font-size:15px}
+.bless b{font:700 18px/1.1 var(--f-dis);color:var(--gold2)}.bhead .cls,.charcard .cls{color:var(--gold);font-family:var(--f-dis)}
+.sw{border-radius:3px}.sw.on{box-shadow:0 0 0 3px var(--gold)}
+.hearts{color:#e05a5a}.cr-row,.namefld{font-family:var(--f-dis)}.namefld input{font:700 20px var(--f-dis);border-radius:3px;border-color:var(--gold3)}
+.death h2{font-family:var(--f-dis);color:#c8302a}.death p,.win p{font:18px/1.45 var(--f-txt)}
+#lvup b{font-family:var(--f-dis);font-style:normal;font-weight:900}#lvup small{font-family:var(--f-dis)}
+#callout{font-family:var(--f-dis);font-style:normal}
+/* Bag: paper-doll equipment page */
+.gear2{display:grid;grid-template-columns:310px minmax(0,1fr) 260px;gap:18px;align-items:start}
+@media (max-width:900px){.gear2{grid-template-columns:1fr}}
+.dollbox{display:grid;grid-template-columns:64px 1fr 64px;grid-template-rows:auto auto;align-items:center;justify-items:center;gap:8px;padding:12px 8px;border:1px solid #4a3a28;border-radius:4px;background:radial-gradient(ellipse at 50% 72%,#c9a24a2a,transparent 62%),#140d08;box-shadow:inset 0 0 20px #000a}
+#gDoll{grid-column:2;grid-row:1/3;width:120px;height:150px;image-rendering:pixelated}
+.eq-weapon{grid-column:1;grid-row:1/3}.eq-armor{grid-column:3;grid-row:1}.eq-acc{grid-column:3;grid-row:2}
+.dollbox .slot{width:60px}
+.eqslot span{font:700 9px var(--f-dis);letter-spacing:.12em;color:#a8926a}
+.hero-id{display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center;margin-top:12px}
+.hero-id canvas{width:76px;aspect-ratio:200/240;image-rendering:pixelated;border-radius:4px;border:1px solid var(--gold3);background:radial-gradient(circle at 50% 75%,#c9a24a33,#1c130d 70%)}
+.hero-id h3{font:700 21px/1 var(--f-dis);color:var(--gold2);margin:0 0 3px}
+.hero-id .cls{font:700 10px var(--f-dis);letter-spacing:.14em;color:var(--gold);text-transform:uppercase}
+.hero-id small{font:600 11px var(--f-ui);color:#a8926a}
+.xpbar{height:5px;margin:6px 0 2px;background:#0a0604;border:1px solid #000;box-shadow:0 0 0 1px var(--gold3)}.xpbar i{display:block;height:100%;background:linear-gradient(90deg,#c9a24a,#f1d48a)}
+.attrs{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;margin-bottom:16px}
+.attr{display:grid;grid-template-columns:18px 1fr auto;align-items:center;gap:7px;padding:5px 8px;border:1px solid #3a2c1e;border-radius:3px;background:linear-gradient(90deg,#1f150e,#140d08)}
+.attr img{width:16px;height:16px;image-rendering:pixelated}.attr span{font:15px var(--f-txt);color:#cbb88e}
+.attr b{font:800 13px var(--f-ui);color:#f3e8d0;font-variant-numeric:tabular-nums}.attr i{font-style:normal;color:var(--good);font-size:11px;margin-left:4px}
+.gear2 .inv{max-width:none}
 </style>
 
 <canvas id="cv"></canvas>
@@ -1580,7 +1697,7 @@ function newGame(cls,name,slot){buildWorld();G.slot=slot;const P=new Player(cls,
   G.quests={};G.flags={};G.chests={};G.harv={};G.disc={};G.kills={};G.time=7.5*60;G.day=1;G.playTime=0;G.lantern={map:'eldoria',x:26*T+8,y:22*T+8,name:'Plaza Lantern'};
   invAdd('health_potion',3);invAdd('mana_potion',1);qStart('fading_light',true);G.tracked='fading_light';
   enterPlay();loadMap('eldoria',24*T+8,12*T+8);saveGame(slot,true);
-  setTimeout(()=>say({name:'',por:'sun'},['You wake on warm cobblestones. Birdsong. The smell of bread. A sky with a sun that looks just slightly too small.',`Reborn in Aurel as ${P.name}. A white-haired woman on the hall steps to the north is waving at you, looking very surprised.`],null,()=>{if(!settings.seenHelp){settings.seenHelp=true;saveSettings();toast(isTouch()?'Left side: move. ATK attacks and talks. ROLL dodges.':'WASD move · J/Space attack · K roll · L block · 1-4 skills · E talk');}}),700)}
+  setTimeout(()=>say({name:'',por:'sun'},['You wake on warm cobblestones. No rain. No horns. Birdsong, and the smell of bread instead of filter coffee. A sky with a sun that looks just slightly too small.',`Reborn in Aurel as ${P.name}. A white-haired woman on the hall steps to the north is waving at you, looking very surprised.`],null,()=>{if(!settings.seenHelp){settings.seenHelp=true;saveSettings();toast(isTouch()?'Left side: move. ATK attacks and talks. ROLL dodges.':'WASD move · J/Space attack · K roll · L block · 1-4 skills · E talk');}}),700)}
 
 /* ---------- Render ---------- */
 function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);G.dpr=dpr;const w=Math.floor(innerWidth*dpr),h=Math.floor(innerHeight*dpr);cv.width=w;cv.height=h;
@@ -2098,18 +2215,18 @@ Object.defineProperty(Player.prototype,'pal',{get(){return this._pal||(this._pal
 function startOpening(){AudioSys.init();AudioSys.resume();hideScreens();G.state='cine';Music.play('title');
   const N=(t,e)=>({t,e});
   Scene.play('city',[
-    {t:'Tokyo. 11:48 PM. Rain for the third night running.'},
-    {t:'You worked late again. The train was late again. Somewhere behind you, a delivery truck is running a red light.'},
-    {t:'At the crosswalk, a small girl has dropped her umbrella and stepped out after it.'},
+    {t:'Kochi. 11:48 PM. The monsoon has not let up for three days.'},
+    {t:'You worked late at the Infopark office again, and the last ferry left without you. So you walk Marine Drive in the rain, past shuttered tea stalls and the dark shapes of the Chinese fishing nets. Somewhere behind you, a private bus is taking the wet corner far too fast.'},
+    {t:'At the crossing by the boat jetty, a small girl has dropped her umbrella and stepped into the road after it.'},
     {t:'You do not decide anything. Your body simply moves.',shake:0},
-    {bg:'flash',sfx:'slam',t:'Headlights. A shove. A sound like the world folding in half.'},
+    {bg:'flash',sfx:'slam',t:'An air horn. Headlights. A shove. A sound like the world folding in half.'},
     {bg:null,wait:900},
     {bg:'heaven',sfx:'cutin',t:'...Warmth. Light, everywhere, as if you are lying inside the morning.'},
     {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'happy',t:'Ah, you are awake. Welcome, brave soul. The child you pushed aside is safe. She will grow up and become a nurse, by the way.'},
-    {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'sad',t:'Your own story, I am afraid, ended on that crosswalk. But endings are where I work best. I am Aurelia, goddess of the dawn.'},
+    {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'sad',t:'Your own story, I am afraid, ended on that wet road in Kochi. But endings are where I work best. I am Aurelia, goddess of the dawn.'},
     {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'n',t:'There is a world called Aurel, where my sun is being eaten. Something old and hollow is waking beneath it.',c:[
       {t:'Wait. Is this... an isekai?',go:[{n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'happy',t:'I have no idea what that word means, but you said it with such hope that I will say yes.'}]},
-      {t:'Can I go back home?',go:[{n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'sad',t:'No. I am sorry. But a new home is waiting, if you are willing to light it.'}]},
+      {t:'Can I go back to Kochi? Amma will be waiting up.',go:[{n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'sad',t:'No. I am sorry. Tonight I will send your mother a dream: that you are warm, and safe, and finally eating properly. A new home is waiting, if you are willing to light it.'}]},
       {t:'Tell me what you need.',go:[{n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'surprised',t:'Straight to it! I chose well.'}]}]},
     {n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e:'happy',t:'You will be reborn in Aurel, young and whole. First, tell me who you will be.'}
   ],()=>openCreate())}
@@ -2198,7 +2315,7 @@ const TALK={
     lines:['Do not touch the notes.','I have recalculated the eclipse cycle twice today. You were in the margins both times.','[blush]Stand closer. The frost wards work better. That is the only reason.','[blush]I have stopped pretending I do not wait for you.','[love]I have stopped counting the years. Only the days with you.','[love]Engaged. A human custom. I have read eleven books about it. None were adequate.','[happy]Your tea is acceptable. ...I love you. Drink it before it cools.'],
     topics:[{t:'Elves live a thousand years. Humans, eighty. Statistically, attachment is inefficient.',c:[['Then make every year count.','trust',5,'surprised','An unscientific answer. I will consider it.'],['Then why are you still talking to me?','aff',4,'blush','Data collection. Obviously.'],['You are right. It is pointless.','aff',-4,'sad','...Yes. I suppose it is.']]},
       {t:'Do you know what the moon is made of?',c:[['Cheese.','aff',-2,'angry','No.'],['Old light.','aff',4,'happy','Correct, in a poetic sense.'],['Tell me.','trust',4,'happy','She explains for twenty minutes. You follow perhaps a third. She seems pleased that you listened.']]},
-      {t:'In your old world, you stepped in front of a cart for a stranger. Why?',c:[['It was the right thing to do.','trust',5,'n','A simple axiom. I find it... admirable.'],['I did not think. I just moved.','aff',3,'blush','Reckless. ...I would have done the same, for you.'],['I do not remember.','friend',1,'n','Memory is kind, sometimes.']]}],
+      {t:'In your old world, you stepped in front of a bus for a stranger. Why?',c:[['It was the right thing to do.','trust',5,'n','A simple axiom. I find it... admirable.'],['I did not think. I just moved.','aff',3,'blush','Reckless. ...I would have done the same, for you.'],['I do not remember.','friend',1,'n','Memory is kind, sometimes.']]}],
     about:['[sad]They exiled me for reading the starlore. Knowledge was not the crime. Asking whether the eclipse could be undone was.','[n]Sylvaran is beautiful and very, very slow. A decision there takes thirty years.'],
     qOffer:'[n]My thesis needs data. Two Lumen Crystals from the caverns. And then... a night at the Moon Shrine, if you would come.',
     qStep:['','Bring Lyra 2 Lumen Crystals.','Visit the Moon Shrine at night with Lyra in your party.'],
@@ -2599,17 +2716,17 @@ function renderJournal(B){const ids=Object.keys(G.quests).sort((a,b)=>(G.quests[
 
 function renderMapTab(B){B.innerHTML=`<div class="mapwrap"><div class="seg" style="justify-content:center"><button data-v="realm" class="${mapView==='realm'?'on':''}">The realm</button><button data-v="area" class="${mapView==='area'?'on':''}">${esc(G.map.name)}</button></div><canvas id="wmap" width="900" height="560"></canvas><div class="mapnote" id="mapNote"></div></div>`;
   B.querySelectorAll('[data-v]').forEach(b=>b.onclick=()=>{mapView=b.dataset.v;renderMapTab(B)});const c=$('#wmap'),g=c.getContext('2d');if(mapView==='realm')drawRealm(g,900,560);else drawArea(g,900,560)}
-function drawRealm(g,W,H){g.fillStyle='#0f0d14';g.fillRect(0,0,W,H);const img=g.createImageData(W/4,H/4);for(let y=0;y<H/4;y++)for(let x=0;x<W/4;x++){const nx=x/(W/4),ny=y/(H/4),e=fbm(nx*4,ny*4,55)-Math.hypot(nx-.52,ny-.5)*.9;const i=(y*W/4+x)*4;let c=[18,16,26];if(e>.02)c=[44,38,50];if(e>.12)c=[54,48,58];if(e>.25)c=[66,58,66];if(e>-.02&&e<=.02)c=[30,26,40];img.data[i]=c[0];img.data[i+1]=c[1];img.data[i+2]=c[2];img.data[i+3]=255}
+function drawRealm(g,W,H){g.fillStyle='#d8c69c';g.fillRect(0,0,W,H);const img=g.createImageData(W/4,H/4);for(let y=0;y<H/4;y++)for(let x=0;x<W/4;x++){const nx=x/(W/4),ny=y/(H/4),e=fbm(nx*4,ny*4,55)-Math.hypot(nx-.52,ny-.5)*.9;const i=(y*W/4+x)*4;let c=[168,180,170];if(e>.02)c=[226,210,170];if(e>.12)c=[212,192,148];if(e>.25)c=[192,168,124];if(e>-.02&&e<=.02)c=[132,108,72];img.data[i]=c[0];img.data[i+1]=c[1];img.data[i+2]=c[2];img.data[i+3]=255}
   const tc=mkCanvas(W/4,H/4);tc.getContext('2d').putImageData(img,0,0);g.imageSmoothingEnabled=false;g.drawImage(tc,0,0,W,H);
-  const R=Object.fromEntries(REGIONS.map(r=>[r.id,r]));g.setLineDash([6,6]);g.lineWidth=2;for(const[a,b]of ROADS){const A=R[a],Bb=R[b];const known=G.disc[a]&&G.disc[b];g.strokeStyle=known?'#c9a95a':'#4a4058';g.beginPath();g.moveTo(A.x*W,A.y*H);g.lineTo(Bb.x*W,Bb.y*H);g.stroke()}g.setLineDash([]);
-  for(let i=0;i<14;i++){const x=(.58+hash2(i,1,3)*.18)*W,y=(.12+hash2(i,2,3)*.18)*H;g.fillStyle='#5a5066';g.beginPath();g.moveTo(x,y-14);g.lineTo(x-11,y+6);g.lineTo(x+11,y+6);g.fill();g.fillStyle='#8a8094';g.beginPath();g.moveTo(x,y-14);g.lineTo(x-3,y-8);g.lineTo(x+3,y-8);g.fill()}
-  for(let i=0;i<40;i++){const x=(.3+hash2(i,4,3)*.16)*W,y=(.46+hash2(i,5,3)*.18)*H;g.fillStyle='#2a4a30';g.beginPath();g.arc(x,y,5,0,TAU);g.fill()}
+  const R=Object.fromEntries(REGIONS.map(r=>[r.id,r]));g.setLineDash([6,6]);g.lineWidth=2;for(const[a,b]of ROADS){const A=R[a],Bb=R[b];const known=G.disc[a]&&G.disc[b];g.strokeStyle=known?'#8a2a1a':'#9a8a6a';g.beginPath();g.moveTo(A.x*W,A.y*H);g.lineTo(Bb.x*W,Bb.y*H);g.stroke()}g.setLineDash([]);
+  for(let i=0;i<14;i++){const x=(.58+hash2(i,1,3)*.18)*W,y=(.12+hash2(i,2,3)*.18)*H;g.fillStyle='#7a6044';g.beginPath();g.moveTo(x,y-14);g.lineTo(x-11,y+6);g.lineTo(x+11,y+6);g.fill();g.fillStyle='#f4ead0';g.beginPath();g.moveTo(x,y-14);g.lineTo(x-3,y-8);g.lineTo(x+3,y-8);g.fill()}
+  for(let i=0;i<40;i++){const x=(.3+hash2(i,4,3)*.16)*W,y=(.46+hash2(i,5,3)*.18)*H;g.fillStyle='#5a7a44';g.beginPath();g.arc(x,y,5,0,TAU);g.fill()}
   g.fillStyle='#1a0e14';g.globalAlpha=.6;g.beginPath();g.ellipse(.75*W,.8*H,90,50,0,0,TAU);g.fill();g.globalAlpha=1;
   const cur=G.map.region;g.textAlign='center';
-  for(const r of REGIONS){const x=r.x*W,y=r.y*H,k=G.disc[r.id];g.fillStyle=k?'#f6c46d':r.open?'#8a7a6a':'#3a3045';g.beginPath();g.moveTo(x,y-8);g.lineTo(x+8,y);g.lineTo(x,y+8);g.lineTo(x-8,y);g.fill();
-    if(r.id===cur){g.strokeStyle='#ffffff';g.lineWidth=2;g.beginPath();g.arc(x,y,14+Math.sin(performance.now()/300)*2,0,TAU);g.stroke()}
-    g.font='600 22px "Zen Antique", Georgia, serif';g.fillStyle=k?'#ebe0c9':'#6f6679';g.fillText(k?r.name:r.open?'Unexplored':r.name,x,y-16);if(!r.open){g.font='12px "M PLUS Rounded 1c", sans-serif';g.fillStyle='#6f6679';g.fillText('sealed by the eclipse veil',x,y+24)}}
-  g.font='700 34px "Zen Antique", Georgia, serif';g.fillStyle='#ebe0c9';g.textAlign='left';g.fillText('The Kingdom of Aurel',24,46);
+  for(const r of REGIONS){const x=r.x*W,y=r.y*H,k=G.disc[r.id];g.fillStyle=k?'#a8322a':r.open?'#6a5a40':'#9a8a6a';g.beginPath();g.moveTo(x,y-8);g.lineTo(x+8,y);g.lineTo(x,y+8);g.lineTo(x-8,y);g.fill();
+    if(r.id===cur){g.strokeStyle='#2e2014';g.lineWidth=2;g.beginPath();g.arc(x,y,14+Math.sin(performance.now()/300)*2,0,TAU);g.stroke()}
+    g.font='600 22px "Cinzel", Georgia, serif';g.fillStyle=k?'#2e2014':'#7a6a50';g.fillText(k?r.name:r.open?'Unexplored':r.name,x,y-16);if(!r.open){g.font='12px "M PLUS Rounded 1c", sans-serif';g.fillStyle='#7a6a50';g.fillText('sealed by the eclipse veil',x,y+24)}}
+  g.font='700 34px "Cinzel", Georgia, serif';g.fillStyle='#2e2014';g.textAlign='left';g.fillText('The Kingdom of Aurel',24,46);
   $('#mapNote').textContent='Regions marked as sealed lie beyond the eclipse veil. They open in later chapters.'}
 function drawArea(g,W,H){const m=G.map,P=G.player;g.fillStyle='#07060a';g.fillRect(0,0,W,H);const s=Math.floor(Math.min(W/m.w,H/m.h)),ox=(W-m.w*s)/2,oy=(H-m.h*s)/2;
   for(let y=0;y<m.h;y++)for(let x=0;x<m.w;x++){const i=y*m.w+x;if(!m.explored[i])continue;let c=MMCOL[m.t[i]];if(m.t[i]===TL.SECRET)c=MMCOL[TL.PINE];g.fillStyle=c;g.fillRect(ox+x*s,oy+y*s,s,s)}
@@ -2887,6 +3004,48 @@ Object.assign(H('noelle').pal,{gear:'tunic',sash:'#5a3a7a'});
 Object.defineProperty(Player.prototype,'pal',{get(){const base=this._pal||(this._pal=lookPal(this.cls)),a=this.eq&&this.eq.armor,gk=a&&GEARLOOK[a.id]||null,c=this._pg;
   if(c&&c.base===base&&c.gk===gk)return c.p;const p=Object.assign({},base,{gear:gk});this._pg={base,gk,p};return p},configurable:true});
 const _playerFace=playerFace;playerFace=function(){const f=_playerFace(),P=G.player,a=P&&P.eq&&P.eq.armor&&GEARLOOK[P.eq.armor.id];if(a&&a!=='tunic')f.armor=a;return f};
+
+/* ================= BAG: paper-doll equipment page ================= */
+renderGear=function(B){const P=G.player,s=selInv;let sel=null;if(s)sel=s.eq?P.eq[s.eq]:P.inv[s.i];
+  const at=(ic,l,k,f)=>{const v=P[k==='hp'?'maxHp':k==='mp'?'maxMp':k],bo=P.bonus[k];return`<div class="attr"><img src="${iconUrl('at_'+k,ic[0],ic[1])}" alt=""><span>${l}</span><b>${f?f(v):v}${bo?`<i>+${f?f(bo):bo}</i>`:''}</b></div>`};
+  const eq=k=>`<div class="eqslot eq-${k}">${slotHTML(P.eq[k]?{id:P.eq[k].id,n:1,plus:P.eq[k].plus}:null,`data-eq="${k}"`,s&&s.eq===k)}<span>${k==='acc'?'TRINKET':k==='weapon'?'WEAPON':'ARMOR'}</span></div>`;
+  const xpf=P.lvl>=20?100:Math.round(P.xp/xpNeed(P.lvl)*100);
+  B.innerHTML=`<div class="gear2">
+   <section><p class="sect">Equipment</p><div class="dollbox">${eq('weapon')}<canvas id="gDoll" width="120" height="150"></canvas>${eq('armor')}${eq('acc')}</div>
+    <div class="hero-id"><canvas id="gPor" width="400" height="480"></canvas><div><h3>${esc(P.name)}</h3><div class="cls">Level ${P.lvl} ${CLASSES[P.cls].name}</div><div class="xpbar"><i style="width:${xpf}%"></i></div><small>${P.xp} / ${xpNeed(P.lvl)} XP</small></div></div></section>
+   <section><p class="sect">Attributes</p><div class="attrs">${at(['heart','#d2463c'],'Health','hp')}${at(['flow','#6f9cf0'],'Mana','mp')}${at(['sword','#cfd6de'],'Attack','atk')}${at(['shield','#9aa0b0'],'Defense','def')}${at(['ember','#f6c46d'],'Magic','mag')}${at(['eye','#e0c070'],'Critical','crit',v=>Math.round(v*100)+'%')}${at(['arrow','#9fd3ff'],'Speed','spd')}<div class="attr"><img src="${iconUrl('at_gold','ring','#e0b84a')}" alt=""><span>Gold</span><b class="gold">${P.gold}</b></div></div>
+    <p class="sect">Inventory<em>${24-invFree()}/24</em></p><div class="inv">${P.inv.map((it,i)=>slotHTML(it,`data-i="${i}"`,s&&!s.eq&&s.i===i)).join('')}</div>
+    <p class="hint" style="margin-top:8px">${isTouch()?'Tap an item for details. Drag it onto an equipment slot to wear it.':'Click an item for details, double-click to use or equip. Drag items to move or equip them.'}</p></section>
+   <section class="detail" id="gDet">${sel?detailHTML(sel,s):'<p class="empty">Select an item to read its lore and compare it with what you wear.</p>'}</section></div>`;
+  $('#gPor').getContext('2d').drawImage(getPortrait(playerFace(),'n'),0,0);
+  let fr=0;const doll=()=>{const c=$('#gDoll');if(!c){clearInterval(renderGear.tm);return}const g=c.getContext('2d');g.clearRect(0,0,120,150);g.imageSmoothingEnabled=false;g.save();g.scale(3.4,3.4);drawHumanoid(g,17.6,40,{pal:P.pal,dir:0,weapon:P.weaponKind,wcol:P.wcol,time:fr*.25,noShadow:false});g.restore();fr++};
+  clearInterval(renderGear.tm);doll();renderGear.tm=setInterval(doll,250);
+  B.querySelectorAll('.slot').forEach(el=>bindSlot(el));
+  const det=$('#gDet');det.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{const a=b.dataset.act;if(a==='use'){useItem(s.i);selInv=P.inv[s.i]?s:null}else if(a==='unequip'){unequip(s.eq);selInv=null}else if(a==='drop'){if(b.dataset.arm){P.inv[s.i]=null;selInv=null;AudioSys.play('ui')}else{b.dataset.arm=1;b.textContent='Tap again to discard';return}}renderCodex()})};
+
+/* ================= OPENING: a monsoon night on Marine Drive, Kochi ================= */
+const _drawScene=drawScene;drawScene=function(g,bg,t){if(bg!=='city')return _drawScene(g,bg,t);
+  const W=320,Hh=180,F=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x|0,y|0,w|0,h|0)};
+  let gr=g.createLinearGradient(0,0,0,110);gr.addColorStop(0,'#05070f');gr.addColorStop(1,'#1e1a34');g.fillStyle=gr;g.fillRect(0,0,W,110);
+  g.fillStyle='rgba(44,44,74,.6)';for(let i=0;i<8;i++){g.beginPath();g.ellipse((i*56+t*4)%380-30,18+hash2(i,1,5)*34,52,11,0,0,TAU);g.fill()}
+  F(0,94,W,8,'#0b0b16');for(let i=0;i<46;i++)F(hash2(i,2,8)*W,95+hash2(i,3,8)*5,1,1,hash2(i,4,8)>.75?'#7ff0ff':'#ffd27a');
+  gr=g.createLinearGradient(0,102,0,132);gr.addColorStop(0,'#0e1a30');gr.addColorStop(1,'#070e1a');g.fillStyle=gr;g.fillRect(0,102,W,30);
+  for(let i=0;i<34;i++){const x=(hash2(i,5,8)*W+t*6)%W,y=104+hash2(i,6,8)*26;F(x,y,5+hash2(i,7,8)*9,1,'rgba(255,200,120,.22)')}
+  const net=x=>{g.strokeStyle='#241a14';g.lineWidth=2;g.beginPath();g.moveTo(x,128);g.lineTo(x+30,58);g.moveTo(x+12,128);g.lineTo(x+30,58);g.moveTo(x+30,58);g.lineTo(x+70,30);g.moveTo(x+30,58);g.lineTo(x+2,34);g.stroke();
+    g.lineWidth=1;g.beginPath();g.moveTo(x+2,34);g.lineTo(x-4,70);g.moveTo(x+70,30);g.lineTo(x+70,44);g.stroke();
+    g.strokeStyle='rgba(150,135,120,.55)';g.beginPath();for(let k=0;k<=6;k++){g.moveTo(x+70,44);g.lineTo(x+52+k*6,94)}g.moveTo(x+52,94);g.quadraticCurveTo(x+70,104,x+88,94);g.moveTo(x+58,70);g.lineTo(x+82,70);g.stroke();
+    F(x-6,126,26,4,'#1a1410');for(let i=0;i<3;i++)F(x+2+i*6,118,2,8,'#1a1410')};
+  net(14);net(118);
+  const palm=(x,h,lean)=>{g.strokeStyle='#120e14';g.lineWidth=3;g.beginPath();g.moveTo(x,140);g.quadraticCurveTo(x+lean*.4,140-h*.6,x+lean,140-h);g.stroke();const tx=x+lean,ty=140-h;g.lineWidth=2;for(let k=0;k<8;k++){const a=-Math.PI*1.05+k*Math.PI/6.4+Math.sin(t*1.6+k+x)*.08;g.beginPath();g.moveTo(tx,ty);g.quadraticCurveTo(tx+Math.cos(a)*12,ty+Math.sin(a)*12-5,tx+Math.cos(a)*23,ty+Math.sin(a)*13+7);g.stroke()}F(tx-2,ty,4,4,'#1a1410')};
+  palm(236,72,10);palm(262,90,-6);palm(292,64,14);
+  F(0,134,W,6,'#2c2834');F(0,133,W,1,'#4a4450');for(let x=4;x<W;x+=12)F(x,127,1,7,'#3a3440');F(0,127,W,1,'#3a3440');
+  F(0,140,W,40,'#14121c');for(let x=8;x<W;x+=30)F(x,161,14,2,'#d8d0a0');
+  for(const x of[64,154,244]){F(x,98,2,42,'#2a2630');F(x-6,96,10,3,'#2a2630');g.fillStyle='rgba(255,180,90,.22)';g.beginPath();g.arc(x-3,102,18,0,TAU);g.fill();F(x-5,98,5,2,'#ffd27a');F(x-6,168,9,1,'rgba(255,200,120,.35)')}
+  F(184,146,9,8,'#d8c040');F(184,146,9,3,'#2a2a30');F(186,154,2,2,'#000');F(191,154,2,2,'#000');F(183,149,1,2,'#ffe7a8');
+  const bx=288;F(bx,142,40,22,'#b02a20');F(bx,151,40,3,'#f2c23a');F(bx,142,40,2,'#7a1a14');for(let i=0;i<4;i++)F(bx+4+i*9,145,6,5,'#ffe7a8');F(bx-1,158,3,3,'#ffffff');F(bx+4,164,6,3,'#000');F(bx+28,164,6,3,'#000');
+  g.fillStyle='rgba(255,250,220,.16)';g.beginPath();g.moveTo(bx,159);g.lineTo(bx-130,148);g.lineTo(bx-130,180);g.closePath();g.fill();
+  if(Math.sin(t*1.3)>.992){g.fillStyle='rgba(210,220,255,.3)';g.fillRect(0,0,W,Hh)}
+  g.strokeStyle='rgba(170,190,255,.35)';g.lineWidth=1;g.beginPath();for(let i=0;i<120;i++){const x=(hash2(i,9,1)*W+t*-40)%W,y=(hash2(i,10,1)*Hh+t*260)%Hh;g.moveTo((x+W)%W,y);g.lineTo((x+W)%W-2,y+7)}g.stroke()};
 
 boot();
 </script>

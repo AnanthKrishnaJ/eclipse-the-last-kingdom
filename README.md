@@ -1,0 +1,31 @@
+# Eclipse: The Last Kingdom
+
+A pixel-art action RPG in a single HTML file. Open `eclipse.html` in a browser to play; there is nothing to install or build.
+
+## Story
+
+On a monsoon night in Kochi, a tired office worker who has missed the last ferry walks home along Marine Drive. They push a child out of the path of a speeding bus and die on the wet road. Aurelia, goddess of the dawn, gives them a second life in Aurel, a kingdom whose sun is being eaten by an eclipse. Reborn in the village of Eldoria, the hero has to reach the Hollow Sovereign beneath the Crystal Caverns and defeat it.
+
+## Features
+
+- Real-time combat: three-hit combos, dodge rolls, blocking and parries, four skills, and a Burst art with an anime cut-in.
+- Three classes, Warden, Ranger and Arcanist, each with its own gear on the character.
+- Armor shows on the character: tunic, leather, chainmail, wolfhide or full plate. Portraits change to match.
+- Bag page laid out as an equipment screen (paper doll) with attributes, a 24-slot inventory and item comparison.
+- Companions Mimi, Lyra, Serah and Noelle, with a bond system: gifts, dates, personal quests and marriage.
+- Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
+- Three areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
+- Three save slots kept in the browser, gamepad support and touch controls.
+
+## Controls
+
+| Action | Keys |
+| --- | --- |
+| Move / run | WASD or arrow keys, hold Shift to run |
+| Attack, talk | J or Space |
+| Dodge / block | K / L |
+| Skills | 1–4 |
+| Burst | R |
+| Potion | Q |
+| Bag, skills, journal, map | I, T, O, M |
+| Pause | Esc |
