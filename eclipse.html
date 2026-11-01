@@ -896,6 +896,25 @@ body.mundane .hud-tl .bar,body.mundane .hud-tl .lvb,body.mundane #hBurstBar,body
 .qte-b .btn{font-size:20px;padding:12px 28px}
 
 #sPowers[hidden]{display:none!important}#sPowers *{box-sizing:border-box}
+/* creator, designer, difficulty */
+.cr-pane .dzname{padding:6px 8px;border-radius:4px;border:2px solid #4a5aa8;background:#070c34;color:#fff;font:14px var(--f-txt);min-width:0;width:220px;max-width:100%}
+.dzpre button,.dzlib button{font-size:12px}.dzwhich{display:grid!important;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}.dzwhich button{display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:8px 10px;text-align:left}.dzwhich small{font:12px var(--f-txt);opacity:.8}
+.cpick{position:relative;display:inline-grid;place-items:center;width:26px;height:26px;border-radius:50%;border:2px dashed #a8b4ff;cursor:pointer;overflow:hidden;vertical-align:middle}.cpick input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;border:0;padding:0}.cpick span{color:#fff;font:16px var(--f-dis);pointer-events:none}
+.libitem{display:inline-flex;align-items:center}.libitem .del{padding:2px 7px;margin-left:-2px}.dzio{justify-content:flex-start!important;margin:8px 0}.dzcode{width:100%;box-sizing:border-box;background:#070c34;color:#dfe6ff;border:2px solid #4a5aa8;border-radius:4px;font:12px monospace;padding:6px}
+.crpose{display:flex;flex-wrap:wrap;gap:3px;justify-content:center;margin:6px 0}.crpose button{font-size:12px;padding:4px 8px}.crtools{justify-content:center!important;flex-wrap:wrap;gap:6px}
+.cr-stage.bg-kochi{background:linear-gradient(#1a1c30,#3a3448 60%,#34343c 60%)!important}.cr-stage.bg-meadow{background:linear-gradient(#8ac8f0,#d8ecf4 55%,#5a9a44 55%)!important}
+.studio{display:grid;grid-template-columns:170px minmax(0,1fr);gap:14px}.st-prev{display:flex;flex-direction:column;align-items:center;gap:8px}.st-prev canvas{background:radial-gradient(circle at 50% 80%,#3a55c8,#070c34 70%);border:2px solid var(--edge,#6c80d8);border-radius:6px;image-rendering:pixelated}
+@media (max-width:640px){.studio{grid-template-columns:1fr}.dzwhich{grid-template-columns:1fr}}
+#sDiff{position:fixed;inset:0;z-index:40;display:block!important;overflow:auto;background:radial-gradient(ellipse at 50% 0%,#2a1a4a,#06040f 70%);color:#eef}#sDiff[hidden]{display:none!important}
+.df-wrap{box-sizing:border-box;max-width:900px;margin:0 auto;padding:18px 16px 30px;display:flex;flex-direction:column;gap:14px}.df-wrap header small{font:400 13px var(--f-dis);letter-spacing:.1em;text-transform:uppercase;color:#a8b4ff}.df-wrap h2{margin:0;font:400 28px var(--f-dis);color:#fff3c0}
+.df-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px}.dfcard{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:8px;border:2px solid color-mix(in srgb,var(--dc) 55%,#1a1440);background:linear-gradient(#1a1440,#0a0820);color:#fff}
+.dfcard b{font:400 17px var(--f-dis);color:var(--dc)}.dfcard small{font:12px var(--f-txt);color:#cfd8ff}.dfcard .skulls{color:var(--dc);font-size:9px;letter-spacing:1px}.dfcard .dfn{position:absolute;top:4px;left:7px;font:12px var(--f-dis);color:#8a8ab0}
+.dfcard.on{border-color:var(--dc);box-shadow:0 0 18px color-mix(in srgb,var(--dc) 55%,transparent);transform:translateY(-2px)}
+.df-detail{padding:14px;border-radius:8px;border:2px solid var(--dc);background:linear-gradient(#1a2878,#070c34)}.df-detail h3{margin:0 0 4px;font:400 22px var(--f-dis);color:var(--dc)}.df-detail p{margin:4px 0;font:15px/1.4 var(--f-txt)}
+.df-detail dl{display:grid;grid-template-columns:repeat(2,auto 1fr);gap:4px 12px;margin:10px 0;font:14px var(--f-txt)}.df-detail dt{color:#a8b4ff}.df-detail dd{margin:0}.perma{color:#ff7a7a}.dfconfirm{display:flex;gap:8px;align-items:center;font:14px var(--f-txt);color:#ffb0b0}
+@media (max-width:720px){.df-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.df-detail dl{grid-template-columns:auto 1fr}}
+.diffbadge{font:400 13px var(--f-dis);color:var(--dc);text-align:center;margin-bottom:6px;letter-spacing:.06em}
+.cr-left .crpose,.cr-left .crtools{grid-column:1/-1;flex-direction:row!important;align-items:center}.crtools .btn{height:auto;flex:0 0 auto}.crpose{flex-direction:row!important}
 
 </style>
 
@@ -4259,7 +4278,7 @@ const _phurtPW=Player.prototype.hurt;Player.prototype.hurt=function(dmg,sx,sy,o=
     if(this.shieldRef&&o.src&&o.src.status&&!o.src.boss)o.src.status.chill={t:2.5};if(dmg<1){this.iframe=.3;AudioSys.play('block');return false}}
   return _phurtPW.call(this,dmg,sx,sy,o)};
 const _pdiePW=Player.prototype.die;Player.prototype.die=function(){const s=pw(),ph=(G.allies||[]).find(a=>a.revive&&!a.dead);
-  if(G.state==='play'&&(ph||(PM().revive&&s.reviveDay!==G.day))){if(ph){ph.dead=true;ph.t=ph.dur}else s.reviveDay=G.day;this.dead=false;this.hp=this.maxHp;this.iframe=2.5;G.flashT=.8;
+  if(G.state==='play'&&!(typeof DF==='function'&&DF().perma)&&(ph||(PM().revive&&s.reviveDay!==G.day))){if(ph){ph.dead=true;ph.t=ph.dur}else s.reviveDay=G.day;this.dead=false;this.hp=this.maxHp;this.iframe=2.5;G.flashT=.8;
     banner(ph?'Rebirth in flame':pwHas('dawn_chosen')?"Dawn's Chosen":'Immortality','You refuse to die');AudioSys.play('heal');for(let i=0;i<40;i++){const a=rnd(0,TAU);G.part(this.x,this.y-8,Math.cos(a)*80,Math.sin(a)*80-30,1,ph?'#ff9a3a':'#ffe7a8',2,0,'glow')}return}
   _pdiePW.call(this)};
 
@@ -4547,40 +4566,46 @@ const _genTilesK=genTiles;genTiles=function(){_genTilesK();
   tileSet('cobble',(g,v,r)=>{g.fillStyle='#6e6252';g.fillRect(0,0,16,16);for(let y=0;y<4;y++)for(let x=0;x<4;x++){const ox=(y%2)*2;g.fillStyle=['#b4a68e','#a8997e','#bfb29a','#9c8e76'][Math.floor(r()*4)];g.fillRect(x*4+ox-1,y*4,3,3);g.fillStyle='#d4c8b0';g.fillRect(x*4+ox-1,y*4,3,1)}},46);
   tileSet('townwall',(g,v,r)=>{g.fillStyle='#4a4450';g.fillRect(0,0,16,16);for(let y=0;y<16;y+=4){const o=(y/4)%2?4:0;for(let x=-4+o;x<16;x+=8){g.fillStyle=['#7a7284','#6e6678','#867e90'][Math.floor(r()*3)];g.fillRect(x+1,y+1,7,3);g.fillStyle='#9a92a4';g.fillRect(x+1,y+1,7,1)}}},47)};
 
-/* ================= KOCHI: Marine Drive, a monsoon evening ================= */
-function buildKochi(){const W=64,H=32,m=newMap('kochi','Marine Drive, Kochi',W,H,{seed:91,ground:'grass',floor:'walk',music:'title',region:'kochi',sub:'Kerala · a monsoon evening'});
+/* ================= KOCHI: Kakkanad, outside Infopark, a monsoon evening ================= */
+TL.MEDIAN=30;TNAME[30]='median';MMCOL[30]='#8a8a80';SOLID[30]=1;
+const _genTilesKk=genTiles;genTiles=function(){_genTilesKk();tileSet('median',(g,v,r)=>{g.fillStyle='#34343c';g.fillRect(0,0,16,16);g.fillStyle='#b8b4a8';g.fillRect(0,3,16,10);for(let x=0;x<16;x+=4){g.fillStyle=(x/4+v)%2?'#e8c830':'#1a1a1a';g.fillRect(x,3,4,2);g.fillRect(x,11,4,2)}g.fillStyle='#3a6a32';g.fillRect(1,6,14,4);g.fillStyle='#5a9a44';for(let i=0;i<4;i++)g.fillRect(2+Math.floor(r()*11),5+Math.floor(r()*3),2,2)},48)};
+function buildKochi(){const W=64,H=34,m=newMap('kochi','Kakkanad, Kochi',W,H,{seed:91,ground:'grass',floor:'walk',music:'title',region:'kochi',sub:'Kerala · a monsoon evening outside Infopark'});
   const R=(x0,y0,x1,y1,t)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)m.set(x,y,t)};
-  R(0,0,W-1,H-1,TL.GRASS);R(0,0,W-1,6,TL.WATER);R(0,7,W-1,7,TL.SEAWALL);R(0,8,W-1,11,TL.WALK);R(0,13,W-1,13,TL.WALK);R(0,14,W-1,18,TL.ROAD);R(0,16,W-1,16,TL.ROADL);R(0,19,W-1,19,TL.WALK);R(53,14,55,18,TL.ZEBRA);
-  R(57,1,58,7,TL.BRIDGE);R(0,8,0,H-1,TL.TREE);R(W-1,8,W-1,H-1,TL.TREE);R(0,H-1,W-1,H-1,TL.TREE);R(1,20,62,20,TL.PATH);
-  const house=(tx,ty,w,h,o)=>{R(tx,ty,tx+w-1,ty+h-1,TL.WALL);const hs=Object.assign({tx,ty,w,h,chim:false},o);hs.door={x:tx+Math.floor(w/2),y:ty+h-1};m.houses.push(hs);R(hs.door.x,ty+h,hs.door.x,20,TL.PATH);return hs};
-  house(2,22,7,5,{name:'Sea Breeze Flats',roof:'#8a8a90',wall:'#ece6d4',id:'k_flats'});
-  R(10,25,19,29,TL.SOIL);house(11,21,8,4,{name:'Kalari Sangham',roof:'#a8482a',wall:'#d8b890',id:'k_kalari'});
-  house(22,21,6,4,{name:'Sree Krishna Bakery',roof:'#b5522e',wall:'#f2d8a0',sign:'coin',id:'k_bakery'});
-  house(30,21,6,4,{name:'Marine Medicals',roof:'#3a7a8a',wall:'#d8eef0',sign:'potion',id:'k_med'});
-  house(38,21,7,4,{name:'Hotel Annapoorna',roof:'#b5522e',wall:'#f8e8c0',id:'k_hotel'});
-  house(56,21,7,5,{name:'Boat Jetty Office',roof:'#2a5a8a',wall:'#e0e8f0',id:'k_jetty'});
-  house(22,27,5,4,{name:'Old tharavadu house',roof:'#8a3a22',wall:'#e8d8b8',id:'k_house1'});house(30,27,6,4,{name:'Kerala Handloom Textiles',roof:'#7a2a3a',wall:'#f0e4cc',id:'k_tex'});
-  for(let x=2;x<W-2;x+=6)addObj(m,'palm',x,12,{solid:true,text:['A coconut palm leaning toward the backwater. Someone has nailed a strip of tin around the trunk to keep the rats from the coconuts.']});for(let x=5;x<W-2;x+=8){if(m.objs.some(o=>o.tx===x&&o.ty===12))continue;addObj(m,'klamp',x,12,{solid:true,light:'torch',text:['A sodium streetlamp, buzzing. Moths and rain spin in its orange light.']})}
-  for(const x of[9,33,45])addObj(m,'bench',x,10,{solid:true,text:['A wet concrete bench facing the backwater. On clear nights couples sit here until the police whistle them home.']});
-  for(const x of[12,26,40])addObj(m,'cnet',x,7,{solid:true,text:['A Chinese fishing net: a great wooden cantilever balanced with stones on ropes. Fishermen lower it into the water and lift it out by walking along the beam.','Traders from the court of Kublai Khan are said to have brought them to Kochi centuries ago. Tonight the net hangs still in the rain.']});
-  addObj(m,'teastall',20,12,{solid:true,light:'fire'});addObj(m,'busstop',49,20,{solid:true,text:['JETTY BUS STOP. The timetable has been pasted over by a film poster. The last bus home leaves at 7:45.']});
-  for(const x of[43,46])addObj(m,'auto',x,20,{solid:true});addObj(m,'kdog',35,19,{});
-  addObj(m,'sign',56,8,{solid:true,text:['BOAT JETTY. Ferries to Vypin, Fort Kochi and Bolgatty. Last service 7:15 PM.','You missed it by five minutes. Of course you did.']});
-  for(const[x,y]of[[54,3],[61,4],[48,2]])addObj(m,'boat',x,y,{hide:()=>true});addObj(m,'tlight',52,13,{solid:true,hide:()=>true});
-  addObj(m,'nilavilakku',12,26,{solid:true,light:'fire',text:['A tall brass nilavilakku, its wicks burning on the edge of the kalari ground. Gurukkal lights it before every class.']});addObj(m,'staffrack',18,25,{solid:true,text:['A rack of bamboo staves, short sticks and wooden practice daggers, oiled and well used.']});
-  for(let i=0;i<8;i++){const x=3+Math.floor(hash2(i,1,91)*58),y=pick([9,10,15,17,19]);addObj(m,'puddle',x,y,{hide:()=>true})}
+  R(0,0,W-1,H-1,TL.GRASS);R(0,0,W-1,0,TL.TREE);R(0,8,W-1,8,TL.WALK);R(0,9,W-1,13,TL.ROAD);R(0,11,W-1,11,TL.MEDIAN);R(46,9,48,13,TL.ZEBRA);R(0,14,W-1,14,TL.WALK);
+  R(0,15,W-1,15,TL.SEAWALL);R(8,15,11,15,TL.WALK);R(0,16,W-1,H-1,TL.PLAZA);R(0,H-1,W-1,H-1,TL.TREE);
+  for(const[x0,y0,x1,y1]of[[1,17,6,19],[14,17,20,18],[30,30,48,32],[52,31,61,32],[36,17,46,19]])R(x0,y0,x1,y1,TL.GRASS);
+  const house=(tx,ty,w,h,o)=>{R(tx,ty,tx+w-1,ty+h-1,TL.WALL);const hs=Object.assign({tx,ty,w,h,chim:false},o);hs.door={x:tx+Math.floor(w/2),y:ty+h-1};m.houses.push(hs);if(ty<8)R(hs.door.x,ty+h,hs.door.x,7,TL.PATH);return hs};
+  house(1,2,6,5,{name:"Rasheed's Juice Point",roof:'#3a9a5a',wall:'#f4f0d8',sign:'potion',id:'k_juice'});
+  house(9,1,8,4,{name:'Kalari Sangham',roof:'#a8482a',wall:'#d8b890',id:'k_kalari'});R(9,5,16,7,TL.SOIL);
+  house(19,2,6,5,{name:'Sree Krishna Bakery',roof:'#b5522e',wall:'#f2d8a0',sign:'coin',id:'k_bakery'});
+  house(26,2,6,5,{name:'Kakkanad Medicals',roof:'#3a7a8a',wall:'#d8eef0',sign:'potion',id:'k_med'});
+  house(33,1,8,6,{name:'Green Valley Apartments',roof:'#8a8a90',wall:'#ece6d4',id:'k_flats'});
+  house(43,2,7,5,{name:'Hotel Annapoorna',roof:'#b5522e',wall:'#f8e8c0',id:'k_hotel'});
+  house(51,2,6,5,{name:'Smart Mobiles',roof:'#2a5aa8',wall:'#e8eef8',sign:'coin',id:'k_mobile'});
+  house(58,2,5,5,{name:'Kerala Handloom',roof:'#7a2a3a',wall:'#f0e4cc',id:'k_tex'});
+  house(1,21,12,9,{name:'Infopark · Tower 1',office:true,id:'k_t1'});house(16,20,14,10,{name:'Infopark · Tower 2',office:true,id:'k_t2'});house(34,22,12,8,{name:'Infopark · Tower 3',office:true,id:'k_t3'});house(50,20,13,10,{name:'Infopark · Tower 4',office:true,id:'k_t4'});
+  for(const x of[1,19,25,32,41,57,62])addObj(m,'palm',x,7,{solid:true,text:['A coconut palm dripping onto the footpath. Someone has nailed a strip of tin around the trunk to keep the rats from the coconuts.']});
+  for(const x of[6,24,31,35,43,51,59])addObj(m,'klamp',x,7,{solid:true,light:'torch',text:['A sodium streetlamp, buzzing. Moths and rain spin in its orange light.']});
+  for(const x of[3,24,44,58])addObj(m,'palm',x,17,{solid:true,text:['A palm planted in the Infopark lawn, trimmed so neatly it looks like a drawing of a palm.']});
+  for(const x of[5,17,29,40,58])addObj(m,'mpillar',x,11,{solid:true,text:['A metro pillar rising out of the median: the new line to Infopark, still under construction.','A banner on the barricade apologises for the inconvenience. It has been apologising for two years.']});
+  addObj(m,'teastall',17,7,{solid:true,light:'fire'});addObj(m,'busstop',49,7,{solid:true,text:['INFOPARK BUS STOP. The timetable has been pasted over by a film poster. The last bus to Vyttila leaves at 7:45.']});
+  for(const x of[38,39])addObj(m,'auto',x,7,{solid:true});addObj(m,'kdog',27,8,{});
+  addObj(m,'booth',12,16,{solid:true,light:'torch',text:['The security booth at the Infopark gate. A radio inside is playing an old Yesudas song.']});addObj(m,'sign',14,16,{solid:true,text:['INFOPARK KOCHI · PHASE 1. Please display your ID card.','Your lanyard is still around your neck. Habit.']});
+  addObj(m,'nilavilakku',10,5,{solid:true,light:'fire',text:['A tall brass nilavilakku, its wicks burning on the edge of the kalari ground. Gurukkal lights it before every class.']});addObj(m,'staffrack',16,5,{solid:true,text:['A rack of bamboo staves, short sticks and wooden practice daggers, oiled and well used.']});
+  addObj(m,'tlight',45,8,{solid:true,hide:()=>true});for(let i=0;i<9;i++){const x=2+Math.floor(hash2(i,1,91)*60),y=pick([8,9,13,14,17]);if(m.get(x,y)!==TL.WALL)addObj(m,'puddle',x,y,{hide:()=>true})}
   m.exits=[];return m}
 REGIONS.push({id:'kochi',name:'Kochi',x:.02,y:.95,open:false});
 const KOCHI_NPC={
-  chandran:{name:'Chandran',title:'Tea stall owner',map:'kochi',day:[20.5,13.7],night:[20.5,13.7],pal:{skin:'#8a5a3a',hair:'#d8d4cc',top:'#e8e4d8',top2:'#c8c4b8',legs:'#f4f0e4',boots:'#5a3a24',robe:true,beard:'#d8d4cc'},face:{skin:'#8a5a3a',hair:'#d8d4cc',hs:'short',eye:'#2a1a10',outfit:'#e8e4d8',trim:'#c8a050'}},
-  unni:{name:'Gurukkal Unni',title:'Kalarippayattu master',map:'kochi',day:[14.5,26.7],night:[14.5,26.7],pal:{skin:'#7a4a2e',hair:'#1a1410',top:'#7a4a2e',top2:'#6a3a22',legs:'#c8302a',boots:'#7a4a2e',sash:'#c8302a'},face:{skin:'#7a4a2e',hair:'#1a1410',hs:'short',eye:'#1a0e08',outfit:'#c8302a',trim:'#e0b84a'}},
-  kannan:{name:'Kannan',title:'Kalari student',map:'kochi',day:[16.6,27.7],night:[16.6,27.7],scale:.9,pal:{skin:'#8a5634',hair:'#1a1410',top:'#8a5634',top2:'#7a4a2a',legs:'#c8302a',boots:'#8a5634'},face:{skin:'#8a5634',hair:'#1a1410',hs:'messy',eye:'#1a0e08',outfit:'#c8302a',trim:'#c8302a'}},
-  joseph:{name:'Joseph chettan',title:'Net fisherman',map:'kochi',day:[27.6,8.8],night:[27.6,8.8],pal:{skin:'#6a4028',hair:'#3a3430',top:'#3a5a8a',top2:'#2a4068',legs:'#e8e0c8',boots:'#6a4028',robe:true,beard:'#5a5048'},face:{skin:'#6a4028',hair:'#3a3430',hs:'short',eye:'#1a0e08',outfit:'#3a5a8a',trim:'#2a4068'}},
-  anu:{name:'Anu',title:'College student',map:'kochi',day:[34.2,9.8],night:[34.2,9.8],pal:{skin:'#c08a64',hair:'#1a1210',top:'#d84a7a',top2:'#a83a5a',legs:'#2a2a40',boots:'#3a2a20',fem:true},face:{skin:'#c08a64',hair:'#1a1210',hs:'long',eye:'#2a1a10',outfit:'#d84a7a',trim:'#f0d8e0',fem:true}},
-  babu:{name:'Babu',title:'Auto-rickshaw driver',map:'kochi',day:[44.5,19.8],night:[44.5,19.8],pal:{skin:'#7a4a2e',hair:'#1a1410',top:'#e8d8a8',top2:'#c8b888',legs:'#f0ecdc',boots:'#4a3020',robe:true,beard:'#1a1410'},face:{skin:'#7a4a2e',hair:'#1a1410',hs:'short',eye:'#1a0e08',outfit:'#e8d8a8',trim:'#8a7a50'}},
-  lakshmi:{name:'Lakshmi amma',title:'Waiting for the bus',map:'kochi',day:[48.3,19.8],night:[48.3,19.8],scale:.92,pal:{skin:'#9a6a48',hair:'#d8d4d0',top:'#e8e0c8',top2:'#d8c890',legs:'#e8e0c8',boots:'#6a4a30',robe:true,fem:true,scarf:'#d8b040'},face:{skin:'#9a6a48',hair:'#d8d4d0',hs:'long',eye:'#2a1a10',outfit:'#e8e0c8',trim:'#d8b040',fem:true}},
-  thomas:{name:'Thomas',title:'A tired father',map:'kochi',day:[56.4,12.7],night:[56.4,12.7],pal:{skin:'#a8704a',hair:'#2a2420',top:'#5a6a7a',top2:'#3a4a5a',legs:'#2a2a34',boots:'#2a1a14'},face:{skin:'#a8704a',hair:'#2a2420',hs:'short',eye:'#2a1a10',outfit:'#5a6a7a',trim:'#3a4a5a'}},
-  meenu:{name:'Meenu',title:'Six years old',map:'kochi',day:[55.2,12.8],night:[55.2,12.8],scale:.62,pal:{skin:'#b07a54',hair:'#1a1210',top:'#ffd84a',top2:'#e8b830',legs:'#ffd84a',boots:'#e84a5a',robe:true,fem:true},face:{skin:'#b07a54',hair:'#1a1210',hs:'twin',eye:'#2a1a10',outfit:'#ffd84a',trim:'#e84a5a',fem:true}}};
+  chandran:{name:'Chandran',title:'Tea stall owner',map:'kochi',day:[17.5,8.7],night:[17.5,8.7],pal:{skin:'#8a5a3a',hair:'#d8d4cc',top:'#e8e4d8',top2:'#c8c4b8',legs:'#f4f0e4',boots:'#5a3a24',robe:true,beard:'#d8d4cc'},face:{skin:'#8a5a3a',hair:'#d8d4cc',hs:'short',eye:'#2a1a10',outfit:'#e8e4d8',trim:'#c8a050'}},
+  unni:{name:'Gurukkal Unni',title:'Kalarippayattu master',map:'kochi',day:[12.4,6.6],night:[12.4,6.6],pal:{skin:'#7a4a2e',hair:'#1a1410',top:'#7a4a2e',top2:'#6a3a22',legs:'#c8302a',boots:'#7a4a2e',sash:'#c8302a'},face:{skin:'#7a4a2e',hair:'#1a1410',hs:'short',eye:'#1a0e08',outfit:'#c8302a',trim:'#e0b84a'}},
+  kannan:{name:'Kannan',title:'Kalari student',map:'kochi',day:[14.8,6.8],night:[14.8,6.8],scale:.9,pal:{skin:'#8a5634',hair:'#1a1410',top:'#8a5634',top2:'#7a4a2a',legs:'#c8302a',boots:'#8a5634'},face:{skin:'#8a5634',hair:'#1a1410',hs:'messy',eye:'#1a0e08',outfit:'#c8302a',trim:'#c8302a'}},
+  rasheed:{name:'Rasheed',title:'Juice shop owner',map:'kochi',day:[5.6,8.7],night:[5.6,8.7],pal:{skin:'#9a6a44',hair:'#1a1410',top:'#3a9a5a',top2:'#2a7a44',legs:'#f0ecdc',boots:'#4a3020',robe:true,beard:'#2a2018'},face:{skin:'#9a6a44',hair:'#1a1410',hs:'short',eye:'#1a0e08',outfit:'#3a9a5a',trim:'#f0ecdc'}},
+  mani:{name:'Mani chettan',title:'Infopark security',map:'kochi',day:[13.4,17.4],night:[13.4,17.4],pal:{skin:'#7a4a2e',hair:'#2a2420',top:'#5a6a8a',top2:'#3a4a6a',legs:'#2a2a3a',boots:'#1a1a1a',beard:'#2a2420'},face:{skin:'#7a4a2e',hair:'#2a2420',hs:'short',eye:'#1a0e08',outfit:'#5a6a8a',trim:'#3a4a6a'}},
+  anu:{name:'Anu',title:'College student',map:'kochi',day:[30.2,8.8],night:[30.2,8.8],pal:{skin:'#c08a64',hair:'#1a1210',top:'#d84a7a',top2:'#a83a5a',legs:'#2a2a40',boots:'#3a2a20',fem:true},face:{skin:'#c08a64',hair:'#1a1210',hs:'long',eye:'#2a1a10',outfit:'#d84a7a',trim:'#f0d8e0',fem:true}},
+  babu:{name:'Babu',title:'Auto-rickshaw driver',map:'kochi',day:[40.4,8.7],night:[40.4,8.7],pal:{skin:'#7a4a2e',hair:'#1a1410',top:'#e8d8a8',top2:'#c8b888',legs:'#f0ecdc',boots:'#4a3020',robe:true,beard:'#1a1410'},face:{skin:'#7a4a2e',hair:'#1a1410',hs:'short',eye:'#1a0e08',outfit:'#e8d8a8',trim:'#8a7a50'}},
+  lakshmi:{name:'Auntie Lakshmi',title:'Waiting for the bus',map:'kochi',day:[50.8,8.5],night:[50.8,8.5],scale:.92,pal:{skin:'#9a6a48',hair:'#d8d4d0',top:'#e8e0c8',top2:'#d8c890',legs:'#e8e0c8',boots:'#6a4a30',robe:true,fem:true,scarf:'#d8b040'},face:{skin:'#9a6a48',hair:'#d8d4d0',hs:'long',eye:'#2a1a10',outfit:'#e8e0c8',trim:'#d8b040',fem:true}},
+  thomas:{name:'Thomas',title:'A tired father',map:'kochi',day:[49.8,8.7],night:[49.8,8.7],pal:{skin:'#a8704a',hair:'#2a2420',top:'#5a6a7a',top2:'#3a4a5a',legs:'#2a2a34',boots:'#2a1a14'},face:{skin:'#a8704a',hair:'#2a2420',hs:'short',eye:'#2a1a10',outfit:'#5a6a7a',trim:'#3a4a5a'}},
+  meenu:{name:'Meenu',title:'Six years old',map:'kochi',day:[48.7,8.8],night:[48.7,8.8],scale:.62,pal:{skin:'#b07a54',hair:'#1a1210',top:'#ffd84a',top2:'#e8b830',legs:'#ffd84a',boots:'#e84a5a',robe:true,fem:true},face:{skin:'#b07a54',hair:'#1a1210',hs:'twin',eye:'#2a1a10',outfit:'#ffd84a',trim:'#e84a5a',fem:true}}};
 Object.assign(NPCDEF,KOCHI_NPC);for(const k in KOCHI_NPC)FACES[k]=Object.assign({},FACES.maren||{},KOCHI_NPC[k].face);
 const _buildWorldK=buildWorld;buildWorld=function(){const stash={};for(const k in NPCDEF)if(!['eldoria','woods','caverns'].includes(NPCDEF[k].map)){stash[k]=NPCDEF[k];delete NPCDEF[k]}try{_buildWorldK()}finally{Object.assign(NPCDEF,stash)}G.maps.kochi=buildKochi();for(const h of G.maps.kochi.houses)genHouse(h)};
 /* Kochi objects */
@@ -4603,17 +4628,19 @@ NEWOBJ.boat=(g,o,t)=>{const x=Math.round(o.x),y=Math.round(o.y+Math.sin(t*1.2+o.
 NEWOBJ.tlight=(g,o,t)=>{const x=Math.round(o.x),y=Math.round(o.y);g.fillStyle='#2a2a30';g.fillRect(x-1,y-30,2,30);g.fillRect(x-3,y-38,6,12);const ph=Math.floor(t/4)%3;g.fillStyle=ph===0?'#ff4a3a':'#4a1a14';g.fillRect(x-1,y-37,2,2);g.fillStyle=ph===1?'#ffc83a':'#4a3a14';g.fillRect(x-1,y-33,2,2);g.fillStyle=ph===2?'#3aff6a':'#143a1a';g.fillRect(x-1,y-29,2,2)};
 NEWOBJ.nilavilakku=(g,o,t)=>{const x=Math.round(o.x),y=Math.round(o.y);g.fillStyle='#c8962a';g.fillRect(x-1,y-22,2,20);g.fillRect(x-4,y-3,8,3);g.fillRect(x-5,y-23,10,2);g.fillStyle='#e8c050';g.fillRect(x-1,y-26,2,3);for(let i=-1;i<=1;i++){g.fillStyle=Math.sin(t*12+i)>0?'#ffe07a':'#ff9a3a';g.fillRect(x+i*4-1,y-27-Math.abs(Math.sin(t*9+i)),2,3)}};
 NEWOBJ.staffrack=(g,o)=>{const x=Math.round(o.x),y=Math.round(o.y);g.fillStyle='#5a3a22';g.fillRect(x-7,y-4,14,2);g.fillRect(x-7,y-14,14,2);for(let i=0;i<5;i++){g.fillStyle=i%2?'#c8a868':'#a8884a';g.fillRect(x-6+i*3,y-22,1,20)}};
+NEWOBJ.mpillar=(g,o)=>{const x=Math.round(o.x),y=Math.round(o.y);g.fillStyle='#8a8a84';g.fillRect(x-4,y-64,8,62);g.fillStyle='#a8a8a2';g.fillRect(x-4,y-64,2,62);g.fillStyle='#6a6a66';g.fillRect(x+2,y-64,2,62);g.fillStyle='#9a9a94';g.fillRect(x-11,y-70,22,7);g.fillStyle='#7a7a74';g.fillRect(x-11,y-64,22,1);g.fillStyle='#3a8a3a';g.fillRect(x-9,y-10,18,8);g.fillStyle='#f0f0e8';g.fillRect(x-7,y-8,14,2)};
+NEWOBJ.booth=(g,o,t,nf)=>{const x=Math.round(o.x),y=Math.round(o.y);g.fillStyle='#d8d8d0';g.fillRect(x-7,y-18,14,18);g.fillStyle='#3a5a8a';g.fillRect(x-8,y-20,16,3);g.fillStyle=nf>.2?'#ffe7a8':'#9ab8d8';g.fillRect(x-5,y-14,10,6);g.fillStyle='#e8c830';g.fillRect(x+7,y-8,10,1);g.fillStyle='#1a1a1a';g.fillRect(x+9,y-8,2,1);g.fillRect(x+13,y-8,2,1)};
 NEWOBJ.puddle=(g,o,t,nf)=>{g.save();g.globalAlpha=.35+nf*.25;g.fillStyle='#5a6a8a';g.beginPath();g.ellipse(o.x,o.y-5,7,2.2,0,0,TAU);g.fill();g.globalAlpha=.4*nf;g.fillStyle='#ffd27a';g.fillRect(o.x-2,o.y-6,3,1);g.globalAlpha=.5;g.strokeStyle='#a8c0e0';g.lineWidth=.5;const r=(t*3+o.tx)%2;g.beginPath();g.ellipse(o.x+2,o.y-5,r*2,r*.7,0,0,TAU);g.stroke();g.restore()};
 const _drawObjN=drawObj;drawObj=function(g,o,t,nf){const f=NEWOBJ[o.kind];if(f){f(g,o,t,nf);return}_drawObjN(g,o,t,nf)};
-const _objLabelN=objLabel;objLabel=function(o){return{bench:'Sit for a moment',cnet:'Look at the fishing net',teastall:'Order a chai',busstop:'Read the timetable',auto:'Look at the auto',kdog:'Pet the dog',nilavilakku:'Look at the lamp',staffrack:'Look at the rack'}[o.kind]||_objLabelN(o)};
-const _interactN=interactObj;interactObj=function(o){if(o.kind==='teastall')return talkTo(G.npcs.find(n=>n.id==='chandran')||{id:'chandran',name:'Chandran',d:NPCDEF.chandran});
+const _objLabelN=objLabel;objLabel=function(o){return{mpillar:'Look at the pillar',booth:'Look at the booth',bench:'Sit for a moment',cnet:'Look at the fishing net',teastall:'Order a chai',busstop:'Read the timetable',auto:'Look at the auto',kdog:'Pet the dog',nilavilakku:'Look at the lamp',staffrack:'Look at the rack'}[o.kind]||_objLabelN(o)};
+const _interactN=interactObj;interactObj=function(o){if(o.kind==='booth')return say({name:'Security booth',por:'sun'},o.text);if(o.kind==='teastall')return talkTo(G.npcs.find(n=>n.id==='chandran')||{id:'chandran',name:'Chandran',d:NPCDEF.chandran});
   if(o.kind==='auto')return say({name:'',por:'sun'},['A black-and-yellow auto-rickshaw, its meter wrapped in plastic against the rain. A sticker on the back says "God is great, horn please".']);
-  if(o.kind==='kdog'){AudioSys.play('ui');return say({name:'',por:'sun'},['A wet stray curled up under the bakery awning. It thumps its tail twice without opening its eyes.','You scratch behind its ears. It sighs like an old man.'])}
+  if(o.kind==='kdog'){AudioSys.play('ui');return say({name:'',por:'sun'},['A wet stray curled up outside the medical shop. It thumps its tail twice without opening its eyes.','You scratch behind its ears. It sighs like an old man.'])}
   return _interactN(o)};
 /* Kochi traffic and rain */
 G.ktraf=[];
 const _updK=update;update=function(dt){const m=G.map;if(m&&m.id==='kochi'&&G.state==='play'){G.time=19.5*60;const W=G.weather;W.tr=.8;W.rain=Math.max(W.rain,.6);W.fog=.05;W.next=99;
-    if(!G.cut&&Math.random()<dt*.45){const dir=Math.random()<.5?1:-1,lane=dir>0?pick([17.5,18.5]):pick([14.6,15.6]);G.ktraf.push({x:dir>0?-30:m.w*T+30,y:lane*T,dir,v:rnd(70,120),kind:pick(['auto','auto','car','bike','car','bus']),col:pick(['#c83a2a','#e8e8e8','#2a4a8a','#3a3a40','#d8a030'])})}
+    if(!G.cut&&Math.random()<dt*.45){const dir=Math.random()<.5?1:-1,lane=dir>0?pick([9.8,10.8]):pick([12.7,13.7]);G.ktraf.push({x:dir>0?-30:m.w*T+30,y:lane*T,dir,v:rnd(70,120),kind:pick(['auto','auto','car','bike','car','bus']),col:pick(['#c83a2a','#e8e8e8','#2a4a8a','#3a3a40','#d8a030'])})}
     const P=G.player;for(const c of G.ktraf){let v=c.v;if(P&&Math.abs(P.y-c.y)<10&&(P.x-c.x)*c.dir>0&&(P.x-c.x)*c.dir<46){v=0;c.honk=(c.honk||0)-dt;if(c.honk<=0){c.honk=1.4;AudioSys.play('error');if(Math.random()<.5)G.num(c.x,c.y-20,'POM POM','#ffe07a')}}c.x+=c.dir*v*dt}
     G.ktraf=G.ktraf.filter(c=>c.x>-60&&c.x<m.w*T+60);kochiTick(dt)}else G.ktraf=[];
   _updK(dt)};
@@ -4629,16 +4656,17 @@ const KTALK={
   chandran:()=>S2('chandran',[['happy','Aah, you again! Infopark people always come at this hour, faces like wet newspaper. Chaya venam? Tea?'],['n','Strong, with extra sugar. I know.']],[{t:'One chaya, please. (10 rupees)',f:()=>{G.kochi.chai=true;AudioSys.play('heal');say(who('chandran'),['[happy]He pulls the tea from a height, a long brown ribbon between two steel tumblers, foam rising.','It is too sweet and too hot, and exactly right. For a moment the rain does not matter.','[n]Go home safe, mone. The buses drive like they are late for their own weddings tonight.'])}},{t:'Just sheltering from the rain.',f:()=>say(who('chandran'),['[happy]Shelter, shelter. Rain is free, the tarpaulin is free. Only the tea costs money.'])}]),
   unni:()=>G.flags.kalari?say(who('unni'),['[happy]Good. Your stance is better already. Practise every morning. The body forgets faster than the mind.']):S2('unni',[['n','Kalari is closed for tonight, but the lamp is still burning. You have been watching us through the fence for months.'],['happy','Come. One small lesson. When I clap, you strike. Not before. Not after. Ready?']],[{t:'Ready, Gurukkal.',f:()=>kalariDrill()},{t:'Another night.',f:()=>say(who('unni'),['[n]Another night, then. The ground will wait. It always does.'])}]),
   kannan:()=>say(who('kannan'),['[happy]Gurukkal says I kick like a goat. A strong goat, I think.','The secret is the eyes. Watch the hips, not the hands.']),
-  joseph:()=>say(who('joseph'),['[n]No catch today. The sea is angry in Karkidakam, so we let her be angry.','[happy]My grandfather worked this same net. Wood changes, rope changes, the net stays.','When you walk home, go by the jetty crossing. The lights there actually work. Sometimes.']),
-  anu:()=>say(who('anu'),['[n]...yes Amma, I am at the bus stop. No Amma, I have an umbrella. Yes, I ate.','[happy]She covers the phone. "Every mother in Kerala has the same three questions." She goes back to answering them.']),
-  babu:()=>S2('babu',[['n','Where to, saar? Kaloor? Kadavanthra? In this rain, meter illa. Fixed rate.']],[{t:'How much to Vyttila?',f:()=>say(who('babu'),['[happy]For you, three hundred. For a tourist, six hundred. For my brother-in-law, I do not go.','You decide to take the bus. Babu shrugs like a man who expected exactly this.'])},{t:'I will take the bus.',f:()=>say(who('babu'),['[n]Bus, bus. The 7:45 private bus drives like the driver owes money to the road. Stand back from the edge.'])}]),
+  rasheed:()=>say(who('rasheed'),['[happy]Sharjah shake? Lime soda? ...In this rain, nobody wants juice. I am thinking of selling umbrellas instead.','[n]You office people should eat something real. Go home, eat rice.']),
+  mani:()=>say(who('mani'),['[happy]Late again, saar? The company cab left at seven sharp. I told the driver to wait. He said the cab waits for nobody.','[n]Take the bus from the stop across the road, by Annapoorna. Use the zebra crossing. These buses do not stop for anyone.']),
+  anu:()=>say(who('anu'),['[n]...yes Mom, I am at the bus stop. No Mom, I have an umbrella. Yes, I ate.','[happy]She covers the phone. "Every mother in Kerala has the same three questions." She goes back to answering them.']),
+  babu:()=>S2('babu',[['n','Where to, saar? Kaloor? Kadavanthra? In this rain, meter illa. Fixed rate.']],[{t:'How much to Vyttila?',f:()=>say(who('babu'),['[happy]For you, three hundred. For a tourist, six hundred. For my brother-in-law, I do not go.','You decide to take the bus. Babu shrugs like a man who expected exactly this.'])},{t:'I will take the bus.',f:()=>say(who('babu'),['[n]Bus, bus. The 7:45 private bus to Vyttila drives like the driver owes money to the road. Stand back from the edge.'])}]),
   lakshmi:()=>say(who('lakshmi'),['[happy]Mole, come stand under the shelter. You will catch a cold and then who will your mother scold?','[n]The last bus comes at 7:45. Or 7:55. Or when God wills it.']),
-  thomas:()=>say(who('thomas'),['[n]She would not leave the boats. Six years old and already she wants to be a ferry captain.','Meenu, hold my hand. Meenu. Meenu, the umbrella stays closed in this wind!']),
-  meenu:()=>say(who('meenu'),['[happy]Look! My umbrella has ducks on it! Appa bought it in Lulu!','[n]When I grow up I will drive the big boat. Then Appa does not have to wait for the ferry.'])};
+  thomas:()=>say(who('thomas'),['[n]Every plane that goes over, she has to wave at it. Six years old and already she wants to be a pilot.','Meenu, hold my hand. Meenu. Meenu, the umbrella stays closed in this wind!']),
+  meenu:()=>say(who('meenu'),['[happy]Look! My umbrella has ducks on it! Dad bought it for my birthday!','[n]When I grow up I will fly the big planes from the airport. Then Dad does not have to wait for buses.'])};
 function who(id){const d=NPCDEF[id];return{name:d.name,title:d.title,face:FACES[id]}}
 function S2(id,lines,choices){Dlg.open(who(id),lines.map(([e,t])=>'['+e+']'+t),choices.map(c=>({t:c.t,f:c.f})),null)}
 const _talkToK=talkTo;talkTo=function(n){if(KTALK[n.id]){G.talkNpc=n;return KTALK[n.id]()}return _talkToK(n)};
-QUESTS.kochi_night={name:'Monsoon Night',type:'Main',giver:'Amma',stages:['Walk east along Marine Drive to the bus stop by the boat jetty. Amma is waiting up.'],reward:'Home'};
+QUESTS.kochi_night={name:'Monsoon Night',type:'Main',giver:'Mom',stages:['Cross the road at the zebra crossing and catch the bus by Hotel Annapoorna. Mom is waiting up.'],reward:'Home'};
 /* the kalari drill: wait for the clap, then strike */
 const kdEl=document.createElement('div');kdEl.id='kalari';kdEl.hidden=true;document.body.appendChild(kdEl);
 function kalariDrill(){const K={round:0,hits:0,state:'wait',t:0,go:rnd(1,2.4)};G.ui='kalari';kdEl.hidden=false;let last=performance.now();
@@ -4654,17 +4682,17 @@ function kalariDrill(){const K={round:0,hits:0,state:'wait',t:0,go:rnd(1,2.4)};G
     else if(K.state==='done'&&K.t>1){K.round++;if(K.round>=3){finish();return}K.state='wait';K.t=0;K.go=rnd(.9,2.6);draw('Watch his hands...')}},30)}
 /* ================= THE INCIDENT ================= */
 const qteEl=document.createElement('div');qteEl.id='qte';qteEl.hidden=true;document.body.appendChild(qteEl);
-function kochiTick(dt){const P=G.player;if(!P||G.cut||G.kochi.done)return;if(P.x>49.5*T&&P.y>7*T&&P.y<21*T)startIncident()}
+function kochiTick(dt){const P=G.player;if(!P||G.cut||G.kochi.done)return;if(P.x>43*T&&P.x<55*T&&P.y<15*T)startIncident()}
 function startIncident(){const P=G.player,m=G.npcs.find(n=>n.id==='meenu'),th=G.npcs.find(n=>n.id==='thomas');G.kochi.done=true;if(!m||!th)return;
   G.ktraf=[];const C=G.cut={t:0,phase:'gust',umb:{x:m.x+4,y:m.y-8,a:0},girl:m,dad:th,saved:null,player:(p,dt)=>{p.moving=false}};AudioSys.play('dodge');document.body.classList.add('cine');
   toast('A gust of wind tears the umbrella out of Meenu\'s hands.')}
 const _updInc=update;update=function(dt){const sc=G.slowT>0?(G.slowScale||.3):1,rdt=dt;_updInc(dt);const C=G.cut;if(!C||G.state!=='play')return;dt*=sc;C.t+=dt;const P=G.player,m=C.girl,u=C.umb,bx=C.bus,th=C.dad;
-  if(C.phase==='gust'){u.x=lerp(u.x,54.5*T,dt*1.6);u.y=lerp(u.y,16.4*T,dt*1.6);u.a+=dt*8;if(C.t>.6){m.x=lerp(m.x,54.3*T,dt*1.3);m.y=lerp(m.y,16*T,dt*1.3);m.moving=true;m.dir=0;m.walk+=dt*10}
-    if(C.t>2.2){C.phase='bus';C.t=0;C.bus={x:G.map.w*T+40,y:16.6*T,dir:-1,v:150,kind:'bus'};AudioSys.play('roar');G.num(m.x,m.y-26,'!','#ff4a3a',true)}}
-  else if(C.phase==='bus'){bx.x-=bx.v*dt;if(bx.x<m.x+240&&!C.qte){C.qte={t:0};G.slowT=9;G.slowScale=.12;qteOpen()}if(C.qte){C.qte.t+=rdt;qteTick(C.qte.t)}}
-  else if(C.phase==='run'){const tx=m.x,ty=m.y,dx=tx-P.x,dy=ty-P.y,d=Math.hypot(dx,dy);P.moving=true;P.walk+=dt*16;P.setFacing(dx,dy);if(d>6){P.x+=dx/d*260*dt;P.y+=dy/d*260*dt}else{C.phase='shove';C.t=0;G.slowT=1.6;G.slowScale=.25;AudioSys.play('swing3');G.num(P.x,P.y-26,'!!','#ffe07a',true)}bx.x-=bx.v*dt*.5}
-  else if(C.phase==='shove'){m.x=lerp(m.x,55.5*T,Math.min(1,dt*9));m.y=lerp(m.y,13.2*T,Math.min(1,dt*9));m.moving=false;bx.x-=bx.v*dt*(C.t<.35?.3:1);if(bx.x<P.x+30&&C.t>.35)impact()}
-  else if(C.phase==='freeze'){P.moving=false;th.x=lerp(th.x,m.x,dt*3);th.y=lerp(th.y,m.y,dt*3);if(C.t>.5){m.x=lerp(m.x,55.8*T,dt*5);m.y=lerp(m.y,13*T,dt*5)}bx.x-=bx.v*dt;bx.y=lerp(bx.y,P.y-2,dt*1.6);if(bx.x<P.x+30)impact()}};
+  if(C.phase==='gust'){u.x=lerp(u.x,47.3*T,dt*1.6);u.y=lerp(u.y,10.6*T,dt*1.6);u.a+=dt*8;if(C.t>.6){m.x=lerp(m.x,47.5*T,dt*1.3);m.y=lerp(m.y,10.3*T,dt*1.3);m.moving=true;m.dir=0;m.walk+=dt*10}
+    if(C.t>2.2){C.phase='bus';C.t=0;C.bus={x:-60,y:10.4*T,dir:1,v:150,kind:'bus'};AudioSys.play('roar');G.num(m.x,m.y-26,'!','#ff4a3a',true)}}
+  else if(C.phase==='bus'){bx.x+=bx.v*dt;if(bx.x>m.x-240&&!C.qte){C.qte={t:0};G.slowT=9;G.slowScale=.12;qteOpen()}if(C.qte){C.qte.t+=rdt;qteTick(C.qte.t)}}
+  else if(C.phase==='run'){bx.x+=bx.v*dt*.5;const tx=m.x,ty=m.y,dx=tx-P.x,dy=ty-P.y,d=Math.hypot(dx,dy);P.moving=true;P.walk+=dt*16;P.setFacing(dx,dy);if(d>6){P.x+=dx/d*260*dt;P.y+=dy/d*260*dt}else{C.phase='shove';C.t=0;G.slowT=1.6;G.slowScale=.25;AudioSys.play('swing3');G.num(P.x,P.y-26,'!!','#ffe07a',true)}}
+  else if(C.phase==='shove'){m.x=lerp(m.x,48.6*T,Math.min(1,dt*9));m.y=lerp(m.y,8.3*T,Math.min(1,dt*9));m.moving=false;bx.x+=bx.v*dt*(C.t<.35?.3:1);if(bx.x>P.x-30&&C.t>.35)impact()}
+  else if(C.phase==='freeze'){P.moving=false;th.x=lerp(th.x,m.x,dt*3);th.y=lerp(th.y,m.y,dt*3);if(C.t>.5){m.x=lerp(m.x,49.2*T,dt*5);m.y=lerp(m.y,8.2*T,dt*5)}bx.x+=bx.v*dt;bx.y=lerp(bx.y,P.y-2,dt*1.6);if(bx.x>P.x-30)impact()}};
 const _pupdCut=Player.prototype.update;Player.prototype.update=function(dt){if(G.cut){for(const k in this.cds)if(this.cds[k]>0)this.cds[k]-=dt;return}_pupdCut.call(this,dt)};
 const _npcUpdCut=NPC.prototype.update;NPC.prototype.update=function(dt){if(G.cut&&(this===G.cut.girl||this===G.cut.dad))return;_npcUpdCut.call(this,dt)};
 const _sceneNextK=Scene.next;Scene.next=function(){const s=this.steps&&this.steps[this.i];if(s&&s.pre)s.pre();return _sceneNextK.call(this)};
@@ -4697,12 +4725,12 @@ const AU=(e,t,c)=>({n:'Aurelia',ti:'Goddess of the Dawn',f:GODDESS,e,t,c,pre:()=
 function divineScene(){const C=creation,saved=!!(G.kochi&&G.kochi.saved),F=G.flags;F.savedGirl=saved||undefined;DIV.t0=performance.now()/1000;Music.play('title');
   const steps=[()=>{DIV.t0=performance.now()/1000},{bg:'divine',sfx:'cutin',t:'Warmth. Light, everywhere, as if you are lying inside the morning. There is no rain here. There is no road.'},
     AU('happy',`Ah. You are awake. Welcome, ${C.name}.`),
-    saved?AU('happy','The little girl with the duck umbrella is safe. Meenu will grow up to captain a ferry across the backwater, and she will never once be late. You did that.')
+    saved?AU('happy','The little girl with the duck umbrella is safe. Meenu will grow up to fly planes out of Kochi, and she will never once be late. You did that.')
          :AU('sad','You froze. It is all right: almost everyone does. Her father pulled her back in time. The bus swerved... and found you instead.'),
-    AU('sad','Your own story ended on that wet road in Kochi. But endings are where I do my best work. I am Aurelia, goddess of the dawn.'),
+    AU('sad','Your own story ended on that wet road in Kakkanad. But endings are where I do my best work. I am Aurelia, goddess of the dawn.'),
     AU('n','There is a world called Aurel, where my sun is being eaten. Something old and hollow is waking beneath it. I need someone who still moves toward danger.',[
       {t:'Wait. Is this... an isekai?',go:[AU('happy','I have no idea what that word means, but you said it with such hope that I will say yes.')]},
-      {t:'Can I go back? Amma will be waiting up.',go:[AU('sad','No. I am sorry. Tonight I will send your mother a dream: that you are warm, and safe, and finally eating properly.')]},
+      {t:'Can I go back? Mom will be waiting up.',go:[AU('sad','No. I am sorry. Tonight I will send your mom a dream: that you are warm, and safe, and finally eating properly.')]},
       {t:'What is eating your sun?',go:[AU('n','Something hungry. Something old. Let us not talk about it yet.',[{t:'You are avoiding the question.',f:()=>{F.askedEclipse=true},go:[AU('surprised','...Yes. I am.'),AU('sad','It was a god once. Like me. It went hollow, and now it wants the light back. A piece of its darkness will stay with you for asking. Use it well.')]},{t:'All right. Later, then.'}])]},
       {t:'(Say nothing. Just listen to the silence.)',f:()=>{F.fellQuiet=true},go:[{t:'You say nothing. Between her words there is a silence like the space between two worlds, and you listen to it until it listens back.'},AU('surprised','...Oh. You heard that? Most souls never do. Keep it. It will let you walk where others cannot.')]}]),
     AU('happy','Before you go, I will give you gifts. Not one. Several. Choose carefully: a soul can only carry so much.'),
@@ -4718,12 +4746,12 @@ function afterPick(chosen){const top=chosen.map(id=>PWI[id]).sort((a,b)=>b.rar-a
     {bg:'flash',sfx:'level',t:'The light folds around you like a blanket being tucked in.'},{bg:null,wait:700}],()=>{G.openFlags=Object.assign({},G.flags);newGame(C.cls,C.name,G.slot)})}
 /* ================= OPENING FLOW ================= */
 startOpening=function(){AudioSys.init();AudioSys.resume();hideScreens();G.state='cine';Music.play('title');
-  Scene.play('city',[{t:'Kochi, Kerala. 7:30 in the evening. The monsoon has not let up for three days.'},{t:'You are twenty-four, you work at Infopark, and you have just missed the last ferry home. Again.'},{t:'Before the night goes on, remember who you are.'}],()=>openCreate())};
+  Scene.play('kakkanad',[{t:'Kakkanad, Kochi. 7:30 in the evening. The monsoon has not let up for three days.'},{t:'You are twenty-four, you work at Infopark, and the office cab has just left without you. Again.'},{t:'Before the night goes on, remember who you are.'}],()=>openCreate())};
 $('#crGo').onclick=()=>{const nm=$('#crName');if(nm)creation.name=(nm.value||'').trim().slice(0,14)||creation.name||'Kael';clearInterval(renderCreate.tm);AudioSys.play('ui');startKochi()};
 function startKochi(){const C=creation;hideScreens();buildWorld();G.slot=pendingSlot;G.powers=null;G.pm=null;G.allies=[];G.flags={};G.quests={};G.chests={};G.harv={};G.disc={};G.kills={};G.playTime=0;G.day=1;G.time=19.5*60;G.party=[];
   G.isekaiPending=true;G.kochi={};G.cut=null;G.guild=guildDefaults({rank:0,pts:0,board:[],day:-1,active:[],reg:false});const P=new Player(C.cls,C.name);G.player=P;G.look=lookFromCreation();G.lookAfter=Object.assign({},G.look);G.look.outfit='office';P._pal=null;
-  G.lantern=null;enterPlay();loadMap('kochi',3*T+8,10*T+8);document.body.classList.add('mundane');qStart('kochi_night',true);G.tracked='kochi_night';Music.play('title');
-  setTimeout(()=>say({name:'Phone · Amma',por:'sun'},['Amma: Ferry poyo? Did you miss the ferry again?','Amma: Take the bus from the jetty stop. Not the auto, they will cheat you. I made fish curry. Come straight home.','You type "ok amma" and pocket the phone. The rain drums on the promenade.'],null,()=>toast(isTouch()?'Move with the left stick. Tap ATK near people to talk.':'Move with WASD. Press E near people and things to talk or look.')),900)}
+  G.lantern=null;enterPlay();loadMap('kochi',9.5*T,17.6*T);document.body.classList.add('mundane');qStart('kochi_night',true);G.tracked='kochi_night';Music.play('title');
+  setTimeout(()=>say({name:'Phone · Mom',por:'sun'},['Mom: Did the cab leave without you again?','Mom: Take the bus from the stop near Annapoorna hotel. Not the auto, they will cheat you. I made fish curry. Come straight home.','You type "ok mom" and pocket the phone. Rain drums on the Infopark gate.'],null,()=>toast(isTouch()?'Move with the left stick. Tap ATK near people to talk.':'Move with WASD. Press E near people and things to talk or look.')),900)}
 const _saveGameK=saveGame;saveGame=function(slot,silent){if(G.map&&G.map.id==='kochi'||G.isekaiPending){if(!silent)toast('You cannot save here.','bad');return false}return _saveGameK(slot,silent)};
 const _loadMapKo=loadMap;loadMap=function(id,px,py,silent){_loadMapKo(id,px,py,silent);document.body.classList.toggle('mundane',id==='kochi')};
 
@@ -4787,7 +4815,7 @@ const _pdrawW=Player.prototype.draw;Player.prototype.draw=function(g,t){if(this.
 const _newGameS=newGame;newGame=function(cls,name,slot){const pend=G.isekaiPending,of=G.openFlags||{},look=G.lookAfter,powers=G.powers;_newGameS(cls,name,slot);if(!pend)return;
   const P=G.player;G.isekaiPending=false;G.powers=powers;G.flags=Object.assign(G.flags||{},of,{isekai:true});G.openFlags=null;
   P.eq={weapon:null,armor:null,acc:null};P.inv=new Array(24).fill(null);P.gold=0;delete G.quests.fading_light;delete G.quests.first_steps;qStart('new_life',true);G.tracked='new_life';
-  if(look)G.look=look;G.look.outfit='traveler';P._pal=null;if(typeof applyLook==='function')applyLook();pmRecalc();P.hp=P.maxHp;P.mp=P.maxMp;P.wakeT=2.8;document.body.classList.remove('mundane');hudCache={};
+  if(look)G.look=look;if(!G.look.dz)G.look.outfit='traveler';P._pal=null;if(typeof applyLook==='function')applyLook();pmRecalc();P.hp=P.maxHp;P.mp=P.maxMp;P.wakeT=2.8;document.body.classList.remove('mundane');hudCache={};
   saveGame(slot,true);setTimeout(()=>{if(!pw().slots.some(Boolean))return;toast('Your powers: '+[0,1,2,3].filter(i=>pw().slots[i]).map(i=>keyName(Input.bind['pow'+(i+1)][0])).join(' ')+(isTouch()?' (power buttons on the right)':'')+'. Passive powers work on their own.','q')},9000);
   setTimeout(()=>toast('You have no weapon. Fight with your fists, throw stones (hold attack), or use your powers.','q'),14000)};
 
@@ -4797,7 +4825,7 @@ Object.assign(ITEMS,{
   red_apple:{name:'Red Apple',type:'use',r:0,heal:20,price:3,stack:20,icon:['gel','#d8402a'],desc:'Crisp and cold. Restores 20 HP.'},
   meat_pie:{name:'Meat Pie',type:'use',r:1,heal:90,price:20,stack:20,icon:['pelt','#b8783a'],desc:'Peppery and filling. Restores 90 HP.'},
   honey_cake:{name:'Honey Cake',type:'use',r:1,heal:60,mana:20,price:15,stack:20,icon:['pelt','#f2b440'],desc:'Restores 60 HP and 20 MP.'},
-  spiced_stew:{name:'Spiced Fish Stew',type:'use',r:2,heal:150,mana:40,price:35,stack:10,icon:['potion','#d8602a'],desc:'Red, sour and fiery. It tastes almost like Amma\'s fish curry. Restores 150 HP and 40 MP.'},
+  spiced_stew:{name:'Spiced Fish Stew',type:'use',r:2,heal:150,mana:40,price:35,stack:10,icon:['potion','#d8602a'],desc:'Red, sour and fiery. It tastes almost like Mom\'s fish curry. Restores 150 HP and 40 MP.'},
   roast_fowl:{name:'Roast Fowl',type:'use',r:1,heal:120,price:28,stack:10,icon:['pelt','#c88a4a'],desc:'Half a bird, crackling skin. Restores 120 HP.'},
   cider:{name:'Orchard Cider',type:'use',r:0,mana:40,price:10,stack:20,icon:['potion','#e8c040'],desc:'Restores 40 MP.'},
   outfit_adv:{name:'Ranger\'s Field Coat',type:'key',r:1,price:140,icon:['cloak','#3a5a2a'],desc:'Green wool cloak over a leather jerkin. Wear it from the Wardrobe.'},
@@ -4819,7 +4847,7 @@ const _signK=drawSignIcon;drawSignIcon=function(g,k,x,y){const F=(a,b,w,h,c)=>{g
   if(k==='bed'){F(0,3,7,2,'#e8e0f0');F(0,2,2,2,'#c8302a');F(0,5,1,2,'#3a2a1a');F(6,5,1,2,'#3a2a1a');return}if(k==='mug'){F(1,1,4,5,'#e0b84a');F(1,1,4,1,'#ffffff');F(5,2,1,3,'#e0b84a');return}
   if(k==='bread'){F(0,2,7,3,'#d8a050');F(1,1,5,1,'#e8c070');F(2,2,1,1,'#a8702a');F(4,2,1,1,'#a8702a');return}if(k==='needle'){F(1,5,5,1,'#cfd8dc');F(5,1,1,5,'#cfd8dc');F(2,1,2,3,'#c8302a');return}
   if(k==='bag'){F(1,2,5,4,'#a8784a');F(2,1,3,1,'#6a4a2a');return}if(k==='sun'){F(2,2,3,3,'#ffd27a');F(3,0,1,7,'#ffd27a');F(0,3,7,1,'#ffd27a');return}return _signK(g,k,x,y)};
-function genGrand(h){h.wins=[];const W=h.w*T,Hh=h.h*T+10,c=mkCanvas(W,Hh),g=c.getContext('2d'),F=(x,y,w,hh,col)=>{g.fillStyle=col;g.fillRect(x,y,w,hh)},r=mulberry32(77),fH=78,fy=Hh-fH,dc=(h.door.x-h.tx)*T+8;
+function genGrand(h){h.wins=[];const W=h.w*T,Hh=h.h*T+10+(h.extraH||0),c=mkCanvas(W,Hh),g=c.getContext('2d'),F=(x,y,w,hh,col)=>{g.fillStyle=col;g.fillRect(x,y,w,hh)},r=mulberry32(77),fH=78,fy=Hh-fH,dc=(h.door.x-h.tx)*T+8;
   const rc='#8a2a3a';F(10,24,W-20,fy-24+2,rc);for(let y=28;y<fy;y+=4){F(10,y,W-20,1,shade(rc,-.22));for(let x=10+((y/4)%2?3:0);x<W-10;x+=6)F(x,y-2,1,2,shade(rc,-.12))}F(10,24,W-20,2,shade(rc,.3));F(10,fy-3,W-20,3,shade(rc,-.45));
   for(const dx of[60,W-84]){F(dx,34,24,22,'#e8dcc4');F(dx-2,32,28,3,shade(rc,-.3));F(dx+4,40,16,14,'#2a3048');F(dx+11,40,2,14,'#e8dcc4');h.wins.push([dx+4,40,16,14])}
   const tower=(x,w,top)=>{F(x,top+14,w,fy-top-14,'#d8ccb4');for(let y=top+18;y<fy;y+=6)F(x,y,w,1,'#b8ac94');g.fillStyle='#5a2030';g.beginPath();g.moveTo(x-3,top+15);g.lineTo(x+w/2,top-6);g.lineTo(x+w+3,top+15);g.closePath();g.fill();F(x+w/2-1,top-12,2,7,'#e0b84a');F(x+w/2,top-12,6,3,'#c8302a');F(x+w/2-4,top+24,8,12,'#2a3048');h.wins.push([x+w/2-4,top+24,8,12])};
@@ -4982,6 +5010,358 @@ function drawGuildHall(g,t){const W=320,Hh=180,F=(x,y,w,h,c)=>{g.fillStyle=c;g.f
   F(0,130,W,50,'#6b4a2c');for(let y=134;y<Hh;y+=8)F(0,y,W,1,'#5a3d26');F(20,70,70,50,'#6a4a2c');F(24,74,62,42,'#c8b090');for(let i=0;i<8;i++)F(28+(i%4)*15,78+Math.floor(i/4)*18,12,14,'#efe2c8');
   for(let i=0;i<7;i++){const x=120+i*26+Math.sin(t*.7+i)*3,h=34+(i%3)*5;g.fillStyle='rgba(20,14,20,.55)';g.fillRect(x,140-h,12,h);g.beginPath();g.arc(x+6,140-h-5,6,0,TAU);g.fill()}
   F(0,150,W,30,'#5a3a22');F(0,150,W,4,'#8a6440');g.fillStyle='rgba(180,230,255,.6)';g.beginPath();g.arc(250,140,8+Math.sin(t*3),0,TAU);g.fill();F(244,146,12,4,'#c9a24a')}
+
+/* ================= OUTFIT STUDIO: design your own clothes ================= */
+const DZ_OPT={
+  top:[['tshirt','T-shirt'],['shirt','Collared shirt'],['kurta','Kurta'],['blouse','Blouse'],['tank','Sleeveless top'],['hoodie','Hoodie'],['jacket','Jacket'],['longcoat','Long coat'],['vest','Vest over shirt'],['tunic','Tunic'],['robe','Robe']],
+  sleeve:[['long','Long'],['short','Short'],['none','None']],
+  bottom:[['trousers','Trousers'],['jeans','Jeans'],['joggers','Joggers'],['shorts','Shorts'],['skirt','Skirt'],['longskirt','Long skirt'],['mundu','Mundu'],['foldedmundu','Folded mundu']],
+  shoes:[['shoes','Shoes'],['sneakers','Sneakers'],['boots','Boots'],['highboots','High boots'],['sandals','Sandals'],['barefoot','Barefoot']],
+  outer:[['none','None'],['cape','Cape'],['cloak','Cloak'],['shawl','Shawl'],['pallu','Saree drape'],['scarf','Scarf'],['apron','Apron']],
+  belt:[['none','None'],['belt','Belt'],['sash','Sash'],['obi','Wide sash']],
+  head:[['none','None'],['cap','Cap'],['beanie','Beanie'],['straw','Straw hat'],['bandana','Bandana'],['hood','Hood up'],['jasmine','Jasmine flowers']],
+  pattern:[['plain','Plain'],['stripes','Stripes'],['vstripes','Pinstripes'],['checks','Checks'],['dots','Dots'],['border','Border']],
+  patArea:[['top','Top'],['bottom','Bottom'],['both','Both']],
+  acc:[['necklace','Necklace'],['lanyard','ID lanyard'],['bag','Shoulder bag'],['gloves','Gloves'],['watch','Watch'],['bangles','Bangles']]};
+const DZ_SLOTS=[['top','Top'],['top2','Trim / inner'],['bottom','Bottom'],['bottom2','Border'],['shoes','Shoes'],['outer','Outer layer'],['belt','Belt / sash'],['head','Headwear'],['pat','Pattern'],['acc','Gloves']];
+const DZ_COLORS=['#f4f0e6','#e8d8b0','#c8b48a','#7a7a84','#3a3a44','#1c1a24','#2a3a7a','#3a6ad0','#8ac0e8','#2a6a4a','#5aa05a','#e8c040','#e0b84a','#d8783a','#c8302a','#8a1a2a','#e87aa8','#7a3a9a','#6a4a2a','#a8784a'];
+const dzMk=(name,o,c)=>Object.assign({name,top:'tshirt',sleeve:'long',bottom:'trousers',shoes:'shoes',outer:'none',belt:'none',head:'none',pattern:'plain',patArea:'top',acc:[]},o,{c:Object.assign({top:'#f4f0e6',top2:'#ffffff',bottom:'#2e3440',bottom2:'#e0b84a',shoes:'#3a2a20',outer:'#2a3a7a',belt:'#3a2a1a',head:'#2a2a30',pat:'#3a6ad0',acc:'#3a3a44'},c)});
+const DZ_PRESETS=[
+  dzMk('Office wear',{top:'shirt',belt:'belt',acc:['watch','lanyard']},{top:'#dfe8f2',top2:'#ffffff',bottom:'#2e3440'}),
+  dzMk('Kurta and jeans',{top:'kurta',bottom:'jeans',shoes:'sandals',acc:['watch']},{top:'#e8b830',top2:'#c8302a',bottom:'#3a5a8a',shoes:'#6a4a2a'}),
+  dzMk('Shirt and mundu',{top:'shirt',sleeve:'short',bottom:'mundu',shoes:'sandals'},{top:'#f4f0e6',top2:'#f4f0e6',bottom:'#f8f4ea',bottom2:'#e0b84a',shoes:'#6a4a2a'}),
+  dzMk('Kerala saree',{top:'blouse',sleeve:'short',bottom:'longskirt',outer:'pallu',shoes:'sandals',acc:['bangles','necklace'],pattern:'border',patArea:'bottom'},{top:'#2a6a4a',bottom:'#f4eedc',bottom2:'#e0b84a',outer:'#f4eedc',shoes:'#c8a050',pat:'#e0b84a'}),
+  dzMk('T-shirt and jeans',{bottom:'jeans',shoes:'sneakers',sleeve:'short'},{top:'#c8302a',bottom:'#3a5a8a',shoes:'#2a2a30'}),
+  dzMk('Hoodie and joggers',{top:'hoodie',bottom:'joggers',shoes:'sneakers'},{top:'#3a3a44',top2:'#e8e8e0',bottom:'#2a2a30',shoes:'#c8302a'}),
+  dzMk('Linen tunic',{top:'tunic',belt:'belt'},{top:'#d8c8a0',top2:'#b8a47a',bottom:'#6a5a44',shoes:'#5a4030',belt:'#6a4428'}),
+  dzMk('Wanderer',{top:'tunic',bottom:'trousers',shoes:'boots',outer:'cloak',belt:'belt',acc:['bag']},{top:'#5a6a3a',top2:'#3a4a2a',bottom:'#4a3a2a',shoes:'#2a1e14',outer:'#3a4a5a',belt:'#4a2e1c'}),
+  dzMk('Mage robe',{top:'robe',belt:'sash',head:'hood',acc:['necklace']},{top:'#3a2a6a',top2:'#e0b84a',head:'#2a1a4a',belt:'#c8302a'}),
+  dzMk('Long coat',{top:'longcoat',bottom:'trousers',shoes:'highboots',belt:'belt'},{top:'#1c1a24',top2:'#e8e4dc',bottom:'#2a2a34',shoes:'#2a1e18'}),
+  dzMk('Summer dress',{top:'blouse',bottom:'skirt',shoes:'sandals',sleeve:'short',head:'straw',pattern:'dots',patArea:'bottom'},{top:'#f4f0e6',bottom:'#8ac0e8',head:'#e8d08a',pat:'#ffffff',shoes:'#a8784a'})];
+const dzClone=d=>JSON.parse(JSON.stringify(d));
+function dzValid(d){if(!d||typeof d!=='object'||!d.c)return null;const o=dzClone(DZ_PRESETS[6]);for(const k of['top','sleeve','bottom','shoes','outer','belt','head','pattern','patArea'])if(DZ_OPT[k].some(x=>x[0]===d[k]))o[k]=d[k];
+  o.acc=Array.isArray(d.acc)?d.acc.filter(a=>DZ_OPT.acc.some(x=>x[0]===a)):[];for(const[k]of DZ_SLOTS)if(/^#[0-9a-f]{6}$/i.test(d.c[k]||''))o.c[k]=d.c[k];o.name=String(d.name||'My design').slice(0,24);return o}
+/* palette and portrait from a design */
+function dzApply(p,d,L){const c=d.c;Object.assign(p,{kit:'plain',gear:null,robe:d.top==='robe',top:c.top,top2:d.top==='robe'?c.top2:shade(c.top,-.3),legs:c.bottom,boots:c.shoes,cape:null,hood:null,scarf:null,sash:null,hat:null,circlet:null,steel:null,leather:null,metal:null,tabard:null,apron:null,buckle:null,hc:null,dz:d});
+  if(d.outer==='cape'||d.outer==='cloak')p.cape=c.outer;if(d.outer==='scarf')p.scarf=c.outer;if(d.head==='hood')p.hood=d.outer==='cloak'?c.outer:c.head;if(d.head==='straw')p.hat=c.head;p.band=d.head==='bandana'?c.head:(L&&L.band)||null;return p}
+const _lookPalDZ=lookPal;lookPal=function(cls,look){const L=look||G.look;if(L&&L.outfit==='custom'&&L.dz){const p=_lookPalDZ(cls,Object.assign({},L,{outfit:'class'}));dzApply(p,L.dz,L);if(L.beard)p.fh=L.beard;return p}const p=_lookPalDZ(cls,look);if(L&&L.beard)p.fh=L.beard;return p};
+const _lookFaceDZ=lookFace;lookFace=function(cls,L){L=L||{};if(L.outfit==='custom'&&L.dz){const f=_lookFaceDZ(cls,Object.assign({},L,{outfit:'class'})),c=L.dz.c;Object.assign(f,{kit:'plain',outfit:c.top,trim:L.dz.top==='jacket'||L.dz.top==='longcoat'||L.dz.top==='vest'?c.top2:shade(c.top,-.25),cloak:['cape','cloak','shawl','pallu'].includes(L.dz.outer)?c.outer:null,armor:null,metal:null,hc:null});if(L.beard==='beard')f.beard=L.hair;return f}
+  const f=_lookFaceDZ(cls,L);if(L.beard==='beard')f.beard=L.hair;return f};
+playerFace=function(){const P=G.player,cls=P?P.cls:'warden',L=G.look,f=lookFace(cls,L),a=P&&P.eq&&P.eq.armor&&GEARLOOK[P.eq.armor.id];if(a&&a!=='tunic'&&!(L&&L.showArmor===false))f.armor=a;if(L&&L.outfit==='knight')f.armor='plate';return f};
+/* the pixel tailor: draws each piece on the 24x35 sprite */
+function dzPass(P,S,d,layer,k){const c=d.c,b=k.b,side=k.side,back=k.back,front=!side&&!back,sk=rampOf(S.skin||'#f6d6c0'),T=rampOf(c.top),T2=rampOf(c.top2),B=rampOf(c.bottom),B2=rampOf(c.bottom2||c.bottom),Sh=rampOf(c.shoes),O=rampOf(c.outer),Bl=rampOf(c.belt),H=rampOf(c.head);
+  const isR=(v,R)=>v===R.m||v===R.l||v===R.d||v===R.h,map=(v,R,R2)=>v===R.l?R2.l:v===R.d?R2.d:v===R.h?R2.h:R2.m;
+  const rec=(x0,y0,x1,y1,R,R2)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++){const v=P.g(x,y);if(v&&isR(v,R))P.s(x,y,map(v,R,R2))}};
+  const row=(y,x0,x1,R)=>{for(let x=x0;x<=x1;x++)P.s(x,y,x===x0?R.l:x===x1?R.d:R.m)};
+  const skirt=(y0,n,R,border)=>{for(let j=0;j<n;j++){const y=y0+b+j;let x0,x1;if(side){x0=9-Math.floor(j/3);x1=14+Math.floor(j/4)}else{const w=8+Math.floor(j/2.6)*2;x0=12-w/2;x1=x0+w-1}row(y,x0,x1,border&&j>=n-1?B2:R)}};
+  const tx0=side?9:8,tx1=side?14:15;
+  if(layer==='legs'){
+    if(d.top!=='robe'){const bt=d.bottom;
+      if(bt==='shorts')rec(3,28,20,31,B,sk);
+      else if(bt==='jeans'&&!side){for(const x of[9,14])for(let y=26;y<31;y++){const v=P.g(x,y);if(v&&isR(v,B))P.s(x,y,B.h)}}
+      else if(bt==='joggers'){if(!side)for(const x of[9,14])for(let y=25;y<30;y++){const v=P.g(x,y);if(v&&isR(v,B))P.s(x,y,T2.m)}for(let x=3;x<21;x++){const v=P.g(x,30);if(v&&isR(v,B))P.s(x,30,B.d)}}
+      else if(bt==='skirt'){rec(3,28,20,31,B,sk);skirt(24,5,B,d.pattern==='border')}
+      else if(bt==='foldedmundu'){rec(3,28,20,31,B,sk);skirt(24,5,B,true);if(front){P.s(13,24+b,B.h);P.s(13,25+b,B.d)}}
+      else if(bt==='longskirt'||bt==='mundu'){skirt(24,8,B,bt==='mundu'||d.pattern==='border');if(bt==='mundu'&&front)for(let y=24+b;y<31+b;y++)P.s(14,y,B2.m)}}
+    const sh=d.shoes;if(sh==='highboots')rec(3,27,20,30,B,Sh);
+    if(sh==='sandals'||sh==='sneakers'||sh==='barefoot')for(let y=28;y<35;y++)for(let x=3;x<21;x++){const v=P.g(x,y);if(!v||!isR(v,Sh))continue;
+      P.s(x,y,sh==='barefoot'?map(v,Sh,sk):sh==='sandals'?(y>=32?'#4a2e1a':(x+y)%2?Sh.m:sk.m):(y>=32?'#f0f0ec':v===Sh.l?'#ffffff':Sh.m))}
+    return}
+  if(layer==='body'){const top=d.top,arms=front||back?[4,5,6,7,16,17,18,19]:[],sleeve=top==='tank'?'none':top==='blouse'&&d.sleeve==='long'?'short':d.sleeve;
+    const armRec=(y0,R2)=>{for(const x of arms)for(let y=y0+b-1;y<27+b;y++){const v=P.g(x,y);if(v&&isR(v,T))P.s(x,y,map(v,T,R2))}};
+    if(top!=='robe'){if(top==='vest')armRec(17,T2);else if(sleeve==='short')armRec(21,sk);else if(sleeve==='none')armRec(18,sk)}
+    const hem=(R)=>{row(23+b,tx0,tx1,R);for(let x=tx0;x<=tx1;x++)P.s(x,24+b,R.d)},ext=(y1,R,edge)=>{for(let y=25;y<=y1;y++){const w=y>26&&front?1:0;row(y+b,tx0-w,tx1+w,y===y1&&edge?edge:R)}};
+    if(front){switch(top){
+      case'tshirt':P.s(10,18+b,T.m);P.s(13,18+b,T.m);P.s(10,19+b,T.m);P.s(13,19+b,T.m);P.s(11,20+b,T.m);P.s(12,20+b,T.m);hem(T);break;
+      case'shirt':P.s(10,17+b,T2.h);P.s(13,17+b,T2.h);P.s(10,18+b,T2.l);P.s(13,18+b,T2.l);P.s(11,20+b,T.m);P.s(12,20+b,T.m);for(let y=19;y<=22;y++)P.s(12,y+b,T.d);P.s(12,20+b,T2.l);P.s(12,22+b,T2.l);hem(T);break;
+      case'kurta':hem(T);ext(28,T,T2);P.s(10,18+b,T2.l);P.s(13,18+b,T2.l);for(let y=19;y<=21;y++){P.s(11,y+b,T2.m);P.s(12,y+b,y===19?sk.d:T.d)}P.s(10,20+b,T2.l);P.s(13,20+b,T2.l);for(const x of[7,16])for(let y=27;y<=28;y++)P.s(x,y+b,B.m);break;
+      case'blouse':P.s(10,18+b,sk.m);P.s(13,18+b,sk.m);P.s(4,18+b,T.l);P.s(19,18+b,T.d);P.s(5,18+b,T.m);P.s(18,18+b,T.m);row(23+b,tx0,tx1,sk);for(let x=tx0;x<=tx1;x++)P.s(x,24+b,sk.d);break;
+      case'tank':for(const x of[8,9,14,15])P.s(x,18+b,sk.m);P.s(10,19+b,sk.m);P.s(13,19+b,sk.m);hem(T);break;
+      case'hoodie':for(const x of[8,15])P.s(x,17+b,T.d);for(const x of[9,14])P.s(x,17+b,T.m);P.row(21+b,9,14,T.d);P.s(9,22+b,T.d);P.s(14,22+b,T.d);for(const y of[19,20]){P.s(10,y+b,T2.h);P.s(13,y+b,T2.h)}for(let x=tx0;x<=tx1;x++){P.s(x,23+b,T.d);P.s(x,24+b,T.d)}break;
+      case'jacket':case'longcoat':for(let y=19;y<=24;y++)for(let x=10;x<=13;x++)P.s(x,y+b,y===23?T2.d:T2.m);P.s(10,18+b,T.h);P.s(13,18+b,T.h);P.s(10,19+b,T.l);P.s(13,19+b,T.d);P.s(10,20+b,T.l);P.s(13,20+b,T.d);for(const x of[8,9,14,15]){P.s(x,23+b,T.m);P.s(x,24+b,T.d)}
+        if(top==='longcoat')for(let y=25;y<=30;y++){const f=y>28?k.flut:0;P.s(8-f,y+b,T.l);P.s(9-f,y+b,T.m);P.s(14+f,y+b,T.m);P.s(15+f,y+b,T.d)}break;
+      case'vest':for(let y=18;y<=24;y++){P.s(11,y+b,y===18?sk.m:T2.m);P.s(12,y+b,y===18?sk.m:T2.l)}for(let y=19;y<=22;y++){P.s(10,y+b,T.d);P.s(13,y+b,T.d)}break;
+      case'tunic':hem(T);ext(27,T,T2);P.s(11,19+b,sk.d);P.s(12,19+b,T2.m);break;
+      case'robe':P.s(10,18+b,T2.m);P.s(13,18+b,T2.m);P.s(11,19+b,T2.l);P.s(12,19+b,T2.l);break}}
+    else if(back){if(top==='kurta'){hem(T);ext(28,T,T2)}else if(top==='tunic'){hem(T);ext(27,T,T2)}else if(top==='longcoat'){for(let y=23;y<=30;y++)row(y+b,8-(y>28?k.flut:0),15+(y>28?k.flut:0),T)}else if(top==='hoodie'){P.r(9,17+b,6,3,T.d);P.row(17+b,10,13,T.m)}else if(top==='blouse'){row(23+b,tx0,tx1,sk)}else if(top!=='robe')hem(T)}
+    else{if(top==='kurta'){hem(T);ext(28,T,T2)}else if(top==='tunic'){hem(T);ext(27,T,T2)}else if(top==='longcoat'){for(let y=24;y<=30;y++){P.s(8-k.flut*(y>28?1:0),y+b,T.m);P.s(9,y+b,T.d)}}else if(top==='blouse')row(23+b,tx0,tx1,sk);else if(top!=='robe')hem(T)}
+    switch(d.outer){
+      case'cloak':if(!back){if(front){P.row(18+b,6,17,O.m);P.row(19+b,6,8,O.d);P.row(19+b,15,17,O.d);P.s(11,18+b,'#e0b84a');P.s(12,18+b,'#e0b84a')}else{P.r(9,18+b,6,2,O.m)}}break;
+      case'cape':if(front){P.s(8,18+b,O.m);P.s(15,18+b,O.m);P.s(11,18+b,'#e0b84a');P.s(12,18+b,'#e0b84a')}break;
+      case'shawl':if(front){P.row(18+b,6,17,O.m);for(let y=19;y<=27;y++){P.s(7,y+b,O.l);P.s(16,y+b,O.d)}}else if(back){P.r(7,18+b,10,4,O.m);P.row(22+b,8,15,O.d)}else{P.r(9,18+b,5,2,O.m);for(let y=20;y<=26;y++)P.s(13,y+b,O.d)}break;
+      case'pallu':if(front){for(let t=0;t<8;t++){const x=8+t,y=25-t+b;P.s(x,y-1,O.l);P.s(x,y,O.m);P.s(x,y+1,B2.m)}P.r(15,17+b,2,3,O.m);P.s(16,20+b,B2.m)}else if(back){for(let y=17;y<=27;y++){P.s(14,y+b,O.l);P.s(15,y+b,O.m);P.s(16,y+b,B2.m)}}else{P.r(10,18+b,3,7,O.m);for(let y=18;y<=25;y++)P.s(9,y+b,B2.m)}break;
+      case'apron':if(front){for(let y=20;y<=27;y++)row(y+b,9,14,O);P.s(9,19+b,O.d);P.s(14,19+b,O.d)}break}
+    const bx0=tx0,bx1=tx1;switch(d.belt){
+      case'belt':row(23+b,bx0,bx1,Bl);if(front){P.s(11,23+b,'#e0b84a');P.s(12,23+b,'#f6e7a0')}break;
+      case'sash':row(23+b,bx0,bx1,Bl);for(let x=bx0;x<=bx1;x++)P.s(x,24+b,Bl.d);if(front){P.s(13,25+b,Bl.m);P.s(13,26+b,Bl.d);P.s(14,26+b,Bl.d)}break;
+      case'obi':for(const y of[22,23,24])row(y+b,bx0,bx1,Bl);if(front){P.s(11,23+b,Bl.h);P.s(12,23+b,Bl.h)}else if(back){P.r(10,21+b,4,2,Bl.l);P.s(9,22+b,Bl.m);P.s(14,22+b,Bl.m)}break}
+    const acc=new Set(d.acc||[]);
+    if(acc.has('necklace')&&front){P.s(10,19+b,'#e0b84a');P.s(13,19+b,'#e0b84a');P.s(11,20+b,'#e0b84a');P.s(12,20+b,'#f6e7a0')}
+    if(acc.has('lanyard')&&front){for(let y=18;y<=20;y++){P.s(10,y+b,'#3a6ad0');P.s(13,y+b,'#3a6ad0')}P.s(11,21+b,'#3a6ad0');P.s(12,21+b,'#3a6ad0');P.r(11,22+b,2,2,'#f4f4f0');P.s(11,23+b,'#3a6ad0')}
+    if(acc.has('bag')){if(front){for(let t=0;t<6;t++)P.s(9+t,18+t+b,'#5a3a22');P.r(14,23+b,3,3,'#7a5432');P.row(23+b,14,16,'#9a7048')}else if(back){for(let t=0;t<6;t++)P.s(14-t,18+t+b,'#5a3a22')}else{P.r(8,22+b,2,3,'#7a5432');P.s(10,19+b,'#5a3a22')}}
+    if((front||back)&&(acc.has('gloves')||acc.has('watch')||acc.has('bangles')))for(const pair of[[5,6,7],[16,17,18]]){let hy=-1;for(let y=19;y<28;y++)for(const x of pair){const v=P.g(x,y);if(v&&isR(v,sk))hy=Math.max(hy,y)}if(hy<0)continue;
+      for(const x of pair){const v=P.g(x,hy);if(!v||!isR(v,sk))continue;if(acc.has('gloves'))P.s(x,hy,rampOf(c.acc).m);const u=P.g(x,hy-1);if(u&&(acc.has('bangles')||acc.has('watch')&&pair[0]===5))P.s(x,hy-1,acc.has('watch')&&pair[0]===5?'#2a2a30':'#e0b84a')}}
+    if(d.pattern!=='plain'){const pc=c.pat,area=d.patArea,f=(x,y,v)=>{switch(d.pattern){case'stripes':return y%2===0?mixC(v,pc,.65):v;case'vstripes':return x%2===0?mixC(v,pc,.55):v;case'checks':return((x>>1)+(y>>1))%2?mixC(v,pc,.5):v;case'dots':return x%3===1&&y%3===1?pc:v}return v};
+      const doR=(R,y0,y1)=>{for(let y=y0;y<=y1;y++)for(let x=3;x<21;x++){const v=P.g(x,y);if(v&&isR(v,R))P.s(x,y,f(x,y,v))}};
+      if(d.pattern==='border'){if(area!=='bottom'){let ly=-1;for(let y=18;y<32;y++)if(isR(P.g(12,y)||'',T))ly=y;if(ly>0)for(let x=3;x<21;x++){const v=P.g(x,ly);if(v&&isR(v,T))P.s(x,ly,pc)}}
+        if(area!=='top')for(let x=3;x<21;x++)for(const y of[29,30,31]){const v=P.g(x,y);if(v&&isR(v,B)&&!isR(P.g(x,y+1)||'',B))P.s(x,y,pc)}}
+      else{if(area!=='bottom')doR(T,17,31);if(area!=='top'&&c.bottom!==c.top)doR(B,24,31)}}
+    return}
+  if(layer==='top'&&!S.helm&&!S.skull){const hy=5+b,hd=d.head;
+    if(hd==='cap'){if(!side){P.r(7,hy-1,10,3,H.m);P.row(hy-1,8,15,H.l);if(!back){P.row(hy+2,6,17,H.d);P.s(11,hy,H.h)}else P.row(hy+2,7,16,H.d)}else{P.r(8,hy-1,8,3,H.m);P.row(hy-1,9,14,H.l);P.row(hy+2,10,19,H.d)}}
+    if(hd==='beanie'){const x0=side?7:6,x1=side?16:17;P.r(x0,hy-1,x1-x0+1,4,H.m);P.row(hy-1,x0+1,x1-1,H.l);P.row(hy+2,x0,x1,H.d);P.s(11,hy-2,H.h);P.s(12,hy-2,H.h)}
+    if(hd==='jasmine'){if(back){for(let x=7;x<=16;x++)P.s(x,hy+8+(x%2),x%2?'#ffffff':'#f4f0d0')}else if(side){for(let y=hy+4;y<=hy+12;y++)P.s(6+(y%2),y,y%2?'#ffffff':'#f4f0d0')}else{P.s(6,hy+3,'#ffffff');P.s(17,hy+3,'#ffffff');P.s(5,hy+4,'#f4f0d0');P.s(18,hy+4,'#f4f0d0')}}}}
+const _gpDZ=gearPass;gearPass=function(P,S,layer,k){_gpDZ(P,S,layer,k);if(S.dz)dzPass(P,S,S.dz,layer,k);if(layer==='top'&&S.fh&&!S.helm&&!S.skull&&!k.back){const hy=5+k.b,hr=rampOf(S.hair||'#2a2020'),sk=S.skin||'#f6d6c0';
+    if(!k.side){if(S.fh==='stubble'){for(let y=hy+10;y<=hy+12;y++)for(let x=8;x<=15;x++)if((x+y)%2&&P.g(x,y))P.s(x,y,mixC(sk,S.hair||'#2a2020',.4))}
+      if(S.fh==='moustache'||S.fh==='goatee'||S.fh==='beard'){P.row(hy+10,10,13,hr.d)}if(S.fh==='goatee')P.r(11,hy+12,2,2,hr.m);if(S.fh==='beard'){P.r(8,hy+10,2,3,hr.m);P.r(14,hy+10,2,3,hr.m);P.row(hy+12,9,14,hr.m);P.row(hy+13,10,13,hr.d)}}
+    else{if(S.fh==='beard'||S.fh==='goatee')P.r(14,hy+11,3,2,hr.m);if(S.fh!=='stubble')P.row(hy+10,15,16,hr.d);else P.s(15,hy+11,mixC(sk,S.hair||'#2a2020',.4))}}};
+/* height */
+const HEIGHTS={short:.93,avg:1,tall:1.07};
+const _pdrawH=Player.prototype.draw;Player.prototype.draw=function(g,t){const h=HEIGHTS[(G.look&&G.look.height)||'avg']||1;if(h===1)return _pdrawH.call(this,g,t);g.save();g.translate(this.x,this.y);g.scale(h,h);g.translate(-this.x,-this.y);_pdrawH.call(this,g,t);g.restore()};
+/* wardrobe entry for the design */
+OUTFITS.custom={name:'My design',desc:'The outfit you designed yourself. Change it any time in the Design studio.',own:()=>true};
+const _openWardrobeDZ=openWardrobe;openWardrobe=function(){const L=G.look||(G.look={});if(!L.dz)L.dz=dzClone(DZ_PRESETS[6]);_openWardrobeDZ();const r=$('#genB .wd-right');if(r)r.insertAdjacentHTML('afterbegin','<button class="btn sm" id="wdStudio" type="button">Open the Design studio</button>');const b=$('#wdStudio');if(b)b.onclick=()=>openStudio()};
+function openStudio(){const L=G.look;if(!L.dz)L.dz=dzClone(DZ_PRESETS[6]);const D=dzClone(L.dz);const draw=()=>{openGen('Design studio',`<div class="studio"><div class="st-prev"><canvas id="stSpr" width="144" height="168"></canvas><div class="row-btns"><button class="btn sm" id="stSave">Wear this design</button><button class="btn ghost sm" id="stCancel">Cancel</button></div></div><div class="st-ed">${dzEditorHTML(D)}</div></div>`,B=>{
+    bindDzEditor(B,D,draw);$('#stSave').onclick=()=>{L.dz=dzClone(D);L.outfit='custom';applyLook();AudioSys.play('quest');toast('Design saved: '+D.name);openWardrobe()};$('#stCancel').onclick=()=>openWardrobe();
+    spinPreview($('#stSpr'),()=>lookPal(G.player.cls,Object.assign({},L,{outfit:'custom',dz:D})),'stSpr')})};draw()}
+function spinPreview(cv,palFn,key,opt={}){const sg=cv.getContext('2d');sg.imageSmoothingEnabled=false;clearInterval(spinPreview[key]);let k=0;const pal=palFn();
+  const tick=()=>{if(!document.body.contains(cv)){clearInterval(spinPreview[key]);return}sg.clearRect(0,0,cv.width,cv.height);const h=HEIGHTS[opt.height||'avg']||1,s=4*h,dir=opt.dir!=null?opt.dir:[0,3,1,2][Math.floor(k/12)%4],pose=opt.pose||'walk';
+    sg.save();sg.translate(cv.width/2,cv.height-10);sg.scale(s,s);drawHumanoid(sg,0,0,{pal,dir,moving:pose==='walk',walk:k*.5,weapon:opt.weapon||null,wcol:opt.wcol,atk:pose==='attack'?(k%8)/8:null,aimL:0,time:k/10});sg.restore();k++};tick();spinPreview[key]=setInterval(tick,110)}
+/* the editor itself, shared by creation and the studio */
+function dzEditorHTML(D,extra=''){const seg=(k,opts)=>opts.map(([v,l])=>`<button class="${D[k]===v?'on':''}" data-dzk="${k}" data-v="${v}">${l}</button>`).join('');
+  const row=(l,h,cls='seg')=>`<div class="cr-row"><span>${l}</span><div class="${cls}">${h}</div></div>`;
+  const need={top:1,top2:['shirt','jacket','longcoat','vest','kurta','tunic','robe','hoodie'].includes(D.top),bottom:D.top!=='robe',bottom2:['mundu','foldedmundu','longskirt','skirt'].includes(D.bottom)||D.outer==='pallu',shoes:D.shoes!=='barefoot',outer:D.outer!=='none',belt:D.belt!=='none',head:!['none','jasmine'].includes(D.head),pat:D.pattern!=='plain',acc:(D.acc||[]).includes('gloves')};
+  const col=(k,l)=>`<div class="cr-row dzcol"><span>${l}</span><div class="swatches">${DZ_COLORS.map(c=>`<button class="sw${D.c[k]===c?' on':''}" data-dzc="${k}" data-v="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')}<label class="cpick" title="Any colour"><input type="color" data-dzp="${k}" value="${D.c[k]}" aria-label="${l}: pick any colour"><span>+</span></label></div></div>`;
+  return`${extra}<div class="cr-row"><span>Name</span><div class="seg"><input class="dzname" id="dzName" maxlength="24" value="${esc(D.name||'My design')}" autocomplete="off" spellcheck="false"></div></div>
+   <p class="sect">Start from</p><div class="seg dzpre">${DZ_PRESETS.map((p,i)=>`<button data-dzpre="${i}">${esc(p.name)}</button>`).join('')}<button data-dzrand="1">Surprise me</button></div>
+   <p class="sect">Pieces</p>${row('Top',seg('top',DZ_OPT.top))}${D.top!=='robe'&&D.top!=='tank'&&D.top!=='vest'?row('Sleeves',seg('sleeve',DZ_OPT.sleeve)):''}${D.top!=='robe'?row('Bottom',seg('bottom',DZ_OPT.bottom)):''}${row('Shoes',seg('shoes',DZ_OPT.shoes))}${row('Outer layer',seg('outer',DZ_OPT.outer))}${row('Belt',seg('belt',DZ_OPT.belt))}${row('Headwear',seg('head',DZ_OPT.head))}
+   ${row('Accessories',DZ_OPT.acc.map(([v,l])=>`<button class="${(D.acc||[]).includes(v)?'on':''}" data-dza="${v}">${l}</button>`).join(''))}
+   <p class="sect">Pattern</p>${row('Pattern',seg('pattern',DZ_OPT.pattern))}${D.pattern!=='plain'?row('On',seg('patArea',DZ_OPT.patArea)):''}
+   <p class="sect">Colours</p>${DZ_SLOTS.filter(([k])=>need[k]).map(([k,l])=>col(k,l)).join('')}
+   <p class="sect">Library</p><div class="seg dzlib">${dzLib().map((x,i)=>`<span class="libitem"><button data-dzload="${i}">${esc(x.name)}</button><button class="del" data-dzdel="${i}" aria-label="Delete ${esc(x.name)}">×</button></span>`).join('')||'<small class="hint">No saved designs yet.</small>'}</div>
+   <div class="row-btns dzio"><button class="btn sm" data-dzsave="1">Save to library</button><button class="btn ghost sm" data-dzexp="1">Export code</button><button class="btn ghost sm" data-dzimp="1">Import code</button></div><textarea class="dzcode" id="dzCode" hidden rows="3" spellcheck="false" aria-label="Design code"></textarea>`}
+const dzLib=()=>{const l=Store.get('eclipse.designs',[]);return Array.isArray(l)?l.map(dzValid).filter(Boolean):[]};
+function dzRandom(D){const r=a=>pick(a)[0],cc=()=>pick(DZ_COLORS);Object.assign(D,{top:r(DZ_OPT.top),sleeve:r(DZ_OPT.sleeve),bottom:r(DZ_OPT.bottom),shoes:r(DZ_OPT.shoes),outer:Math.random()<.5?'none':r(DZ_OPT.outer),belt:r(DZ_OPT.belt),head:Math.random()<.6?'none':r(DZ_OPT.head),pattern:Math.random()<.6?'plain':r(DZ_OPT.pattern),patArea:r(DZ_OPT.patArea),acc:DZ_OPT.acc.filter(()=>Math.random()<.25).map(a=>a[0])});for(const[k]of DZ_SLOTS)D.c[k]=cc()}
+function bindDzEditor(B,D,redraw,push){const ch=()=>{push&&push();redraw()};const nm=B.querySelector('#dzName');if(nm)nm.oninput=e=>{D.name=e.target.value};
+  B.querySelectorAll('[data-dzk]').forEach(b=>b.onclick=()=>{push&&push();D[b.dataset.dzk]=b.dataset.v;AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dza]').forEach(b=>b.onclick=()=>{push&&push();const a=b.dataset.dza,s=new Set(D.acc||[]);s.has(a)?s.delete(a):s.add(a);D.acc=[...s];AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dzc]').forEach(b=>b.onclick=()=>{push&&push();D.c[b.dataset.dzc]=b.dataset.v;AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dzp]').forEach(i=>i.onchange=e=>{push&&push();D.c[i.dataset.dzp]=e.target.value;redraw()});
+  B.querySelectorAll('[data-dzpre]').forEach(b=>b.onclick=()=>{push&&push();const p=dzClone(DZ_PRESETS[+b.dataset.dzpre]);for(const k in p)D[k]=p[k];AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dzrand]').forEach(b=>b.onclick=()=>{push&&push();dzRandom(D);AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dzload]').forEach(b=>b.onclick=()=>{push&&push();const p=dzLib()[+b.dataset.dzload];for(const k in p)D[k]=p[k];AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dzdel]').forEach(b=>b.onclick=()=>{const l=dzLib();l.splice(+b.dataset.dzdel,1);Store.set('eclipse.designs',l);AudioSys.play('ui');redraw()});
+  B.querySelectorAll('[data-dzsave]').forEach(b=>b.onclick=()=>{const l=dzLib();if(l.length>=12){toast('The library holds 12 designs. Delete one first.','bad');return}l.push(dzClone(D));Store.set('eclipse.designs',l)?toast('Saved "'+D.name+'" to your library'):toast('Could not save. Browser storage is unavailable.','bad');redraw()});
+  const code=B.querySelector('#dzCode');
+  B.querySelectorAll('[data-dzexp]').forEach(b=>b.onclick=()=>{code.hidden=false;code.value='ECL1:'+btoa(unescape(encodeURIComponent(JSON.stringify(D))));code.select();try{navigator.clipboard&&navigator.clipboard.writeText(code.value);toast('Design code copied')}catch(e){}});
+  B.querySelectorAll('[data-dzimp]').forEach(b=>b.onclick=()=>{if(code.hidden||!code.value.trim()){code.hidden=false;code.value='';code.placeholder='Paste a design code here, then press Import code again.';code.focus();return}
+    try{const raw=code.value.trim().replace(/^ECL1:/,''),p=dzValid(JSON.parse(decodeURIComponent(escape(atob(raw)))));if(!p)throw 0;push&&push();for(const k in p)D[k]=p[k];toast('Imported "'+p.name+'"');redraw()}catch(e){toast('That design code is not valid','bad');AudioSys.play('error')}})}
+
+/* ================= CHARACTER CREATION, extended ================= */
+LOOK_KEYS.push('height','beard');
+Object.assign(creation,{height:'avg',beard:'',dzKochi:dzClone(DZ_PRESETS[0]),dz:dzClone(DZ_PRESETS[6]),dzEdit:'kochi',pose:'walk',bg:'studio'});
+const _lfcDZ=lookFromCreation;lookFromCreation=function(){const o=_lfcDZ();o.outfit='custom';o.dz=dzClone(creation.dz);return o};
+const crHist={u:[],r:[]},crSnap=()=>JSON.stringify(Object.assign({},creation,{name:creation.name}));
+function crPush(){crHist.u.push(crSnap());if(crHist.u.length>60)crHist.u.shift();crHist.r=[]}
+function crRestore(js){const o=JSON.parse(js);for(const k in o)creation[k]=o[k]}
+const FACIAL=[['','None'],['stubble','Stubble'],['moustache','Moustache'],['goatee','Goatee'],['beard','Full beard']];
+renderCreate=function(){const C=creation,B=$('#createBody');const dz=C.dzEdit==='kochi'?C.dzKochi:C.dz;
+  const sw=(arr,k)=>arr.map(c=>`<button class="sw${C[k]===c?' on':''}" data-k="${k}" data-v="${c}" style="--c:${c}" aria-label="${c}"></button>`).join('')+`<label class="cpick" title="Any colour"><input type="color" data-kp="${k}" value="${/^#[0-9a-f]{6}$/i.test(C[k]||'')?C[k]:'#888888'}" aria-label="Pick any colour"><span>+</span></label>`;
+  const seg=(k,opts)=>opts.map(([v,l])=>`<button class="${(C[k]||'')===v?'on':''}" data-k="${k}" data-v="${v}">${l}</button>`).join('');
+  const row=(l,h,cls)=>`<div class="cr-row"><span>${l}</span><div class="${cls||(h.startsWith('<button class="sw')?'swatches':'seg')}">${h}</div></div>`;
+  const bar=(l,v,m,c)=>`<div class="sbar"><span>${l}</span><i><b style="width:${Math.round(Math.min(1,v/m)*100)}%;background:${c}"></b></i></div>`;
+  const tabs=[['body','Body'],['hair','Hair'],['face','Face'],['design','Outfit design'],['calling','Calling']];if(!tabs.some(t=>t[0]===crTab))crTab='body';
+  let pane='';
+  if(crTab==='body')pane=`<label class="namefld">Name <input id="crName" maxlength="14" value="${esc(C.name)}" autocomplete="off" spellcheck="false"></label>${row('Gender',seg('gender',[['male','Male'],['female','Female'],['other','Other']]))}${row('Height',seg('height',[['short','Short'],['avg','Average'],['tall','Tall']]))}${row('Skin',sw(LOOK_SKIN.concat(['#7a4a2e','#5a3420']),'skin'),'swatches')}${row('Eye colour',sw(LOOK_EYE,'eye'),'swatches')}${row('Eye shape',seg('eyeShape',EYESHAPES))}`;
+  else if(crTab==='hair')pane=`${row('Style',seg('hs',HAIRSTYLES))}${row('Colour',sw(LOOK_HAIR.concat(['#1c1a24','#0e0c12']),'hair'),'swatches')}${row('Headband',seg('band',[['#b8302a','Red'],['#2f5aa8','Blue'],['#e8e0d0','White'],['','None']]))}${row('Facial hair',seg('beard',FACIAL))}`;
+  else if(crTab==='face')pane=`${row('Marks',seg('mark',MARKS))}${row('Glasses',seg('glasses',ONOFF))}${row('Earrings',seg('earrings',ONOFF))}${row('Facial hair',seg('beard',FACIAL))}`;
+  else if(crTab==='design')pane=`<div class="seg dzwhich"><button class="${C.dzEdit==='kochi'?'on':''}" data-dzw="kochi"><b>Kochi clothes</b><small>What you wear on the evening in Kakkanad</small></button><button class="${C.dzEdit==='reborn'?'on':''}" data-dzw="reborn"><b>Reborn outfit</b><small>The clothes you wake up in, in Aurel</small></button></div>
+    <div class="row-btns" style="justify-content:flex-start"><button class="btn ghost sm" data-dzcopy="1">Copy ${C.dzEdit==='kochi'?'to reborn':'from Kochi'}</button></div>${dzEditorHTML(dz)}<p class="hint">Clothes are cosmetic: they never change your stats. In Aurel you can redesign them any time in the Wardrobe's Design studio.</p>`;
+  else pane=`<div class="clscards">${Object.keys(CLASSES).map(k=>{const c=CLASSES[k],b=c.base;return`<button class="clscard${C.cls===k?' on':''}" data-k="cls" data-v="${k}"><canvas width="48" height="64" data-cs="${k}"></canvas><div><h4>${c.name}</h4><p>${esc(c.blurb)}</p>${bar('HP',b.hp,130,'#c8302a')}${bar('MP',b.mp,85,'#2f6ad0')}${bar('ATK',b.atk,10,'#e0962a')}${bar('MAG',b.mag,11,'#8a5ac8')}${bar('SPD',b.spd,70,'#4f8a46')}<small>Starting art: ${esc(SKILLS[c.skill].name)}</small></div></button>`}).join('')}</div>`;
+  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Kael')}</div><div class="cr-title">${CLASSES[C.cls].name} · ${C.dzEdit==='kochi'?'in Kochi':'reborn in Aurel'}</div></div>
+    <div class="cr-stage bg-${C.bg}"><button class="rot" data-rot="-1" aria-label="Turn left">◀</button><canvas id="crSpr" width="144" height="168"></canvas><button class="rot" data-rot="1" aria-label="Turn right">▶</button></div>
+    <div class="seg crpose">${[['walk','Walk'],['idle','Stand'],['attack','Attack']].map(([v,l])=>`<button class="${C.pose===v?'on':''}" data-k="pose" data-v="${v}">${l}</button>`).join('')}${[['studio','Studio'],['kochi','Kochi'],['meadow','Meadow']].map(([v,l])=>`<button class="${C.bg===v?'on':''}" data-k="bg" data-v="${v}">${l}</button>`).join('')}</div>
+    <div class="row-btns crtools"><button class="btn ghost sm" id="crUndo" type="button" ${crHist.u.length?'':'disabled'}>Undo</button><button class="btn ghost sm" id="crRedo" type="button" ${crHist.r.length?'':'disabled'}>Redo</button><button class="btn ghost sm" id="crRand" type="button">Randomize look</button></div></div>
+   <div class="cr-opts"><div class="bagbar crtabs">${tabs.map(([k,l])=>`<button class="${crTab===k?'on':''}" data-crt="${k}">${l}</button>`).join('')}</div><div class="cr-pane">${pane}</div></div>`;
+  const keepName=()=>{const n=$('#crName');if(n)C.name=n.value||C.name};
+  B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{keepName();if(!['pose','bg'].includes(b.dataset.k))crPush();C[b.dataset.k]=b.dataset.v;AudioSys.play('ui');renderCreate()});
+  B.querySelectorAll('[data-kp]').forEach(i=>i.onchange=e=>{keepName();crPush();C[i.dataset.kp]=e.target.value;renderCreate()});
+  B.querySelectorAll('[data-crt]').forEach(b=>b.onclick=()=>{keepName();crTab=b.dataset.crt;AudioSys.play('ui');renderCreate()});
+  B.querySelectorAll('[data-dzw]').forEach(b=>b.onclick=()=>{C.dzEdit=b.dataset.dzw;AudioSys.play('ui');renderCreate()});
+  B.querySelectorAll('[data-dzcopy]').forEach(b=>b.onclick=()=>{crPush();if(C.dzEdit==='kochi')C.dz=dzClone(C.dzKochi);else C.dzKochi=dzClone(C.dz);toast('Outfit copied');renderCreate()});
+  if(crTab==='design')bindDzEditor(B.querySelector('.cr-pane'),dz,()=>{const sc=B.querySelector('.cr-pane').scrollTop;renderCreate();const p=$('#createBody .cr-pane');if(p)p.scrollTop=sc},crPush);
+  const nm=$('#crName');if(nm)nm.oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
+  $('#crUndo').onclick=()=>{if(!crHist.u.length)return;crHist.r.push(crSnap());crRestore(crHist.u.pop());AudioSys.play('ui');renderCreate()};
+  $('#crRedo').onclick=()=>{if(!crHist.r.length)return;crHist.u.push(crSnap());crRestore(crHist.r.pop());AudioSys.play('ui');renderCreate()};
+  $('#crRand').onclick=()=>{crPush();Object.assign(C,{hair:pick(LOOK_HAIR),eye:pick(LOOK_EYE),skin:pick(LOOK_SKIN),hs:pick(HAIRSTYLES)[0],eyeShape:pick(EYESHAPES)[0],mark:Math.random()<.75?'none':pick(MARKS)[0],glasses:Math.random()<.2?'1':'',earrings:Math.random()<.3?'1':'',band:Math.random()<.3?pick(['#b8302a','#2f5aa8','#e8e0d0']):'',height:pick(['short','avg','tall']),beard:C.gender==='female'?'':pick(FACIAL)[0]});AudioSys.play('ui');renderCreate()};
+  B.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>{const ring=[0,3,1,2],cur=crDir==null?0:ring.indexOf(crDir);crDir=ring[(cur+ +b.dataset.rot+4)%4];AudioSys.play('ui');renderCreate()});
+  const look=Object.assign(lookFromCreation(),{dz:dzClone(dz)});$('#crPor').getContext('2d').drawImage(getPortrait(lookFace(C.cls,look),'happy'),0,0);
+  const wk=k=>[ITEMS[CLASSES[k].weapon].wk,ITEMS[CLASSES[k].weapon].icon[1]];
+  B.querySelectorAll('canvas[data-cs]').forEach(c=>{const k=c.dataset.cs,g=c.getContext('2d'),[w,wc]=wk(k);g.imageSmoothingEnabled=false;g.save();g.scale(1.6,1.6);drawHumanoid(g,15,38,{pal:lookPal(k,look),dir:0,weapon:w,wcol:wc,time:0});g.restore()});
+  clearInterval(renderCreate.tm);spinPreview($('#crSpr'),()=>lookPal(C.cls,look),'crSpr',{height:C.height,dir:crDir,pose:C.pose,weapon:C.pose==='attack'?wk(C.cls)[0]:null,wcol:wk(C.cls)[1]})};
+/* the Kochi evening uses the Kochi design, Aurel uses the reborn one */
+const _startKochiDZ=startKochi;startKochi=function(){_startKochiDZ();const C=creation;G.look.outfit='custom';G.look.dz=dzClone(C.dzKochi);G.player._pal=null;G.lookAfter.dz=dzClone(C.dz);G.lookAfter.outfit='custom'};
+
+/* ================= DIFFICULTY: six levels, chosen before a new game ================= */
+const DIFFS=[
+  {id:'easy',name:'Easy',col:'#7ce07a',tag:'Story first',desc:'Enemies are weaker and slower to strike, and you recover quickly. Good for enjoying the story.',hp:.7,dmg:.6,wind:1.25,xp:1.2,gold:1.2,pot:1.25,regen:1.5,grace:true,perma:false},
+  {id:'normal',name:'Normal',col:'#8ac0ff',tag:'As designed',desc:'The intended balance. Dawn\'s Grace lifts you once a day.',hp:1,dmg:1,wind:1,xp:1,gold:1,pot:1,regen:1,grace:true,perma:false},
+  {id:'hard',name:'Hard',col:'#ffd27a',tag:'A real fight',desc:'Tougher, harder-hitting enemies that wind up faster. Slower natural healing.',hp:1.35,dmg:1.3,wind:.9,xp:1.1,gold:1.1,pot:1,regen:.8,grace:true,perma:false},
+  {id:'extreme',name:'Extreme',col:'#ff9a4a',tag:'Every mistake costs',desc:'Enemies nearly twice as strong. Potions work less well and healing is slow.',hp:1.8,dmg:1.7,wind:.8,xp:1.25,gold:1.25,pot:.75,regen:.5,grace:true,perma:false},
+  {id:'hell',name:'Hell',col:'#ff4a4a',tag:'No mercy',desc:'No Dawn\'s Grace and no natural healing. Enemies hit like bosses.',hp:2.5,dmg:2.3,wind:.7,xp:1.5,gold:1.5,pot:.6,regen:0,grace:false,perma:false},
+  {id:'impossible',name:'Impossible',col:'#c86aff',tag:'One life',desc:'Everything from Hell, stronger still, and you only live once: no revives of any kind, and dying erases this save for good.',hp:3.5,dmg:3.2,wind:.6,xp:2,gold:2,pot:.5,regen:0,grace:false,perma:true}];
+const DF=()=>DIFFS.find(d=>d.id===G.diff)||DIFFS[1];
+G.diff='normal';
+/* effects */
+const dfScale=e=>{if(e._dfs)return;e._dfs=1;const k=DF().hp;if(k!==1){e.maxHp=Math.round(e.maxHp*k);e.hp=Math.round(e.hp*k)}};
+const _eupdDF=Enemy.prototype.update;Enemy.prototype.update=function(dt){dfScale(this);_eupdDF.call(this,dt)};
+const _ehurtDF=Enemy.prototype.hurt;Enemy.prototype.hurt=function(d,c,kx,ky,o){dfScale(this);return _ehurtDF.call(this,d,c,kx,ky,o)};
+const _eaiDF=Enemy.prototype.ai;Enemy.prototype.ai=function(dt){const w=this.st==='windup';_eaiDF.call(this,dt);const f=DF().wind;if(w&&this.st==='windup'&&f!==1)this.t-=dt*(1/f-1)};
+const _phurtDF=Player.prototype.hurt;Player.prototype.hurt=function(dmg,sx,sy,o={}){return _phurtDF.call(this,dmg*DF().dmg,sx,sy,o)};
+const _pdieDF=Player.prototype.die;Player.prototype.die=function(){if(!DF().grace)G.rewindDay=G.day;_pdieDF.call(this)};
+const _gainDF=Player.prototype.gainXp;Player.prototype.gainXp=function(n){_gainDF.call(this,n*DF().xp)};
+const _goldDF=dropGold;dropGold=function(x,y,n){_goldDF(x,y,Math.max(1,Math.round(n*DF().gold)))};
+const _useDF=useItem;useItem=function(idx){const P=G.player,s=P.inv[idx],d=s&&ITEMS[s.id],h0=P.hp,m0=P.mp,r=_useDF(idx),k=DF().pot;if(r&&d&&d.type==='use'&&k!==1){P.hp=clamp(h0+(P.hp-h0)*k,1,P.maxHp);P.mp=clamp(m0+(P.mp-m0)*k,0,P.maxMp)}return r};
+const _updDF=update;update=function(dt){const P=G.player,h0=P?P.hp:0,nat=P&&!P.dead&&P.lastHurt>4;_updDF(dt);const k=DF().regen;if(nat&&k!==1&&G.state==='play'&&!P.dead&&P.hp>h0){const base=P.maxHp*.012*dt;P.hp=Math.max(h0,Math.min(P.maxHp,P.hp+base*(k-1)))}};
+/* one life */
+const _showDeathDF=showDeath;showDeath=function(){if(!DF().perma)return _showDeathDF();Store.del('eclipse.slot.'+G.slot);Store.del('eclipse.slot.'+G.slot+'.bak');if(Store.get('eclipse.last',0)===G.slot)Store.del('eclipse.last');
+  G.ui='death';const s=$('#sDeath');s.hidden=false;s.querySelector('.death').innerHTML=`<h2>Your Story Ends</h2><p>On Impossible, there is no second dawn. ${esc(G.player.name)}'s journey is over, and the save in slot ${G.slot} has been erased.</p><button class="btn" id="btnPermaEnd">Return to title</button>`;
+  $('#btnPermaEnd').onclick=()=>{s.hidden=true;s.querySelector('.death').innerHTML=`<h2>You Have Fallen</h2><p>The lantern remembers you. Rise again, and leave a tenth of your gold to the dark.</p><button class="btn" id="btnRise">Rise at the lantern</button>`;$('#btnRise').onclick=rise;G.ui=null;toTitle()}};
+/* saving */
+const _serDF=serialize;serialize=function(){return Object.assign(_serDF(),{diff:G.diff||'normal'})};
+const _startDF=startFrom;startFrom=function(data,slot){G.diff=DIFFS.some(d=>d.id===data.diff)?data.diff:'normal';_startDF(data,slot)};
+/* the choice */
+const sDiff=document.createElement('section');sDiff.id='sDiff';sDiff.className='screen';sDiff.hidden=true;document.body.appendChild(sDiff);
+let dfSel='normal',dfOk=false;
+function openDifficulty(next){hideScreens();sDiff.hidden=false;G.state='cine';const pct=v=>Math.abs(v-1)<.005?'Standard':(v>=1?'+':'')+Math.round((v-1)*100)+'%';
+  const draw=()=>{const D=DIFFS.find(d=>d.id===dfSel);
+    sDiff.innerHTML=`<div class="df-wrap"><header><small>Before your story begins</small><h2>Choose a difficulty</h2></header><div class="df-grid">${DIFFS.map((d,i)=>`<button class="dfcard${dfSel===d.id?' on':''}" data-df="${d.id}" style="--dc:${d.col}"><span class="dfn">${i+1}</span><b>${d.name}</b><small>${d.tag}</small><span class="skulls">${'◆'.repeat(i+1)}</span></button>`).join('')}</div>
+     <div class="df-detail" style="--dc:${D.col}"><h3>${D.name}</h3><p>${esc(D.desc)}</p><dl>
+      <dt>Enemy health</dt><dd>${pct(D.hp)}</dd><dt>Enemy damage</dt><dd>${pct(D.dmg)}</dd><dt>Enemy attack speed</dt><dd>${pct(1/D.wind)}</dd><dt>Experience and gold</dt><dd>${pct(D.xp)}</dd>
+      <dt>Potions and food</dt><dd>${pct(D.pot)}</dd><dt>Natural healing</dt><dd>${D.regen?pct(D.regen):'None'}</dd><dt>Dawn's Grace</dt><dd>${D.grace?'Once per day':'Disabled'}</dd><dt>On death</dt><dd>${D.perma?'<b class="perma">Save is erased</b>':'Rise at your lantern'}</dd></dl>
+      ${D.perma?`<label class="dfconfirm"><input type="checkbox" id="dfOk" ${dfOk?'checked':''}> I understand: if I die, this save is gone forever.</label>`:''}<p class="hint">Difficulty is fixed for this save.</p></div>
+     <div class="row-btns"><button class="btn ghost" id="dfBack">Back</button><button class="btn" id="dfGo" ${D.perma&&!dfOk?'disabled':''}>Begin on ${D.name}</button></div></div>`;
+    sDiff.querySelectorAll('[data-df]').forEach(b=>b.onclick=()=>{dfSel=b.dataset.df;dfOk=false;AudioSys.play('ui');draw()});const ok=$('#dfOk');if(ok)ok.onchange=e=>{dfOk=e.target.checked;draw()};
+    $('#dfBack').onclick=()=>{sDiff.hidden=true;AudioSys.play('ui');toTitle()};$('#dfGo').onclick=()=>{G.diff=dfSel;sDiff.hidden=true;AudioSys.play('quest');next()}};
+  draw()}
+const _startOpeningDF=startOpening;startOpening=function(){AudioSys.init();AudioSys.resume();openDifficulty(()=>_startOpeningDF())};
+const _openPauseDF=openPause;openPause=function(){_openPauseDF();const p=$('.pause-pnl');if(!p)return;let b=p.querySelector('.diffbadge');if(!b){b=document.createElement('div');b.className='diffbadge';p.prepend(b)}const D=DF();b.style.setProperty('--dc',D.col);b.textContent='Difficulty: '+D.name}
+
+/* ================= ARCHITECTURE: unique facades for Solmere and Kakkanad ================= */
+function genFacade(h){const f=h.fz,W=h.w*T,fl=f.floors||1,fh=26+(fl-1)*22,ex=f.extra||0,Hh=h.h*T+10+(fl-1)*22+ex,c=mkCanvas(W,Hh),g=c.getContext('2d'),r=mulberry32(h.tx*31+h.ty*17),
+  F=(x,y,w,hh,col)=>{g.fillStyle=col;g.fillRect(Math.round(x),Math.round(y),Math.round(w),Math.round(hh))},fy=Hh-fh,dc=(h.door.x-h.tx)*T+8,wc=f.wall,rc=f.rc||'#7a3b2e',R0=ex;h.wins=[];
+  /* roof, seen from above: it is the building's depth */
+  const shingles=(x0,y0,x1,y1,col)=>{for(let y=y0;y<y1;y+=3){const off=((y-y0)/3)%2?3:0;F(x0,y,x1-x0,1,shade(col,-.22));for(let x=x0+off;x<x1;x+=6)F(x,y-2,1,2,shade(col,-.14))}};
+  if(f.roof==='flat'||f.roof==='crenel'){F(0,R0+2,W,fy-R0-2,'#8a8494');for(let i=0;i<W*(fy-R0)/30;i++)F(r()*W,R0+2+r()*(fy-R0-4),2,1,shade('#8a8494',r()<.5?.1:-.12));F(0,R0+2,W,3,'#a8a2b2');F(0,fy-4,W,4,'#6a6474');
+    for(let i=0;i<Math.floor(W/40);i++)F(12+i*40+r()*8,R0+12+r()*Math.max(4,fy-R0-30),8,6,'#6a6474')}
+  else if(f.roof==='spire'){g.fillStyle=rc;g.beginPath();g.moveTo(-2,fy+1);g.lineTo(W/2,R0);g.lineTo(W+2,fy+1);g.closePath();g.fill();g.strokeStyle=shade(rc,-.3);g.lineWidth=1;for(let y=R0+8;y<fy;y+=5){const k=(y-R0)/(fy-R0);g.beginPath();g.moveTo(W/2-k*W/2,y);g.lineTo(W/2+k*W/2,y);g.stroke()}F(W/2-1,R0-8,2,9,'#e0b84a');F(W/2-3,R0-10,6,3,'#7ff0c0')}
+  else{const inset=f.roof==='hip'?10:0;g.fillStyle=rc;g.beginPath();g.moveTo(inset,R0);g.lineTo(W-inset,R0);g.lineTo(W,fy+1);g.lineTo(0,fy+1);g.closePath();g.fill();shingles(0,R0+3,W,fy,rc);F(inset,R0,W-inset*2,2,shade(rc,.28));F(0,fy-3,W,3,shade(rc,-.45));
+    if(fl>1)for(let x=24;x<W-24;x+=40){if(Math.abs(x+6-dc)<10)continue;F(x,fy-18,14,15,shade(rc,-.15));g.fillStyle=shade(rc,-.3);g.beginPath();g.moveTo(x-2,fy-17);g.lineTo(x+7,fy-26);g.lineTo(x+16,fy-17);g.closePath();g.fill();F(x+4,fy-14,6,8,'#232a38');h.wins.length<10&&h.wins.push([x+4,fy-14-0,6,8])}}
+  if(f.roof==='dome'){F(0,R0+2,W,fy-R0-2,'#e8e2d4');F(0,fy-4,W,4,'#c8c0b0');const rr=Math.min(W*.22,(fy-R0)*.9);g.fillStyle='#f4f0e4';g.beginPath();g.arc(W/2,fy-2,rr,Math.PI,0);g.fill();g.fillStyle='#ffd27a';g.beginPath();g.arc(W/2,fy-2,rr,Math.PI*1.12,Math.PI*1.35);g.lineTo(W/2,fy-2);g.fill();
+    g.strokeStyle='#c8b890';g.lineWidth=1;for(let i=1;i<6;i++){g.beginPath();g.moveTo(W/2,fy-2-rr);g.quadraticCurveTo(W/2+(i-3)*rr*.45,fy-2-rr*.5,W/2+(i-3)*rr*.66,fy-2);g.stroke()}F(W/2-1,fy-rr-12,2,11,'#e0b84a');g.fillStyle='#ffd27a';g.beginPath();g.arc(W/2,fy-rr-14,4,0,TAU);g.fill();
+    for(const sx of[W*.12,W*.88]){g.fillStyle='#f4f0e4';g.beginPath();g.arc(sx,fy-2,rr*.35,Math.PI,0);g.fill();F(sx-1,fy-rr*.35-7,2,6,'#e0b84a')}}
+  if(f.clock){const tw=34,x=dc-tw/2;F(x,4,tw,fy-4,'#d8ccb4');for(let y=8;y<fy;y+=6)F(x,y,tw,1,'#bcb098');g.fillStyle=rc;g.beginPath();g.moveTo(x-4,8);g.lineTo(dc,-2);g.lineTo(x+tw+4,8);g.closePath();g.fill();
+    g.fillStyle='#f4ecd8';g.beginPath();g.arc(dc,26,11,0,TAU);g.fill();g.strokeStyle='#3a2a1a';g.lineWidth=1.5;g.stroke();g.beginPath();g.moveTo(dc,26);g.lineTo(dc,18);g.moveTo(dc,26);g.lineTo(dc+6,28);g.stroke();F(dc-4,44,8,12,'#2a3048');h.wins.push([dc-4,44,8,12])}
+  if(f.vane){F(W*.7,R0-10,1,12,'#3a3a40');g.fillStyle='#2a2a30';g.beginPath();g.moveTo(W*.7-8,R0-10);g.lineTo(W*.7+6,R0-13);g.lineTo(W*.7+9,R0-9);g.lineTo(W*.7+3,R0-8);g.closePath();g.fill()}
+  for(const cx of f.chimney||[]){const x=cx*W;F(x,R0-2,9,16,'#6a5a58');F(x-1,R0-3,11,3,'#7a6a68');h.smoke=[x+4,R0-2]}
+  /* walls */
+  F(0,fy,W,fh,wc);const M=f.mat;
+  if(M==='stone'){for(let y=fy+2;y<Hh-3;y+=5){const o=((y-fy)/5)%2?6:0;for(let x=o;x<W;x+=12)F(x,y,1,4,shade(wc,-.22));F(0,y+4,W,1,shade(wc,-.2))}}
+  else if(M==='brick'){for(let y=fy+1;y<Hh-3;y+=3){const o=((y-fy)/3)%2?3:0;F(0,y+2,W,1,shade(wc,-.3));for(let x=o;x<W;x+=6)F(x,y,1,2,shade(wc,-.25))}}
+  else if(M==='timber'){const bm=f.beam||'#4a3220';for(let i=0;i<fl;i++){const y0=fy+i*22,hh=i===fl-1?26:22;F(0,y0,W,2,bm);for(let x=0;x<W;x+=16){F(x,y0,2,hh,bm);if(i<fl-1&&(x/16)%2){g.strokeStyle=bm;g.lineWidth=1.5;g.beginPath();g.moveTo(x,y0+hh);g.lineTo(x+16,y0);g.stroke()}}}F(W-2,fy,2,fh,bm)}
+  else if(M==='marble'){for(let i=0;i<W/6;i++){g.strokeStyle=shade(wc,-.08);g.lineWidth=.5;g.beginPath();const x=r()*W;g.moveTo(x,fy);g.lineTo(x+r()*6-3,Hh);g.stroke()}}
+  else{for(const x of[0,W-6])for(let y=fy+2;y<Hh-4;y+=8)F(x,y,6,4,shade(wc,-.15))}
+  if(f.stoneBase)for(let y=Hh-26;y<Hh-3;y+=5){F(0,y,W,26-(y-(Hh-26)),'#8a8494');break}
+  for(let i=1;i<fl;i++)F(0,fy+i*22-1,W,2,shade(wc,-.3));F(0,Hh-3,W,3,'#57515e');F(0,Hh-1,W,1,'#3a3540');
+  if(f.columns)for(let x=8;x<W-6;x+=26){if(Math.abs(x+3-dc)<20)continue;F(x,fy+3,6,fh-6,'#f4f0e6');F(x,fy+3,2,fh-6,'#ffffff');F(x+5,fy+3,1,fh-6,'#c8c0b0');F(x-2,fy+2,10,3,'#e8e2d4');F(x-2,Hh-6,10,3,'#e8e2d4')}
+  /* windows, floor by floor */
+  const win=(x,y,type)=>{const fr=f.frame||'#3a2616',gl='#232a38';if(type==='round'){g.fillStyle=fr;g.beginPath();g.arc(x+4,y+4,5,0,TAU);g.fill();g.fillStyle=gl;g.beginPath();g.arc(x+4,y+4,3.6,0,TAU);g.fill();F(x+3.5,y,1,8,fr);F(x,y+3.5,8,1,fr);h.wins.length<14&&h.wins.push([x+1,y+1,6,6]);return}
+    const hh=type==='tall'?14:type==='arch'?11:9;F(x-1,y-1,10,hh+2,fr);if(type==='arch'){g.fillStyle=gl;g.beginPath();g.moveTo(x,y+hh);g.lineTo(x,y+4);g.arc(x+4,y+4,4,Math.PI,0);g.lineTo(x+8,y+hh);g.closePath();g.fill()}else F(x,y,8,hh,gl);
+    F(x+3.5,y,1,hh,fr);F(x,y+Math.floor(hh/2),8,1,fr);F(x,y,2,1,'#4a5a70');if(f.shut){F(x-4,y,3,hh,f.shut);F(x+9,y,3,hh,f.shut)}if(f.flowers){F(x-2,y+hh+1,12,2,'#6b4a2c');for(let i=0;i<5;i++)F(x-1+i*2,y+hh-1,2,2,['#ff6a8a','#ffd84a','#ffffff','#e84a5a','#ff9ac8'][(i+x)%5])}h.wins.length<14&&h.wins.push([x,y,8,hh])};
+  for(let i=0;i<fl;i++){const ground=i===fl-1,y0=fy+i*22,type=ground?(f.gwin||f.win||'square'):(f.win||'square'),sp=f.wsp||20;if(type==='display'&&ground)continue;
+    for(let x=10;x<W-14;x+=sp){if(Math.abs(x+4-dc)<(ground?18:8))continue;if(f.columns&&((x-8)%26)<8)continue;win(x,y0+(ground?6:5),type)}
+    if(f.balcony&&!ground&&i===fl-2){F(6,y0+19,W-12,2,f.beam||'#4a3220');for(let x=7;x<W-7;x+=3)F(x,y0+15,1,5,f.beam||'#4a3220');F(6,y0+14,W-12,1,f.beam||'#4a3220')}}
+  if(f.gwin==='display'){const y=Hh-22;for(const x0 of[8,W-38]){if(Math.abs(x0+15-dc)<26)continue;F(x0-1,y-1,32,16,'#3a2616');F(x0,y,30,14,'#3a4a5a');F(x0,y,30,2,'#6a8aa8');const goods=f.goods;
+      for(let i=0;i<4;i++){const gx=x0+3+i*7;if(goods==='bread'){F(gx,y+8,6,3,'#d8a050');F(gx+1,y+7,4,1,'#e8c070')}else if(goods==='produce'){F(gx,y+8,6,5,'#8a5a32');F(gx+1,y+6,2,2,['#d8402a','#e8c040','#7ac04a','#e87a3a'][i]);F(gx+3,y+6,2,2,['#7ac04a','#d8402a','#e8c040','#d8402a'][i])}
+        else if(goods==='dress'){F(gx+2,y+2,2,2,'#e8d0b8');g.fillStyle=['#e87aa8','#3a6ad0','#e8c040','#7a3a9a'][i];g.beginPath();g.moveTo(gx+1,y+4);g.lineTo(gx+5,y+4);g.lineTo(gx+6,y+13);g.lineTo(gx,y+13);g.closePath();g.fill()}
+        else if(goods==='potion'){F(gx+2,y+6,2,2,'#cfd8dc');F(gx+1,y+8,4,5,['#c8423a','#3a6ad0','#5aa05a','#9a4ad0'][i])}else{F(gx,y+6,6,7,'#8a5a32');F(gx,y+6,6,1,'#a8784a')}}h.wins.push([x0,y,30,14])}}
+  if(f.awning){const[a1,a2]=f.awning,y=Hh-30;for(let x=0;x<W;x+=6){if(Math.abs(x+3-dc)<14)continue;F(x,y,6,7,(x/6)%2?a1:a2);g.fillStyle=(x/6)%2?a1:a2;g.beginPath();g.arc(x+3,y+7,3,0,Math.PI);g.fill()}}
+  /* door */
+  const dt=f.door||'single';if(dt==='open'){F(dc-14,Hh-22,28,19,'#1a1210');const gr=g.createRadialGradient(dc,Hh-6,1,dc,Hh-6,16);gr.addColorStop(0,'#ffb35a');gr.addColorStop(1,'rgba(255,120,40,0)');g.fillStyle=gr;F(dc-14,Hh-22,28,19,gr);F(dc-15,Hh-23,30,2,'#3a2a1a');F(dc-15,Hh-23,2,20,'#3a2a1a');F(dc+13,Hh-23,2,20,'#3a2a1a')}
+  else if(dt==='arch'||dt==='double'){const w=dt==='arch'?22:20,hh=dt==='arch'?24:19;g.fillStyle='#2a1a10';g.beginPath();g.moveTo(dc-w/2-1,Hh-3);g.lineTo(dc-w/2-1,Hh-hh+w/2-3);if(dt==='arch')g.arc(dc,Hh-hh+w/2-3,w/2+1,Math.PI,0);else g.lineTo(dc+w/2+1,Hh-hh-1);g.lineTo(dc+w/2+1,Hh-3);g.closePath();g.fill();
+    F(dc-w/2+1,Hh-hh+(dt==='arch'?w/2-2:1),w/2-1,hh-(dt==='arch'?w/2:3),'#6a3a1e');F(dc+1,Hh-hh+(dt==='arch'?w/2-2:1),w/2-1,hh-(dt==='arch'?w/2:3),'#6a3a1e');F(dc-3,Hh-12,2,2,'#e0b84a');F(dc+1,Hh-12,2,2,'#e0b84a')}
+  else{F(dc-6,Hh-19,12,16,'#2a1a10');F(dc-5,Hh-18,10,15,f.doorc||'#5a3a22');for(let x=dc-2;x<dc+5;x+=3)F(x,Hh-18,1,15,shade(f.doorc||'#5a3a22',-.2));F(dc+3,Hh-10,1,1,'#e0b84a')}
+  if(f.steps)for(let i=0;i<3;i++)F(dc-14-i*2,Hh-3+i,28+i*4,1,'#b8b0a0');
+  /* signs and decorations */
+  if(f.label){g.font='bold 7px Georgia,serif';const tw=Math.min(W-8,g.measureText(f.label).width+12),sy=fy-(f.labelUp?12:0)+(fl>1?(fl-1)*22-12:fh-38);const y=Math.max(R0+2,f.labelY!=null?Hh-f.labelY:Hh-40);F(dc-tw/2,y,tw,10,'#3a2a1a');F(dc-tw/2+1,y+1,tw-2,8,f.boardc||'#5a3a22');g.fillStyle=f.inkc||'#ffd27a';g.textAlign='center';g.fillText(f.label,dc,y+7.5,tw-6)}
+  if(f.icon){g.save();const ix=dc+(f.iconSide||20),iy=Hh-30;F(ix-1,iy-4,1,4,'#3a2a1a');F(ix-6,iy-4,14,1,'#3a2a1a');F(ix-5,iy,12,10,'#6b4a2c');F(ix-4,iy+1,10,8,'#f0e2c0');drawSignIcon(g,f.icon,ix-3,iy+2);g.restore()}
+  if(f.banners)for(const bx of[6,W-14]){F(bx,fy+3,8,18,f.banners);F(bx,fy+3,8,2,'#e0b84a');F(bx+2,fy+8,4,4,'#e0b84a')}
+  if(f.lantern){F(dc+14,Hh-26,1,6,'#2a2a30');F(dc+11,Hh-20,7,8,'#2a2a30');F(dc+12,Hh-19,5,6,'#ffd27a');h.wins.push([dc+12,Hh-19,5,6])}
+  if(f.barrels)for(const bx of[3,W-12]){F(bx,Hh-12,9,10,'#6b4a2c');F(bx,Hh-9,9,1,'#3a2a1a');F(bx,Hh-5,9,1,'#3a2a1a');F(bx+1,Hh-12,2,10,'#8a6440')}
+  if(f.hoist){const hx=Math.min(W-24,dc+30);F(hx,fy+2,18,3,'#4a3220');F(hx+16,fy+5,1,18,'#c8b898');F(hx+12,fy+23,9,7,'#8a5a32');F(hx+12,fy+23,9,1,'#a8784a');F(hx-4,fy+6,14,16,'#3a2a1a');F(hx-3,fy+7,12,14,'#5a3a22')}
+  if(f.herbs)for(let x=6;x<W-4;x+=7){F(x,fy+1,1,4,'#3a2a1a');F(x-1,fy+5,3,5,['#5aa05a','#a8c84a','#8a6aa8'][x%3])}
+  if(f.merlons){for(let x=0;x<W;x+=12){F(x,fy-7,7,8,'#7a7484');F(x,fy-7,7,1,'#9a94a4')}}
+  if(f.crates)for(const bx of[4,W-14]){F(bx,Hh-11,10,9,'#8a5a32');F(bx,Hh-11,10,1,'#a8784a');F(bx+4,Hh-11,1,9,'#6a4428')}
+  h.cv=c;h.ch=Hh}
+function genOffice(h){const W=h.w*T,Hh=h.h*T+10+70,c=mkCanvas(W,Hh),g=c.getContext('2d'),r=mulberry32(h.tx*13+5),F=(x,y,w,hh,col)=>{g.fillStyle=col;g.fillRect(x,y,w,hh)},roofH=h.h*T-20,fy=roofH;h.wins=[];
+  F(0,0,W,roofH,'#7a8090');F(0,0,W,3,'#9aa0b0');F(0,roofH-3,W,3,'#5a6070');for(let i=0;i<4;i++)F(10+r()*(W-30),8+r()*(roofH-26),12,8,'#5a6070');F(W-20,4,8,8,'#c8302a');
+  F(0,fy,W,Hh-fy,'#2a3a52');for(let y=fy+4;y<Hh-14;y+=9)for(let x=4;x<W-6;x+=8){const lit=r()<.45;F(x,y,6,6,lit?'#ffe7a8':'#3a5a7a');if(lit&&h.wins.length<8&&r()<.3)h.wins.push([x,y,6,6])}
+  for(let y=fy+2;y<Hh-12;y+=9)F(0,y,W,1,'#4a5a72');F(0,fy,W,2,'#8a98b0');const dc=(h.door.x-h.tx)*T+8;F(dc-10,Hh-15,20,12,'#8ac0e8');F(dc,Hh-15,1,12,'#2a3a52');F(0,Hh-3,W,3,'#57515e');
+  g.font='bold 8px sans-serif';g.textAlign='center';g.fillStyle='#ffffff';g.fillText(h.name.replace('Infopark · ','').toUpperCase(),W/2,fy+12);h.cv=c;h.ch=Hh}
+const _genHouseFZ=genHouse;genHouse=function(h){if(h.office)return genOffice(h);if(h.fz)return genFacade(h);return _genHouseFZ(h)};
+/* ================= SOLMERE, rebuilt larger: every building its own ================= */
+buildSolmere=function(){const W=84,H=64,m=newMap('solmere','Solmere',W,H,{seed:53,ground:'grass',floor:'cobble',music:'village',region:'solmere',sub:'City of the guilds'});
+  const R=(x0,y0,x1,y1,t)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)m.set(x,y,t)};
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++)m.set(x,y,hash2(x,y,53)<.07?TL.FLOWER:TL.GRASS);
+  R(0,0,W-1,1,TL.TOWNWALL);R(0,H-2,W-1,H-1,TL.TOWNWALL);R(0,0,1,H-1,TL.TOWNWALL);R(W-2,0,W-1,H-1,TL.TOWNWALL);
+  R(40,14,43,H-1,TL.COBBLE);for(const y of[14,31,47,59])R(3,y,80,y+1,TL.COBBLE);R(3,14,4,60,TL.COBBLE);R(79,14,80,60,TL.COBBLE);R(28,34,55,45,TL.PLAZA);
+  const houses={};const house=(tx,ty,w,h,o)=>{R(tx,ty,tx+w-1,ty+h-1,TL.WALL);const hs=Object.assign({tx,ty,w,h},o);hs.door={x:tx+Math.floor(w/2),y:ty+h-1};m.houses.push(hs);houses[o.id]=hs;
+    for(let y=ty+h;y<H-2;y++){const t=m.get(hs.door.x,y);if(t===TL.COBBLE||t===TL.PLAZA)break;m.set(hs.door.x,y,TL.COBBLE)}return hs};
+  house(24,2,36,11,{name:"Adventurers' Guild",id:'guildhq',grand:true,extraH:60,chim:false});
+  house(4,3,17,10,{name:'Temple of Aurelia',id:'temple',fz:{mat:'marble',wall:'#f4f0e6',roof:'dome',floors:2,extra:24,columns:true,steps:true,door:'arch',win:'tall',label:'TEMPLE OF AURELIA',boardc:'#e8dcc0',inkc:'#8a6a20',frame:'#c8b890'}});
+  house(62,3,18,10,{name:'The Sleeping Lantern Inn',id:'inn',fz:{mat:'timber',wall:'#f0e4c8',rc:'#3a5a8a',roof:'gable',floors:3,balcony:true,flowers:true,shut:'#3a5a8a',lantern:true,door:'double',label:'THE SLEEPING LANTERN',icon:'bed',chimney:[.15,.82]}});
+  house(5,18,14,9,{name:'Hearth & Harvest Grocer',id:'grocer',fz:{mat:'plaster',wall:'#f2e4c8',rc:'#5a8a3a',roof:'hip',floors:1,awning:['#5aa05a','#f4f0e6'],gwin:'display',goods:'produce',crates:true,door:'double',label:'HEARTH & HARVEST',labelY:44}});
+  house(21,19,11,8,{name:'Golden Crust Bakery',id:'bakery',fz:{mat:'brick',wall:'#b8583a',rc:'#6a3a22',roof:'gable',floors:2,gwin:'display',goods:'bread',chimney:[.75],shut:'#e8c040',label:'GOLDEN CRUST',icon:'bread',iconSide:-20,doorc:'#8a5a2a'}});
+  house(33,17,6,10,{name:'Green Vial Apothecary',id:'apoth',fz:{mat:'stone',wall:'#a8b4a0',rc:'#2f8a80',roof:'spire',floors:3,win:'round',herbs:true,icon:'potion',iconSide:-12,doorc:'#2f5a50'}});
+  house(46,18,14,10,{name:'Solmere General Goods',id:'general',fz:{mat:'timber',wall:'#e8dcc0',beam:'#6a4a2a',rc:'#9a4a2a',roof:'gable',floors:2,hoist:true,crates:true,door:'double',label:'GENERAL GOODS',win:'square',shut:'#3a7a4a',awning:['#3a7a4a','#e8dcc0']}});
+  house(62,17,17,11,{name:'The Drunken Wyvern',id:'tavern',fz:{mat:'stone',wall:'#b8a890',rc:'#4a3a5a',roof:'hip',floors:2,win:'round',gwin:'round',vane:true,barrels:true,lantern:true,door:'arch',label:'THE DRUNKEN WYVERN',boardc:'#4a1a2a',icon:'mug',chimney:[.2,.6]}});
+  house(4,34,20,11,{name:'Solmere Town Hall',id:'townhall',fz:{mat:'stone',wall:'#d8d0c8',rc:'#3a4f9a',roof:'hip',floors:2,clock:true,banners:'#3a4f9a',steps:true,door:'arch',win:'arch',label:'TOWN HALL'}});
+  house(59,34,20,11,{name:'City Guard Barracks',id:'barracks',fz:{mat:'stone',wall:'#9a94a4',roof:'crenel',floors:2,merlons:true,banners:'#8a1a2a',door:'double',win:'tall',label:'CITY GUARD',boardc:'#2a2a3a'}});
+  house(4,50,15,8,{name:'Silk & Needle Clothiers',id:'tailor',fz:{mat:'plaster',wall:'#f8e8f0',rc:'#a83a6a',roof:'hip',floors:2,awning:['#a83a6a','#f8f0f4'],gwin:'display',goods:'dress',flowers:true,shut:'#a83a6a',label:'SILK & NEEDLE',icon:'needle',labelY:46}});
+  house(21,50,16,8,{name:'Ironbell Smithy & Armory',id:'smithy',fz:{mat:'stone',wall:'#77707e',rc:'#55505e',roof:'gable',floors:2,door:'open',chimney:[.2,.8],barrels:true,label:'IRONBELL SMITHY',icon:'anvil',win:'square',boardc:'#2a2a30'}});
+  house(45,51,9,6,{name:'Cart station',id:'cartshed',chim:false,fz:{mat:'timber',wall:'#d8c4a0',rc:'#8a6a3a',roof:'gable',floors:1,door:'double',label:'CART STATION',crates:true}});
+  house(56,50,8,7,{name:'A tall townhouse',id:'res1',fz:{mat:'timber',wall:'#efe0c4',rc:'#8a4a3a',roof:'gable',floors:2,shut:'#5a8a3a',flowers:true,chimney:[.7]}});
+  house(66,50,7,7,{name:'A blue-shuttered house',id:'res2',fz:{mat:'plaster',wall:'#f4e8d0',rc:'#3a6aa8',roof:'hip',floors:2,shut:'#3a6aa8'}});
+  house(73,50,6,7,{name:'The scribe\'s house',id:'res5',fz:{mat:'brick',wall:'#a85a44',rc:'#4a3a5a',roof:'gable',floors:2,win:'arch',chimney:[.3]}});
+  for(const[x,y]of[[8,13],[13,13],[66,13],[75,13],[22,30],[36,30],[61,30],[76,30],[10,46],[24,46],[60,46],[76,46],[20,58],[56,58],[70,58],[30,16],[61,16]]){const t=m.get(x,y);if(t===TL.GRASS||t===TL.FLOWER)m.set(x,y,TL.TREE)}
+  addObj(m,'fountain',41,39,{solid:true});m.block[39*W+42]=1;
+  [[31,35],[34,35],[48,35],[51,35],[31,44],[51,44]].forEach(([x,y],i)=>addObj(m,'stall',x,y,{solid:true,i}));
+  for(const[x,y]of[[38,16],[45,16],[38,30],[45,30],[29,34],[54,34],[29,45],[54,45],[38,50],[45,49],[38,57],[44,58]])if(m.get(x,y)!==TL.WALL)addObj(m,'lamp',x,y,{solid:true});
+  for(const[x,y]of[[36,42],[47,42]])addObj(m,'bench',x,y,{solid:true,text:['A sun-warmed stone bench. Pigeons have claimed one end.']});
+  addObj(m,'statue',44,27,{solid:true,text:['A bronze statue of a woman with a sword raised to the sky: Sela Brightmantle, founder of the Adventurers\' Guild.','The plaque reads: "We go where the light does not, so that others need not."']});
+  addObj(m,'sign',45,61,{solid:true,text:['SOLMERE, CITY OF THE GUILDS. North: the Adventurers\' Guild hall. Centre: the market plaza.','Carts depart from the station by the south gate.']});
+  addObj(m,'notice',38,13,{solid:true,text:["GUILD NOTICE: New arrivals register at the counter inside. Rank F work pays in coin and experience.",'WANTED: brave souls for Eldoria, the last lit village to the east. The elder asks the guild for help against the eclipse.','LOST: one grey cat, answers to "Sir Whiskers". Reward from the scribe\'s house.']});
+  addObj(m,'anvil',26,58,{solid:true,light:'forge'});addObj(m,'cart',47,58,{solid:true,id:'cart_city'});addObj(m,'well',20,29,{solid:true,text:['Cold, clean water from the city cistern. You feel restored.'],heal:true});
+  addObj(m,'lantern',38,58,{solid:true,id:'L_city',name:'Station Lantern'});
+  m.exits.push({x:40*T,y:(H-1)*T+6,w:4*T,h:10,to:'meadow',px:41*T,py:17*T+8,need:'rodeCart'});m.cityHouses=houses;
+  const at=(id,hid,dx=1.4)=>{const h=houses[hid];NPCDEF[id].day=NPCDEF[id].night=[h.door.x+dx,h.door.y+1.85]};
+  at('clara','guildhq');at('marta','grocer');at('pell','bakery');at('tobias','general');at('ilsa','apoth');at('rosa','inn');at('gus','tavern');at('vesna','tailor');at('hadrik','smithy');at('ama','temple');at('tam','cartshed');
+  Object.assign(NPCDEF.guard,{day:[41.5,52],night:[41.5,52],route:[[41.5,52],[41.5,17],[5,15],[41.5,17],[79.5,15],[41.5,17]]});Object.assign(NPCDEF.kid,{day:[36,37],night:[36,37],route:[[36,37],[46,41],[50,37],[37,43],[33,40]]});
+  Object.assign(NPCDEF.bard,{day:[45,40.6],night:[45,40.6]});Object.assign(NPCDEF.elder,{day:[37,41.6],night:[37,41.6]});
+  Object.assign(NPCDEF.adv1,{day:[44.5,22],night:[44.5,22],route:[[44.5,22],[44.5,15],[60,15],[60,32],[44.5,32]]});Object.assign(NPCDEF.adv2,{day:[56.5,40],night:[56.5,40],route:[[56.5,40],[56.5,48],[75,48],[75,32],[56.5,32]]});
+  return m};
+CART_DEST.solmere=['Solmere',41.5,60.2];
+const _buildWorldFZ=buildWorld;buildWorld=function(){_buildWorldFZ();const md=G.maps.meadow;if(md)for(const e of md.exits)if(e.to==='solmere'){e.px=41.5*T;e.py=61*T}};
+/* the Kakkanad title card behind the opening lines */
+const _drawSceneKk=drawScene;drawScene=function(g,bg,t){if(bg!=='kakkanad')return _drawSceneKk(g,bg,t);const W=320,Hh=180,F=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x|0,y|0,w|0,h|0)};
+  let gr=g.createLinearGradient(0,0,0,120);gr.addColorStop(0,'#0a0c1c');gr.addColorStop(1,'#2a2440');g.fillStyle=gr;g.fillRect(0,0,W,120);
+  g.fillStyle='rgba(50,50,80,.6)';for(let i=0;i<7;i++){g.beginPath();g.ellipse((i*60+t*4)%380-30,16+hash2(i,1,5)*30,56,10,0,0,TAU);g.fill()}
+  for(let i=0;i<6;i++){const bx=10+i*52,bw=40,bh=60+hash2(i,2,3)*40,by=118-bh;F(bx,by,bw,bh,'#1e2a40');for(let y=by+4;y<116;y+=6)for(let x=bx+3;x<bx+bw-3;x+=5)F(x,y,3,3,hash2(x,y,i)>.5?'#ffe7a8':'#2e4060');F(bx,by,bw,2,'#4a5a78')}
+  g.fillStyle='#ffd27a';g.font='bold 7px sans-serif';g.textAlign='center';g.fillText('INFOPARK',36,52);
+  F(0,118,W,8,'#4a4a50');F(0,126,W,40,'#24242c');for(let x=6;x<W;x+=24)F((x-t*30)%W<0?(x-t*30)%W+W:(x-t*30)%W,145,12,2,'#d8d0a0');F(0,138,W,4,'#8a8a80');for(let x=20;x<W;x+=60){F(x,60,8,78,'#7a7a74');F(x-6,56,20,6,'#8a8a84')}
+  for(let i=0;i<4;i++){const x=((i*110+t*70)%420)-50;F(x,148,26,12,['#c83a2a','#e8e8e8','#2a4a8a','#1a1a1a'][i]);F(x+20,151,6,3,'#fff8d0');g.fillStyle='rgba(255,250,210,.15)';g.beginPath();g.moveTo(x+26,152);g.lineTo(x+90,144);g.lineTo(x+90,166);g.closePath();g.fill()}
+  F(0,166,W,14,'#5a5a60');for(let x=0;x<W;x+=40){F(x+8,150,2,16,'#3a3a40');F(x+3,148,12,3,'#3a6a4a')}
+  g.strokeStyle='rgba(170,190,255,.35)';g.lineWidth=1;g.beginPath();for(let i=0;i<120;i++){const x=(hash2(i,9,1)*W+t*-40)%W,y=(hash2(i,10,1)*Hh+t*260)%Hh;g.moveTo((x+W)%W,y);g.lineTo((x+W)%W-2,y+7)}g.stroke()};
 
 boot();
 </script>

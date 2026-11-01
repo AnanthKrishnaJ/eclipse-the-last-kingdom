@@ -23,7 +23,9 @@ The script is organised in layers, top to bottom:
 | Persistence | `serialize` / `startFrom` / `saveGame`, three slots plus `.bak` backups | `eclipse.slot.N` |
 | Powers | 112 power definitions, passive modifiers, casting, projectiles, fields, summoned allies, selection screen | `PW`, `PWI`, `G.powers`, `PM()`, `PFX`, `castPower`, `Ally`, `openPowerPick` |
 | Opening | Kochi map, conversations, kalari drill, incident, divine space, weaponless arrival | `buildKochi`, `startKochi`, `startIncident`, `divineScene`, `afterPick` |
-| City | Solmere map, grand guild hall, shops, inn, temple, carts, guild registration | `buildSolmere`, `genGrand`, `CTALK`, `cartRide`, `guildRegister` |
+| City | Solmere map, grand guild hall, shops, inn, temple, carts, guild registration | `buildSolmere`, `genGrand`, `genFacade`, `CTALK`, `cartRide`, `guildRegister` |
+| Outfits | design data, palette and portrait mapping, per-piece sprite drawing, creation and studio editors | `DZ_OPT`, `DZ_PRESETS`, `dzApply`, `dzPass`, `dzEditorHTML`, `openStudio` |
+| Difficulty | six levels and their multipliers, permadeath | `DIFFS`, `DF()`, `openDifficulty` |
 
 ### The extension pattern
 
@@ -50,6 +52,7 @@ Because the original code calls these functions by their global names, every cal
 | Quests | `QUESTS` entry, `qStart` / `qSet` / `qDone`, progress through `qProg` and `onKill` layers |
 | Saving new state | add to the `serialize` layer, read it back in the `startFrom` layer with defaults |
 | New powers | add a `D(...)` entry; actives pick an archetype in `PFX`, passives list modifiers that `pmRecalc` sums into `PM()` |
+| New building style | give a house an `fz` description (material, roof, floors, windows, door, signs, decorations) and `genFacade` draws it |
 | New object art | add a draw function to `NEWOBJ`; labels and actions go in the `objLabel` / `interactObj` layers |
 
 ## 3. Risks and constraints
