@@ -4,13 +4,20 @@ A pixel-art action RPG in a single HTML file. Open `eclipse.html` in a browser t
 
 ## Story
 
-On a monsoon night in Kochi, a tired office worker who has missed the last ferry walks home along Marine Drive. They push a child out of the path of a speeding bus and die on the wet road. Aurelia, goddess of the dawn, gives them a second life in Aurel, a kingdom whose sun is being eaten by an eclipse. Reborn in the open grass of Dawnmeadow, the hero fights through the meadow's small monsters to reach Eldoria, the last lit village, and from there must reach the Hollow Sovereign beneath the Crystal Caverns and defeat it.
+It is 7:30 on a monsoon evening in Kochi, and you have just missed the last ferry home from Infopark. You can explore Marine Drive on foot in the rain. Drink chai at Chandran's stall, talk to the net fishermen, haggle with an auto driver, and take a short lesson at the kalari. Then walk to the jetty bus stop. A gust tears a little girl's umbrella away, she runs into the road after it, and a private bus is coming. Whether you move in time is up to you.
+
+You wake in a divine space before Aurelia, goddess of the dawn. What you say to her matters, and she offers you gifts: you choose your own powers from more than a hundred. Then you are reborn in the grass of Dawnmeadow with plain clothes and nothing else: no weapon, no armor, not a coin. Gather stones, branches, reeds and berries; fight with your fists or your powers; craft primitive tools. When you are ready, a merchant's cart carries you to Solmere, the city of the guilds. Register at the Adventurers' Guild, and the guildmaster sends you east to Eldoria, the last lit village, where the war against the eclipse begins.
 
 ## Features
 
+- A playable Kerala opening on Marine Drive, Kochi: a monsoon evening with traffic that honks and brakes for you, Chinese fishing nets, a tea stall, a kalari, and nine people to talk to.
+- 112 divine powers in five categories (Elemental, Physical, Magical, Summoning, Special), across five rarities from Common to Divine. Each has its own cost, cooldown and limitation, and evolves at level 5. Choose three with seven soul points. Four hidden powers are earned through what you do in the opening. The selection screen has filters, search, side-by-side comparison and confirmation, and works on phones.
+- Powers are real mechanics: bolts, beams, waves, meteors, gravity wells, time stop, teleports, barriers, buffs, healing, eleven kinds of summoned allies, copied techniques, and 45 passives that change stats, regeneration, evasion, loot, crafting and more. They level up with use and are saved with the game. Power slots use Z, X, C and V, or the round buttons on touch screens.
+- A weaponless start: gather materials, craft a flint knife, club, staff, grass vest or food, and throw stones with bare hands. The first quest accepts either gathering or fighting.
+- Solmere, the main city: the Adventurers' Guild hall is the largest building, with an inn, a tavern, a grocer, a bakery, a clothier, a smithy and armory, an apothecary, a general store, a temple, a town hall, guard barracks, homes and a market plaza. Carts connect Dawnmeadow, Solmere and Eldoria.
 - Real-time combat: three-hit combos, heavy attacks (hold attack) that differ per weapon, dodge rolls with perfect-dodge slow motion, parries that open a counter-attack, four skills, and ultimates with a cut-in, dimmed screen, slow-motion finish and damage summary.
-- Adventurers' Guild: an adventurer card with ranks F to S and perks, bounties, named elite hunts with rewards, and a rank-gated Guild Shop.
-- Dawnmeadow starting grassland with a starter quest, Meadow Puffs and Horn Beetles.
+- Adventurers' Guild: registration in Solmere, an adventurer card with ranks F to S and perks, bounties, named elite hunts with rewards, and a rank-gated Guild Shop.
+- Dawnmeadow starting grassland with gathering spots, Meadow Puffs and Horn Beetles.
 - Living village: NPCs keep daily routines and gather in the plaza in the evening.
 - Three classes, Warden, Ranger and Arcanist, each with its own gear on the character.
 - Armor shows on the character: tunic, leather, chainmail, wolfhide or full plate. Portraits change to match.
@@ -28,7 +35,7 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 - Companions greet you each day, react to rain, nightfall and danger, banter with each other and point out treasure.
 - Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
 - Cinematic boss fights: letterboxed intros with roar shockwaves, glowing wind-ups, after-image trails on charges, leaps and blinks, impact craters, slow-motion phase changes with banners and phase pips, a shaking boss bar on hits, and a victory finisher with light pillars and shattering.
-- Three areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
+- Six areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
 - Three save slots kept in the browser with automatic backups and recovery, gamepad support and touch controls.
 - Settings for music, effects and ambience volume, and a Reduced screen-effects mode.
 
@@ -44,7 +51,8 @@ All controls can be changed under Pause → Controls or Settings → Customize c
 | Attack, talk | Left click (toward the cursor), J or Space |
 | Dodge / block | K / L or hold right click |
 | Skills | 1–4 |
+| Powers | Z, X, C, V |
 | Burst | R |
 | Potion | Q |
-| Bag, skills, journal, map | I, T, O, M |
+| Bag, skills, journal, map | I, T, O, M (powers and crafting are tabs in the same menu) |
 | Pause | Esc |

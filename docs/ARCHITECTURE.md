@@ -21,6 +21,9 @@ The script is organised in layers, top to bottom:
 | Loop | fixed 60 Hz `update`, then `render`, `hudUpdate`, `Music.update` | `frame`, `update`, `render` |
 | UI | HUD, codex tabs, shop, dialogue/visual-novel layer, menus, creation, wardrobe | `hudUpdate`, `renderCodex`, `Dlg`, `Scene`, `openGen` |
 | Persistence | `serialize` / `startFrom` / `saveGame`, three slots plus `.bak` backups | `eclipse.slot.N` |
+| Powers | 112 power definitions, passive modifiers, casting, projectiles, fields, summoned allies, selection screen | `PW`, `PWI`, `G.powers`, `PM()`, `PFX`, `castPower`, `Ally`, `openPowerPick` |
+| Opening | Kochi map, conversations, kalari drill, incident, divine space, weaponless arrival | `buildKochi`, `startKochi`, `startIncident`, `divineScene`, `afterPick` |
+| City | Solmere map, grand guild hall, shops, inn, temple, carts, guild registration | `buildSolmere`, `genGrand`, `CTALK`, `cartRide`, `guildRegister` |
 
 ### The extension pattern
 
@@ -46,6 +49,8 @@ Because the original code calls these functions by their global names, every cal
 | New enemies | add to `ENEMY`, draw via `NEWDRAW` in the `Enemy.prototype.draw` layer, list in `BEASTS` |
 | Quests | `QUESTS` entry, `qStart` / `qSet` / `qDone`, progress through `qProg` and `onKill` layers |
 | Saving new state | add to the `serialize` layer, read it back in the `startFrom` layer with defaults |
+| New powers | add a `D(...)` entry; actives pick an archetype in `PFX`, passives list modifiers that `pmRecalc` sums into `PM()` |
+| New object art | add a draw function to `NEWOBJ`; labels and actions go in the `objLabel` / `interactObj` layers |
 
 ## 3. Risks and constraints
 
@@ -79,6 +84,7 @@ Next: more group scenes, family events, companion idle animations.
 
 ### Phase 4 — Story and content
 Done: a new opening map, Dawnmeadow, with a starter quest that leads to Eldoria; Guild elite hunts and rank progression from F to S.
+Done (isekai rewrite): a playable Kerala opening on Marine Drive; the incident with a reaction prompt; the divine space and dialogue choices; 112 powers with selection rules, four hidden powers, levels and evolution; a weaponless arrival with gathering and primitive crafting; a cart ride to Solmere, the main city, and guild registration that leads into the original main quest. Old saves keep their gear and can claim powers from the Powers tab or the Solmere temple.
 Next: story cinematics for key beats, optional dungeons, secret bosses, weekly challenges.
 
 ### Phase 5 — Technical polish
