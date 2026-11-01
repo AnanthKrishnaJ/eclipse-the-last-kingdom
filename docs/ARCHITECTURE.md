@@ -74,7 +74,8 @@ Done: NPC daily routines (morning at home, working hours at their posts, evening
 Next: NPCs talking to each other, benches and eating, festival crowds and mini-games, seasonal effects, more exploration and secret areas.
 
 ### Phase 3 — Relationships
-Next: ten relationship stages with safe migration from the current seven, new date locations, first-kiss and anniversary scenes, deeper married life.
+Done: ten display stages derived from the saved seven-step status, so no migration is needed; a progress track in the Bonds tab; five new date places (flower garden, lakeside, picnic, stargazing, evening walk) with three choices each; a first-kiss scene; seasonal anniversaries; married routines, shared meals, evenings, goodnights and gifts; companion greetings, reactions, banter and treasure-spotting.
+Next: more group scenes, family events, companion idle animations.
 
 ### Phase 4 — Story and content
 Done: a new opening map, Dawnmeadow, with a starter quest that leads to Eldoria; Guild elite hunts and rank progression from F to S.

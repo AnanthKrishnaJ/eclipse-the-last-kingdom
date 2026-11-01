@@ -787,6 +787,13 @@ h2{font:400 26px/1.15 var(--f-dis);color:var(--sel);letter-spacing:.04em;text-sh
 .kslot.wait{border-color:var(--sel);color:var(--sel);animation:kblink .8s steps(2) infinite}
 @keyframes kblink{50%{background:#2c43a8}}
 #ctrlFoot{margin-top:10px}
+/* relationships 2.0 */
+.stagetrack{display:flex;gap:4px;margin:2px 0 4px;max-width:360px}.stagetrack i{flex:1;height:8px;border:1px solid #6c80d8;background:#04061a;transform:skewX(-20deg)}
+.stagetrack i.on{background:linear-gradient(#ffb8d0,#e0507a)}.stagetrack i.cur{box-shadow:0 0 8px #ff9cc2;border-color:#fff}
+.stagename{font:400 13px var(--f-dis);color:#ff9cc2;margin-bottom:8px}
+#heartsfx{position:fixed;inset:0;pointer-events:none;z-index:15;overflow:hidden}
+.hfx{position:absolute;bottom:-30px;color:#ff7aa8;text-shadow:0 0 10px #ff9cc2;animation:hrise 2.6s ease-out forwards}
+@keyframes hrise{to{transform:translateY(-85vh) scale(1.4) rotate(12deg);opacity:0}}
 /* guild hall, dimmer */
 #dimmer{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:3;transition:opacity .25s}#dimmer.on{opacity:.45}
 .gcard{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;padding:12px;border:2px solid var(--edge);border-radius:8px;background:linear-gradient(135deg,#2c43a8,#101a5c 60%,#3a2a6a);box-shadow:0 0 0 2px #04061a,inset 0 0 30px #04061a88;margin-bottom:12px}
@@ -3880,6 +3887,129 @@ const _serialize11=serialize;serialize=function(){return Object.assign(_serializ
 const _saveGame11=saveGame;saveGame=function(slot,silent){const prev=Store.get('eclipse.slot.'+slot,null);if(prev)Store.set('eclipse.slot.'+slot+'.bak',prev);return _saveGame11(slot,silent)};
 const _startFrom11=startFrom;startFrom=function(d,slot){try{d.guild=guildDefaults(Object.assign({rank:0,pts:0,board:[],day:-1,active:[],reg:false},d.guild||{}));if(d.map&&!['eldoria','woods','caverns','meadow'].includes(d.map)){d.map='eldoria';d.x=26*T+8;d.y=22*T+8}_startFrom11(d,slot)}
   catch(err){console.error(err);const bak=Store.get('eclipse.slot.'+slot+'.bak',null);if(bak&&!d._bak){bak._bak=true;toast('That save was damaged; the previous backup was loaded.','bad');return startFrom(bak,slot)}toTitle();toast('This save could not be loaded.','bad')}};
+
+/* ================= RELATIONSHIPS 2.0: ten stages derived from saved state ================= */
+const STAGE10=['Stranger','Acquaintance','Friendship','Close friendship','Romantic interest','Confession','Dating','Engagement','Marriage','Married life'];
+function relStage(r){if(r.status>=6)return G.day-(r.marryDay||G.day)>=7?9:8;if(r.status===5)return 7;if(r.status===4)return(r.datesSince||0)>=1?6:5;if(r.status===3)return r.aff>=50?4:3;return r.status}
+function relCheck(id){const r=rel(id);if(!r.met)return;const s=relStage(r);if(r.st10==null){r.st10=s;return}if(s===r.st10)return;const up=s>r.st10;r.st10=s;if(!up)return;
+  toast(`♥ ${H(id).short}: ${STAGE10[s]}`,'heart');relLog(id,'Reached: '+STAGE10[s].toLowerCase()+'.');if(s>=4&&!Scene.on)banner('♥ '+STAGE10[s],H(id).name)}
+const _relGain12=relGain;relGain=function(id,k,n,quiet){_relGain12(id,k,n,quiet);if(!Scene.on)relCheck(id)};
+const _sceneEnd12=Scene.end.bind(Scene);Scene.end=function(){_sceneEnd12();for(const id in HEROINES)relCheck(id)};
+/* hearts float up whenever a line is spoken with love */
+const heartsFx=document.createElement('div');heartsFx.id='heartsfx';document.body.appendChild(heartsFx);
+function heartsBurst(){if(settings.fx==='reduced')return;for(let i=0;i<12;i++){const h=document.createElement('span');h.className='hfx';h.textContent='♥';h.style.left=rnd(10,90)+'%';h.style.animationDelay=rnd(0,.6)+'s';h.style.fontSize=rnd(16,30)+'px';heartsFx.appendChild(h);setTimeout(()=>h.remove(),3200)}}
+const _sceneNext12=Scene.next.bind(Scene);Scene.next=function(){_sceneNext12();const s=this.on&&this.steps&&this.steps[this.i-1];if(s&&s.e==='love')heartsBurst()};
+const _renderBonds12=renderBonds;renderBonds=function(B){_renderBonds12(B);
+  B.querySelectorAll('[data-bd]').forEach(b=>{const id=b.dataset.bd;if(!HEROINES[id])return;const r=rel(id),sm=b.querySelector('small');if(r.met&&sm)sm.textContent=STAGE10[relStage(r)]});
+  if(!HEROINES[bondSel])return;const r=rel(bondSel);if(!r.met)return;const st=relStage(r),hb=B.querySelector('.hearts.big');
+  if(hb)hb.insertAdjacentHTML('afterend',`<div class="stagetrack">${STAGE10.map((n,i)=>`<i class="${i<=st?'on':''}${i===st?' cur':''}" title="${n}"></i>`).join('')}</div><div class="stagename">${STAGE10[st]} · stage ${st+1} of 10</div>`);
+  const sb=B.querySelector('.statl b');if(sb)sb.textContent=STAGE10[st]};
+
+/* ================= DATES: five new places, each with a scene and three choices ================= */
+const DATENAME={hill:'Sakura Hill',cafe:'the café',river:'the riverside',garden:'the flower garden',lake:'the lakeside',picnic:'a picnic',stars:'stargazing',walk:'an evening walk'};
+const DATE2={
+  mimi:{garden:['[happy]So many flowers! Do they all smell different? I am going to smell every single one.',['Smell this one with me.',6,'blush','...It smells like you. Wait, forget I said that.'],['Pick your favourite.',4,'happy','The orange one! It looks like my tail.'],['Careful, you will sneeze.',-1,'angry','Scouts do not sneeze! ...Achoo.']],
+    lake:['[n]The sunset turns the whole lake orange. It is like the sky is melting.',['It is beautiful. So are you.',7,'love','...You cannot just say that! Now my face is melting too.'],['Want to skip stones?',4,'happy','Seven skips! Beat that!'],['I am getting hungry.',-1,'sad','Oh. We can go, I guess.']],
+    picnic:['[happy]A picnic! You even brought food! You are the best partner in the whole world.',['I made it for you.',7,'love','You made it? For me? I am going to cry into the cake.'],['Half and half.',4,'happy','Half and half! ...Can my half be slightly bigger?'],['You eat too much.',-3,'angry','Rude! I am a growing scout!']],
+    stars:['[blush]Mom used to say every star is a scout who found their way home.',['Then we will find her star together.',7,'love','...Yeah. Together. I like that word.'],['Which one is the brightest?',4,'happy','That one! No, that one! They keep twinkling!'],['Stars are just balls of fire.',-2,'sad','...Thanks for that.']],
+    walk:['[happy]The lanterns are coming on! Eldoria looks so cozy at night.',['Hold my hand so you do not get lost.',6,'blush','I am a scout! I never get lost. ...Holding anyway.'],['Snack from the stall?',4,'happy','Yes! Grilled corn!'],['Walk faster, it is cold.',-1,'angry','Fine, grumpy.']]},
+  lyra:{garden:['[n]This garden has forty-one species. I counted while you were late.',['Which one is your favourite?',6,'blush','The moonpetal. It only opens for someone patient. ...Like you.'],['Teach me their names.',5,'happy','Gladly. We begin with the old names.'],['They are just weeds to me.',-3,'angry','Then you are just a weed to me.']],
+    lake:['[n]Light bends over water. Technically, the sunset is lying to us.',['Then let it lie a little longer.',7,'love','...Yes. A little longer. With you.'],['Explain the angle.',4,'happy','Finally, someone who asks.'],['Can we go? I am bored.',-3,'sad','...Of course.']],
+    picnic:['[n]Eating outdoors exposes food to insects. I have prepared a ward.',['You put up a ward for our picnic?',6,'blush','Ants have no place in our afternoon.'],['Try the cake I brought.',5,'happy','...Acceptable. Extremely acceptable.'],['Magic for ants is overkill.',-2,'angry','Nothing is overkill for ants.']],
+    stars:['[blush]I have catalogued these stars for a hundred years. Tonight they look new.',['Maybe because you are not alone.',7,'love','...That hypothesis fits all the data.'],['Show me your favourite.',5,'happy','The Lantern-bearer. There, three bright points.'],['I would rather sleep.',-3,'sad','...Then sleep. I will keep watching.']],
+    walk:['[n]Human villages are loud at night. I find I do not mind it with you.',['Let us take the long way.',6,'blush','The long way. Yes. Statistically better.'],['Look, a bookstall.',5,'happy','You know me too well.'],['Let us hurry home.',-1,'n','...Efficient.']]},
+  serah:{garden:['[n]I never had time for gardens. They felt like a luxury for nobles.',['Then let me give you the time.',7,'love','...You keep giving me things I did not know I wanted.'],['These would brighten the barracks.',4,'happy','The men would tease me forever. ...Pick two.'],['Gardens are for nobles.',-2,'angry','I know. That is what I said.']],
+    lake:['[blush]The lake is calm. I am... not used to calm.',['You do not have to stand guard tonight.',7,'love','...Then I will put the shield down. Just for you.'],['Spar on the shore?',3,'happy','Ha! Later. Sit.'],['Calm is boring.',-2,'angry','Typical civilian.']],
+    picnic:['[n]A picnic. In the open. No perimeter. ...I set a perimeter anyway.',['Then we are safe. Sit with me.',6,'blush','...Fine. But only because the perimeter is excellent.'],['I brought your favourite cake.',6,'love','You remembered. Of course you did.'],['You worry too much.',-1,'angry','Somebody has to.']],
+    stars:['[blush]On night watch I counted stars to stay awake. Never with someone beside me.',['Count them with me.',7,'love','One... two... I lost count. You are distracting.'],['Which one guided you home?',4,'happy','That red one. The Captain\'s Lantern.'],['Stars will not keep us safe.',-2,'sad','...No. But they help.']],
+    walk:['[n]Walking through town off duty. People keep saluting. It is embarrassing.',['Take my arm. They will salute less.',6,'blush','...They are saluting more. You did that on purpose.'],['Let us buy a sweet roll.',4,'happy','For security reasons.'],['Stop scanning the rooftops.',-1,'angry','No.']]},
+  noelle:{garden:['[blush]I have walked past this garden every day for two years and never gone in.',['Then today is the first time. With me.',7,'love','...With you, it is brave instead of scary.'],['Pick some for the guild counter.',4,'happy','The counter will look so pretty!'],['Why not?',-1,'sad','I... do not know. I am sorry.']],
+    lake:['[blush]The water is so still. It feels like the whole world is holding its breath.',['So am I. You look beautiful.',7,'love','I need to sit down. I am already sitting. Oh no.'],['Let us count the fish.',4,'happy','Four! No, five!'],['It is cold here.',-1,'sad','Oh. Should we go?']],
+    picnic:['[happy]I packed sandwiches! And labels for the sandwiches. In case we got confused.',['You are adorable, Noelle.',7,'blush','A-adorable? I am filing that under precious things.'],['These are delicious.',5,'happy','Really?! I practised all week!'],['Labels? Seriously?',-2,'sad','...Organization is important.']],
+    stars:['[blush]The Lantern Four used to name stars after each other. I stopped looking up after.',['Let us name a new one. Together.',7,'love','...That one is ours, then. I will remember it forever.'],['Tell me about them.',5,'sad','They were loud and kind and brave. ...Thank you for asking.'],['Better not dwell on the past.',-2,'sad','...You are right. I suppose.']],
+    walk:['[happy]The village looks so different at night! Everyone is so friendly!',['They are friendly because you are smiling.',6,'blush','I am smiling? I am! That is your fault.'],['Let us visit the bakery.',4,'happy','The night loaves! Yes!'],['Let us not stay out late.',-1,'n','...Okay.']]}};
+function afterDate(id){const r=rel(id);if(r.status>=4)r.datesSince=(r.datesSince||0)+1;relCheck(id);if(r.status>=4&&!r.kissed&&r.datesSince>=2&&r.kissAsked!==G.day)setTimeout(()=>kissScene(id),500)}
+function date2(id,place){const r=rel(id),d=DATE2[id][place],[e,t]=exprSplit(d[0]),cg='date_'+id+'_'+place,first=!G.cgs||!G.cgs[cg];r.dateDay=G.day;r.dates++;
+  Scene.play(place,[line(id,e,t,d.slice(1).map(o=>({t:o[0],f:()=>{relGain(id,'aff',o[1]);relGain(id,'friend',3,true);Scene.steps.push(Object.assign(line(id,o[2],o[3]),first&&o[1]>0?{cg,cgt:'Date at '+DATENAME[place]+' with '+H(id).short}:{}))}})))],
+    ()=>{G.time=Math.min(G.time+120,1439);relLog(id,'Went on a date ('+DATENAME[place]+').');afterDate(id)})}
+const _date12=date;date=function(id,place){if(DATE2[id]&&DATE2[id][place])return date2(id,place);_date12(id,place);const f=Scene.onEnd;Scene.onEnd=()=>{f&&f();afterDate(id)}};
+datePicker=function(id){const h=(G.time/60)%24,food=['honey_cake','berry_tart'].find(f=>invCount(f)>0);
+  const o=[{t:'Sakura Hill',f:()=>date(id,'hill')},{t:'The plaza café',f:()=>date(id,'cafe')},{t:'The riverside in the Woods',f:()=>date(id,'river')},{t:'The flower garden',f:()=>date(id,'garden')},{t:'The lakeside at sunset',f:()=>date(id,'lake')},
+    {t:food?`A picnic in Dawnmeadow (uses a ${ITEMS[food].name})`:'A picnic (bring a Honey Cake or Duskberry Tart)',f:()=>{if(!food){S(id,[['sad','We need something to eat first! A honey cake, or a tart?']]);return}invRemove(food,1);relGain(id,'aff',3,true);date(id,'picnic')}}];
+  if(nightF()>.5)o.push({t:'Stargazing',f:()=>date(id,'stars')});if(h>=17)o.push({t:'An evening walk through the village',f:()=>date(id,'walk')});o.push({t:'Never mind'});
+  S(id,[['blush','A d-date? ...Where?']],o)};
+
+/* ================= ROMANCE SCENES: first kiss and anniversaries ================= */
+const KISS={mimi:[['blush','Hey... the wind stopped. Did you notice? Everything is so quiet.'],['blush','Partner... can I... no, never mind. Unless...?']],lyra:[['blush','In elven custom, a first kiss is recorded in the family histories.'],['love','I would like to give the historians something to write.']],serah:[['blush','I have faced goblins, wolves and the Sentinel without flinching.'],['blush','So why am I shaking right now?']],noelle:[['blush','Um... I have a request. Not a bounty. A personal... um.'],['blush','Could we... I mean... oh, I cannot say it!']]};
+const KISSYES={mimi:'...Wow. Okay. My tail is going crazy. Again? Kidding! ...Unless?',lyra:'...Recorded. In great detail. I will need to review it often.',serah:'...Hm. A satisfactory first engagement.',noelle:'Approved. Stamped. Filed under forever.'};
+function kissScene(id){const r=rel(id);if(r.kissed||Scene.on||G.ui)return;r.kissAsked=G.day;
+  Scene.play('stars',[...KISS[id].map(p=>line(id,p[0],p[1])),{t:'The moment hangs in the air between you.',c:[
+    {t:'Lean in.',f:()=>{r.kissed=true;relGain(id,'aff',8);relLog(id,'Shared a first kiss.');Scene.steps.push(Object.assign(line(id,'love',KISSYES[id]),{cg:'kiss_'+id,cgt:'First kiss: '+H(id).short}))}},
+    {t:'Take her hand instead.',f:()=>{relGain(id,'aff',3);Scene.steps.push(line(id,'blush','...Holding hands is nice too. Really nice.'))}}]}])}
+const ANNIV={mimi:[['happy','Guess what day it is! Our anniversary! I made a cake. I ate a corner. It is still a cake.'],['love','Another season of you. Best season ever.']],lyra:[['n','By my count, it has been exactly one season since our wedding.'],['love','I have stopped counting the years. But I will always count this.']],serah:[['blush','At ease. Today is not a drill day. It is our anniversary.'],['love','I swore my blade and my heart. I would swear them again today.']],noelle:[['happy','Happy anniversary! I made a commemorative stamp!'],['love','It says FOREVER. In big letters.']]};
+
+/* ================= MARRIED LIFE: routines, meals, evenings, goodnights, gifts ================= */
+const MEAL={mimi:['happy','Dinner! I set the table. Mostly. There are a lot of spoons.'],lyra:['n','I calibrated the soup to your preferred temperature.'],serah:['happy','Mess call! Sit. Eat. That is an order, love.'],noelle:['happy','I wrote a menu! It has one item. It is your favourite.']};
+const GOODNIGHT={mimi:['blush','Night night. Do not steal the blanket. ...You can steal a little.'],lyra:['blush','Good night. I will be here when the moon sets.'],serah:['blush','Lights out. I will hold the watch. Or just hold you.'],noelle:['blush','Good night... I am so glad I get to say that to you.']};
+const EVE={mimi:['What was the best part of your day?',[['Coming home to you.',6,'love','Same! Exactly the same!'],['The fights.',2,'happy','The fights were pretty cool too!']]],lyra:['Tell me something about your old world.',[['In Kochi, the rain smelled like the sea.',6,'blush','...I would like to smell that rain with you someday.'],['It was not important.',0,'sad','Everything about you is important to me.']]],serah:['Do you ever miss being a nobody?',[['Never. Not with you.',6,'love','...Good. Me neither.'],['Sometimes.',3,'n','Me too. Then I remember who I would not have met.']]],noelle:['Can we just... sit? Like this?',[['As long as you want.',7,'love','Then forever, please.'],['Sure, for a bit.',2,'happy','A bit is good too!']]]};
+const wivesNow=()=>Object.keys(HEROINES).filter(k=>rel(k).status===6);
+const WORKSPOT={mimi:[18.6,25.8],lyra:[12.4,27.6],serah:[42,20.8],noelle:[14.6,24.8]};
+const _npcTarget12=NPC.prototype.target;NPC.prototype.target=function(){if(HEROINES[this.id]&&rel(this.id).status===6&&G.map&&G.map.id==='eldoria'){const h=(G.time/60)%24,i=wivesNow().indexOf(this.id);
+  if(h<9||h>=19||(G.weather&&G.weather.rain>.6))return[(40.6+i*1.3)*T,9.8*T];const w=WORKSPOT[this.id];return[w[0]*T,w[1]*T]}return _npcTarget12.call(this)};
+/* any villager that gets stuck on a wall finishes the trip out of sight */
+const _npcUpd12=NPC.prototype.update;NPC.prototype.update=function(dt){const x0=this.x,y0=this.y;_npcUpd12.call(this,dt);if(!this.moving){this._stuck=0;return}
+  const[tx,ty]=this.target();if(Math.hypot(this.x-x0,this.y-y0)<.05&&Math.hypot(tx-this.x,ty-this.y)>8)this._stuck=(this._stuck||0)+dt;else this._stuck=0;
+  if(this._stuck>1.5){const c=G.cam,far=Math.abs(this.x-c.x)>G.vw/2+20||Math.abs(this.y-c.y)>G.vh/2+20,tfar=Math.abs(tx-c.x)>G.vw/2+20||Math.abs(ty-c.y)>G.vh/2+20;if(far||tfar){this.x=tx;this.y=ty}this._stuck=0}};
+function homeScene(w,steps,end){closeGen();Scene.play('home',steps,end)}
+function shareMeal(){const W=wivesNow();if(!W.length)return;if(G.mealDay===G.day){toast('You already shared a meal today.');return}G.mealDay=G.day;const food=['honey_cake','berry_tart','herbal_tea'].find(f=>invCount(f)>0),P=G.player;if(food)invRemove(food,1);
+  homeScene(W[0],W.map(w=>line(w,MEAL[w][0],MEAL[w][1])).concat(food?[{t:`You share the ${ITEMS[food].name}. Everyone eats a little too much.`}]:[{t:'A simple meal, made better by the company.'}]),()=>{P.hp=P.maxHp;P.mp=P.maxMp;W.forEach(w=>relGain(w,'aff',food?5:3,true));toast('A warm meal together. Health and mana restored.','heart')})}
+function eveningTogether(){const W=wivesNow();if(!W.length)return;if(G.eveDay===G.day){toast('You already spent the evening together.');return}if((G.time/60)%24<17){toast('Come back in the evening.');return}G.eveDay=G.day;const w=pick(W),E=EVE[w];
+  homeScene(w,[line(w,'blush',E[0],E[1].map(o=>({t:o[0],f:()=>{relGain(w,'aff',o[1]);Scene.steps.push(line(w,o[2],o[3]))}})))],()=>relLog(w,'Spent a quiet evening together.'))}
+const _enterHome12=enterHome;enterHome=function(){_enterHome12();if(!wivesNow().length)return;const w=$('#hWard')||$('#hDeco');if(!w)return;w.insertAdjacentHTML('afterend','<button class="btn sm" id="hMeal">Share a meal</button><button class="btn sm" id="hEve">Evening together</button>');$('#hMeal').onclick=shareMeal;$('#hEve').onclick=eveningTogether};
+const _sleep12=sleep;sleep=function(){const W=wivesNow();if(W.length&&G.gnDay!==G.day){G.gnDay=G.day;const w=pick(W);Scene.play('home',[line(w,GOODNIGHT[w][0],GOODNIGHT[w][1])],()=>{relGain(w,'aff',1,true);_sleep12()});return}_sleep12()};
+const _morning12=morningEvent;morningEvent=function(){const W=wivesNow();
+  for(const w of W){const r=rel(w),d=G.day-(r.marryDay||G.day);if(d>0&&d%28===0&&r.annivDay!==G.day){r.annivDay=G.day;
+    Scene.play('lake',ANNIV[w].map((p,i)=>Object.assign(line(w,p[0],p[1]),i===ANNIV[w].length-1?{cg:'anniv_'+w+'_'+G.day,cgt:'Anniversary with '+H(w).short}:{})),()=>{relGain(w,'aff',8,true);invAdd('silk_ribbon',1);toast(H(w).short+' gave you an anniversary gift: Silk Ribbon','heart');relLog(w,'Celebrated an anniversary.')});return}}
+  _morning12();if(W.length&&Math.random()<.35){const w=pick(W),it=pick(['honey_cake','herbal_tea','berry_tart','sunbell']);setTimeout(()=>{invAdd(it,1);toast(`${H(w).short} left you a ${ITEMS[it].name} on the table.`,'heart')},2500)}};
+
+/* ================= COMPANIONS: greetings, reactions, banter, treasure-spotting ================= */
+const GREET={mimi:['Hi hi! Nice day, huh?','Morning, partner! Ready to roll?','There you are! I missed you. Like, a lot.'],lyra:['Good day.','You are late. ...I saved you some tea.','Good morning. I was thinking about you. Academically.'],serah:['Morning. Stay sharp.','Report in. ...Good to see you.','Morning, love. Do not tell the garrison I said that.'],noelle:['G-good morning!','Morning! I brought the good pen today.','Good morning... I am really happy you are here.']};
+const REACT={mimi:{rain:'Rain! My tail is going to frizz!',night:'Getting dark! My eyes are better than yours, stay close!',lowhp:'Hey! You are hurt! Drink something!',chest:'Treasure! Over there, I can smell it!',levelup:'You leveled up! High five!'},
+  lyra:{rain:'Rain lowers spell accuracy. Stay near me.',night:'The stars are out. My wards are stronger at night.',lowhp:'Your vitals are dropping. Fall back. Now.',chest:'There is a chest nearby. Statistically worth checking.',levelup:'Measurable improvement. Well done.'},
+  serah:{rain:'Rain. Watch your footing.',night:'Night watch. Eyes open.',lowhp:'Fall back behind me! That is an order!',chest:'Supplies ahead. Check that chest.',levelup:'Stronger every day. Ser Galen would approve.'}};
+const BANTER=[['mimi','Lyra! Race you to the next tree!','lyra','Running is an inefficient use of mana.'],['serah','Mimi, stop chasing butterflies. We are on patrol.','mimi','I am patrolling the butterflies!'],['lyra','Captain, your armor squeaks at a distracting frequency.','serah','Then think louder.'],['mimi','Do you think our leader likes cake or tarts more?','serah','...Cake. I have done reconnaissance.'],['lyra','Mimi, you are humming again.','mimi','It helps me walk! Hum with me!']];
+const greetLine=id=>{const s=relStage(rel(id));return GREET[id][s<2?0:s<5?1:2]};
+const _gainXp12=Player.prototype.gainXp;Player.prototype.gainXp=function(n){const l=this.lvl;_gainXp12.call(this,n);if(this.lvl>l){const c=(G.party||[]).filter(c=>!c.dead&&REACT[c.id]);if(c.length){const p=pick(c);G.timed.push({t:1.2,f:()=>p.say(REACT[p.id].levelup,2.4)})}}};
+const _update12=update;update=function(dt){const d0=G.day;_update12(dt);if(G.state!=='play'||!G.player)return;const P=G.player,party=(G.party||[]).filter(c=>!c.dead);
+  if(G.day!==d0)for(const id in HEROINES)relCheck(id);if(!party.length)return;
+  if(G.greetDay!==G.day&&!G.ui){G.greetDay=G.day;party.forEach((c,i)=>G.timed.push({t:1.5+i*2.6,f:()=>c.say(greetLine(c.id),2.8)}))}
+  G.reactCd=(G.reactCd==null?6:G.reactCd)-dt;const rainy=G.map.outdoor&&G.weather.rain>.4,night=G.map.outdoor&&nightF()>.5;let ev=null;
+  if(rainy&&G._wasRain===false)ev='rain';else if(night&&G._wasNight===false)ev='night';else if(P.hp<P.maxHp*.3&&!G._low)ev='lowhp';
+  G._wasRain=rainy;G._wasNight=night;if(P.hp<P.maxHp*.3)G._low=true;else if(P.hp>P.maxHp*.6)G._low=false;
+  if(!ev&&G.reactCd<=0&&Math.random()<dt*.5){G.pinged=G.pinged||{};const ch=G.map.objs.find(o=>o.kind==='chest'&&!G.chests[o.id]&&dist(o.x,o.y,P.x,P.y)<120&&!G.pinged[o.id]);if(ch){G.pinged[ch.id]=1;ev='chest';fx2({k:'shock',x:ch.x,y:ch.y,r:20,col:'#ffe07a',dur:.8})}}
+  if(ev&&(G.reactCd<=0||ev==='lowhp')){const cs=party.filter(c=>REACT[c.id]);if(cs.length){const c=pick(cs);c.say(REACT[c.id][ev],2.6);G.reactCd=10}}
+  G.banterT=(G.banterT==null?60:G.banterT)-dt;if(G.banterT<=0&&party.length>=2&&!G.boss){G.banterT=rnd(70,110);const ids=party.map(c=>c.id),opts=BANTER.filter(b=>ids.includes(b[0])&&ids.includes(b[2]));
+    if(opts.length){const b=pick(opts),c1=party.find(c=>c.id===b[0]),c2=party.find(c=>c.id===b[2]);c1.say(b[1],3);G.timed.push({t:3.2,f:()=>c2.say(b[3],3)})}}
+  for(const c of party){if(relStage(rel(c.id))>=4&&!c.moving&&dist(c.x,c.y,P.x,P.y)<40&&Math.random()<dt*.35)G.part(c.x+rnd(-3,3),c.y-28,0,-14,1,'#ff7aa8',1.5,0,'glow');if(c.id==='lyra'&&Math.random()<dt*2)G.part(c.x+rnd(-6,6),c.y-rnd(4,20),0,-6,.8,'#bfe6ff',1,0,'glow')}};
+
+/* ================= DATE BACKDROPS ================= */
+const _drawScene12=drawScene;drawScene=function(g,bg,t){const W=320,Hh=180,F=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x|0,y|0,w|0,h|0)},grad=(a,b,y0=0,y1=Hh)=>{const gr=g.createLinearGradient(0,y0,0,y1);gr.addColorStop(0,a);gr.addColorStop(1,b);g.fillStyle=gr;g.fillRect(0,y0,W,y1-y0)};
+  const stars=n=>{for(let i=0;i<n;i++){const x=hash2(i,1,17)*W,y=hash2(i,2,17)*Hh*.6;if(Math.sin(t*2+i)>-.4)F(x,y,1,1,i%6?'#ffffff':'#ffd6e6')}};
+  switch(bg){
+    case'garden':{grad('#bfe6ff','#fff0f8',0,110);F(0,104,W,76,'#6ab04a');for(let r=0;r<4;r++)for(let i=0;i<40;i++){const x=(i*8+r*4)%W,y=116+r*16+Math.sin(i+r)*2;F(x,y,3,3,['#ff7aa8','#ffd84a','#ffffff','#b48cff'][(i+r)%4]);F(x+1,y+3,1,3,'#3a7a3a')}
+      g.strokeStyle='#8a6440';g.lineWidth=5;g.beginPath();g.arc(160,112,48,Math.PI,0);g.stroke();for(let i=0;i<14;i++){const a=Math.PI+i/13*Math.PI;F(160+Math.cos(a)*48-3,112+Math.sin(a)*48-3,6,6,i%2?'#ff9cc2':'#ffffff')}
+      for(let i=0;i<20;i++){const s=hash2(i,3,9),x=((s*W+t*14)%(W+20))-10,y=((hash2(i,4,9)*Hh+t*16)%(Hh+10))-5;F(x+Math.sin(t*2+i)*4,y,2,1,'#ffc8dc')}break}
+    case'lake':{grad('#ffb070','#7a4a9a',0,100);g.fillStyle='#ffe07a';g.beginPath();g.arc(160,96,22,Math.PI,0);g.fill();g.fillStyle='#4a3a6a';g.beginPath();g.moveTo(0,100);g.quadraticCurveTo(70,70,140,100);g.quadraticCurveTo(220,74,320,100);g.fill();
+      grad('#5a4a8a','#1a1a40',100,Hh);for(let i=0;i<14;i++){const y=104+i*5,w=40-i*2.4+Math.sin(t*2+i)*3;F(160-w/2,y,w,1,'rgba(255,224,122,.6)')}for(let i=0;i<10;i++){F(14+i*7,130-hash2(i,1,4)*20,2,60,'#1a1430');F(250+i*6,134-hash2(i,2,4)*20,2,60,'#1a1430')}break}
+    case'picnic':{grad('#8ad0ff','#e8f8ff',0,100);for(let i=0;i<4;i++){g.fillStyle='rgba(255,255,255,.8)';g.beginPath();g.ellipse((i*90+t*5)%400-40,30+i*10,26,8,0,0,TAU);g.fill()}g.fillStyle='#5aa84a';g.beginPath();g.moveTo(0,110);g.quadraticCurveTo(160,80,320,110);g.lineTo(320,Hh);g.lineTo(0,Hh);g.fill();
+      for(let y=0;y<4;y++)for(let x=0;x<8;x++)F(110+x*12,128+y*7,12,7,(x+y)%2?'#e04a4a':'#ffffff');F(220,120,22,14,'#a0703a');F(222,116,18,4,'#c08a4a');F(30,40,10,80,'#5a3a24');g.fillStyle='#3a8a3a';g.beginPath();g.arc(35,46,34,0,TAU);g.fill();for(let i=0;i<30;i++)F(hash2(i,1,6)*W,140+hash2(i,2,6)*38,2,2,['#ffd84a','#ffffff','#ff9cc2'][i%3]);break}
+    case'stars':{grad('#04061a','#1e1a46');stars(150);g.save();g.globalAlpha=.25;g.fillStyle='#b8a8ff';for(let i=0;i<120;i++){const k=hash2(i,5,2);F(k*W,40+k*60+hash2(i,6,2)*24-12,1,1,'#d8d0ff')}g.restore();
+      const st=(t*.3)%4;if(st<.6){const x=260-st*200,y=20+st*60;g.strokeStyle='rgba(255,255,255,.8)';g.lineWidth=1;g.beginPath();g.moveTo(x,y);g.lineTo(x+18,y-6);g.stroke()}
+      g.fillStyle='#0c0c20';g.beginPath();g.moveTo(0,150);g.quadraticCurveTo(160,118,320,150);g.lineTo(320,Hh);g.lineTo(0,Hh);g.fill();for(let i=0;i<20;i++)F(hash2(i,1,8)*W,152+hash2(i,2,8)*20,1,2,'#3a3a60');break}
+    case'walk':{grad('#3a2a6a','#ff9a6a',0,110);F(0,110,W,70,'#5a4a5a');for(let y=118;y<Hh;y+=8)for(let x=(y/8%2)*8;x<W;x+=16)F(x,y,14,6,'#6a5a6a');
+      for(let i=0;i<6;i++){const x=i*58-10,h=40+hash2(i,1,2)*20;F(x,110-h,50,h,'#2a1a2a');F(x-4,106-h,58,8,'#5a2a2a');for(let w=0;w<3;w++)F(x+6+w*14,118-h+12,8,8,'#ffd27a')}
+      g.strokeStyle='#2a1a1a';g.lineWidth=1;g.beginPath();g.moveTo(0,40);g.quadraticCurveTo(160,70,320,40);g.stroke();for(let i=0;i<12;i++){const x=i*28+10,y=40+Math.sin(i/11*Math.PI)*28;g.globalAlpha=.85+Math.sin(t*3+i)*.15;F(x-3,y,6,7,['#ff7a5a','#ffd27a','#ff9cc2'][i%3]);g.globalAlpha=1}break}
+    default:return _drawScene12(g,bg,t)}};
 
 boot();
 </script>
