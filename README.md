@@ -4,11 +4,14 @@ A pixel-art action RPG in a single HTML file. Open `eclipse.html` in a browser t
 
 ## Story
 
-On a monsoon night in Kochi, a tired office worker who has missed the last ferry walks home along Marine Drive. They push a child out of the path of a speeding bus and die on the wet road. Aurelia, goddess of the dawn, gives them a second life in Aurel, a kingdom whose sun is being eaten by an eclipse. Reborn in the village of Eldoria, the hero has to reach the Hollow Sovereign beneath the Crystal Caverns and defeat it.
+On a monsoon night in Kochi, a tired office worker who has missed the last ferry walks home along Marine Drive. They push a child out of the path of a speeding bus and die on the wet road. Aurelia, goddess of the dawn, gives them a second life in Aurel, a kingdom whose sun is being eaten by an eclipse. Reborn in the open grass of Dawnmeadow, the hero fights through the meadow's small monsters to reach Eldoria, the last lit village, and from there must reach the Hollow Sovereign beneath the Crystal Caverns and defeat it.
 
 ## Features
 
-- Real-time combat: three-hit combos, dodge rolls, blocking and parries, four skills, and a Burst art with an anime cut-in.
+- Real-time combat: three-hit combos, heavy attacks (hold attack) that differ per weapon, dodge rolls with perfect-dodge slow motion, parries that open a counter-attack, four skills, and ultimates with a cut-in, dimmed screen, slow-motion finish and damage summary.
+- Adventurers' Guild: an adventurer card with ranks F to S and perks, bounties, named elite hunts with rewards, and a rank-gated Guild Shop.
+- Dawnmeadow starting grassland with a starter quest, Meadow Puffs and Horn Beetles.
+- Living village: NPCs keep daily routines and gather in the plaza in the evening.
 - Three classes, Warden, Ranger and Arcanist, each with its own gear on the character.
 - Armor shows on the character: tunic, leather, chainmail, wolfhide or full plate. Portraits change to match.
 - Bag page laid out as an equipment screen (paper doll) with attributes, a 24-slot inventory, filters, sorting, hover tooltips and item comparison.
@@ -24,7 +27,10 @@ On a monsoon night in Kochi, a tired office worker who has missed the last ferry
 - Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
 - Cinematic boss fights: letterboxed intros with roar shockwaves, glowing wind-ups, after-image trails on charges, leaps and blinks, impact craters, slow-motion phase changes with banners and phase pips, a shaking boss bar on hits, and a victory finisher with light pillars and shattering.
 - Three areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
-- Three save slots kept in the browser, gamepad support and touch controls.
+- Three save slots kept in the browser with automatic backups and recovery, gamepad support and touch controls.
+- Settings for music, effects and ambience volume, and a Reduced screen-effects mode.
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the game is built and the phased improvement plan.
 
 ## Controls
 

@@ -787,6 +787,19 @@ h2{font:400 26px/1.15 var(--f-dis);color:var(--sel);letter-spacing:.04em;text-sh
 .kslot.wait{border-color:var(--sel);color:var(--sel);animation:kblink .8s steps(2) infinite}
 @keyframes kblink{50%{background:#2c43a8}}
 #ctrlFoot{margin-top:10px}
+/* guild hall, dimmer */
+#dimmer{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;z-index:3;transition:opacity .25s}#dimmer.on{opacity:.45}
+.gcard{display:grid;grid-template-columns:110px minmax(0,1fr);gap:14px;padding:12px;border:2px solid var(--edge);border-radius:8px;background:linear-gradient(135deg,#2c43a8,#101a5c 60%,#3a2a6a);box-shadow:0 0 0 2px #04061a,inset 0 0 30px #04061a88;margin-bottom:12px}
+.gcard canvas{width:110px;aspect-ratio:200/240;border:2px solid var(--edge);border-radius:5px;background:radial-gradient(circle at 50% 75%,#3a55c8,#070c34 70%);image-rendering:pixelated}
+.gname{font:400 22px var(--f-dis);color:var(--sel)}.gcls{font:400 13px var(--f-dis);color:var(--sub);margin-bottom:8px}
+.grank-row{display:flex;gap:12px;align-items:center;margin-bottom:8px}
+.grank{width:48px;height:48px;display:grid;place-items:center;font:400 28px var(--f-dis);color:#fff;border:2px solid var(--edge);border-radius:6px;background:linear-gradient(#5a6a80,#2a3240);box-shadow:0 0 0 2px #04061a;text-shadow:2px 2px 0 #04061a}
+.grank.r2,.grank.r3{background:linear-gradient(#4a9a5a,#1e4a2a)}.grank.r4{background:linear-gradient(#3a80f0,#1a3aa0)}.grank.r5{background:linear-gradient(#a06af0,#4a2a90)}.grank.r6{background:linear-gradient(#ffd27a,#c9822a);box-shadow:0 0 0 2px #04061a,0 0 16px #ffd27a}
+.gstats{display:grid;grid-template-columns:auto 1fr;gap:3px 12px;margin:0;font:400 14px var(--f-txt)}.gstats dt{color:var(--sub)}.gstats dd{margin:0;text-align:right;color:#fff}
+.perks{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:6px}
+.perk{display:flex;gap:10px;align-items:center;padding:6px 10px;border:1px solid var(--line);border-radius:5px;background:#0c1450;opacity:.5}
+.perk.on{opacity:1;border-color:#fff}.perk b{font:400 16px var(--f-dis);color:var(--sel);width:16px}.perk span{font:14px var(--f-txt);color:#dfe6ff}
+@media (max-width:560px){.gcard{grid-template-columns:80px 1fr}.gcard canvas{width:80px}}
 /* boss cinematics */
 .lbox{position:fixed;left:0;right:0;height:0;background:#000;z-index:6;pointer-events:none;transition:height .45s ease}
 #lbTop{top:0}#lbBot{bottom:0}body.cine .lbox{height:9vh}
@@ -1940,7 +1953,7 @@ function newGame(cls,name,slot){buildWorld();G.slot=slot;const P=new Player(cls,
   G.quests={};G.flags={};G.chests={};G.harv={};G.disc={};G.kills={};G.time=7.5*60;G.day=1;G.playTime=0;G.lantern={map:'eldoria',x:26*T+8,y:22*T+8,name:'Plaza Lantern'};
   invAdd('health_potion',3);invAdd('mana_potion',1);qStart('fading_light',true);G.tracked='fading_light';
   enterPlay();loadMap('eldoria',24*T+8,12*T+8);saveGame(slot,true);
-  setTimeout(()=>say({name:'',por:'sun'},['You wake on warm cobblestones. No rain. No horns. Birdsong, and the smell of bread instead of filter coffee. A sky with a sun that looks just slightly too small.',`Reborn in Aurel as ${P.name}. A white-haired woman on the hall steps to the north is waving at you, looking very surprised.`],null,()=>{if(!settings.seenHelp){settings.seenHelp=true;saveSettings();toast(isTouch()?'Left side: move. ATK attacks and talks. ROLL dodges.':'WASD move · Left click attack · Right click block · K roll · 1-4 skills · E talk');}}),700)}
+  setTimeout(()=>say({name:'',por:'sun'},['You wake in tall, sun-warm grass. No rain. No horns. Only birdsong, wind in the meadow, and a sky with a sun that looks just slightly too small.',`Reborn in Aurel as ${P.name}. A dirt road runs north toward chimney smoke and a village. Small round creatures bounce through the grass between you and it.`],null,()=>{if(!settings.seenHelp){settings.seenHelp=true;saveSettings();toast(isTouch()?'Left side: move. ATK attacks and talks. ROLL dodges.':'WASD move · Left click attack, hold for a heavy blow · Right click block · K roll · 1-4 skills · E talk');}}),700)}
 
 /* ---------- Render ---------- */
 function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);G.dpr=dpr;const w=Math.floor(innerWidth*dpr),h=Math.floor(innerHeight*dpr);cv.width=w;cv.height=h;
@@ -2677,8 +2690,8 @@ function campScene(){const ids=(G.party||[]).map(c=>c.id);if(ids.length<2||G.cam
 function guildRefresh(){const g=G.guild;if(g.day===G.day)return;g.day=G.day;const pool=BOUNTIES.filter(b=>b.rank<=g.rank&&!g.active.some(a=>a.id===b.id));const R=mulberry32(G.day*31+7);g.board=[];while(g.board.length<3&&pool.length){g.board.push(pool.splice(Math.floor(R()*pool.length),1)[0].id)}}
 function openBoard(){guildRefresh();const g=G.guild;const B=b=>BOUNTIES.find(x=>x.id===b);
   const prog=a=>{const b=B(a.id);return b.kind==='kill'?Math.min(b.n,a.n):Math.min(b.n,invCount(b.type))};
-  openGen(`Bounty board · Guild rank ${RANKS[g.rank]}`,`${g.reg?'':'<p class="hint">Register with Noelle at the guild counter first.</p>'}<p class="sect">Posted today</p>${g.board.map(id=>{const b=B(id);return`<div class="srow"><img src="${iconUrl('bty','tooth','#ffd27a')}" alt=""><div><b>${esc(b.text)}</b><small>Rank ${RANKS[b.rank]}+ · ${b.gold} gold · ${b.pts} rank point${b.pts>1?'s':''}</small></div><button class="btn sm" data-acc="${id}" ${!g.reg||g.active.length>=2||g.active.some(a=>a.id===id)?'disabled':''}>Accept</button></div>`}).join('')||'<p class="empty">No bounties posted.</p>'}
-   <p class="sect" style="margin-top:12px">Accepted (${g.active.length}/2)</p>${g.active.map(a=>{const b=B(a.id);return`<div class="srow"><img src="${iconUrl('bty2','tooth','#9fe07a')}" alt=""><div><b>${esc(b.text)}</b><small>${prog(a)} / ${b.n}${prog(a)>=b.n?' · report to Noelle':''}</small></div><span></span></div>`}).join('')||'<p class="empty">None. Accept up to two.</p>'}
+  openGen(`Bounty board · Guild rank ${RANKS[g.rank]}`,`${g.reg?'':'<p class="hint">Register with Noelle at the guild counter first.</p>'}<p class="sect">Posted today</p>${g.board.map(id=>{const b=B(id);return`<div class="srow"><img src="${iconUrl('bty','tooth','#ffd27a')}" alt=""><div><b>${esc(b.text)}</b><small>Rank ${RANKS[b.rank]}+ · ${b.gold} gold · ${b.pts} rank point${b.pts>1?'s':''}</small></div><button class="btn sm" data-acc="${id}" ${!g.reg||g.active.length>=guildSlots()||g.active.some(a=>a.id===id)?'disabled':''}>Accept</button></div>`}).join('')||'<p class="empty">No bounties posted.</p>'}
+   <p class="sect" style="margin-top:12px">Accepted (${g.active.length}/${guildSlots()})</p>${g.active.map(a=>{const b=B(a.id);return`<div class="srow"><img src="${iconUrl('bty2','tooth','#9fe07a')}" alt=""><div><b>${esc(b.text)}</b><small>${prog(a)} / ${b.n}${prog(a)>=b.n?' · report to Noelle':''}</small></div><span></span></div>`}).join('')||'<p class="empty">None. Accept up to two.</p>'}
    <p class="hint" style="margin-top:10px">Rank points: ${g.pts}${g.rank<RANKS.length-1?' · next rank at '+RANK_PTS[g.rank+1]:''}</p>`,
    Bd=>Bd.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{g.active.push({id:b.dataset.acc,n:0});AudioSys.play('quest');toast('Bounty accepted','q');openBoard()}))}
 function reportBounties(){const g=G.guild,P=G.player;let done=0,gold=0;g.active=g.active.filter(a=>{const b=BOUNTIES.find(x=>x.id===a.id);const ok=b.kind==='kill'?a.n>=b.n:invCount(b.type)>=b.n;if(ok){if(b.kind==='gather')invRemove(b.type,b.n);done++;gold+=b.gold;g.pts+=b.pts;g.board=g.board.filter(x=>x!==b.id);return false}return true});
@@ -2758,7 +2771,7 @@ const _serialize=serialize;serialize=function(){syncPartyHp();const d=_serialize
 function heroLoc(id){const r=rel(id),h=H(id);if(inParty(id))return null;if(r.status===6)return{map:'eldoria',p:[40.6,9.8]};if(r.recruited)return{map:'eldoria',p:{mimi:[18.6,25.8],lyra:[20.6,25.8],serah:[21.6,26.8]}[id]};return h.spot}
 function refreshNpcs(){if(!G.map||!G.player)return;G.npcs=G.npcs.filter(n=>!HEROINES[n.id]);for(const id in HEROINES){const L=heroLoc(id);if(!L||L.map!==G.map.id)continue;NPCDEF[id].map=L.map;NPCDEF[id].day=L.p;NPCDEF[id].night=L.p;G.npcs.push(new NPC(id))}}
 const _loadMap=loadMap;loadMap=function(id,px,py,silent){syncPartyHp();_loadMap(id,px,py,silent);if(G.state==='play'||G.player){refreshNpcs();buildParty()}if(id==='eldoria'&&G.guild)guildRefresh()};
-const _talkTo=talkTo;talkTo=function(n){if(HEROINES[n.id])return talkHeroine(n);if(n.id==='tobin'&&rel('mimi')&&G.quests.slime_trouble&&G.quests.slime_trouble.done){return say({name:'Tobin',title:'Farmer',face:FACES.tobin},['Seeds for your garden? Ten gold for moonleaf, fifteen for sunbells.'],[{t:'Moonleaf seeds (10 g)',f:()=>buySeed('moon_seed',10)},{t:'Sunbell seeds (15 g)',f:()=>buySeed('sun_seed',15)},{t:'No thanks.'}])}if(n.id==='maren'&&!G.flags.isekaiIntro){G.flags.isekaiIntro=1;return Scene.play(null,[{n:'Elder Maren',ti:'Village elder',f:FACES.maren,e:'surprised',t:'You are awake! The whole plaza saw it: a column of dawn-light, and then there you were, asleep on the cobbles.'},{n:'Elder Maren',ti:'Village elder',f:FACES.maren,e:'happy',t:'Aurelia has not sent anyone in three hundred years. You may stay in the old lamplighter\'s cottage, north-east of the plaza. It is yours now.'},{n:'Elder Maren',ti:'Village elder',f:FACES.maren,e:'n',t:'And visit the Adventurers\' Guild beside the plaza. Noelle will register you. You will need companions for what comes next.'}],()=>{toast('Your cottage is north-east of the plaza. The Guild is south-west.','q');_talkTo(n)})}return _talkTo(n)};
+const _talkTo=talkTo;talkTo=function(n){if(HEROINES[n.id])return talkHeroine(n);if(n.id==='tobin'&&rel('mimi')&&G.quests.slime_trouble&&G.quests.slime_trouble.done){return say({name:'Tobin',title:'Farmer',face:FACES.tobin},['Seeds for your garden? Ten gold for moonleaf, fifteen for sunbells.'],[{t:'Moonleaf seeds (10 g)',f:()=>buySeed('moon_seed',10)},{t:'Sunbell seeds (15 g)',f:()=>buySeed('sun_seed',15)},{t:'No thanks.'}])}if(n.id==='maren'&&!G.flags.isekaiIntro){G.flags.isekaiIntro=1;return Scene.play(null,[{n:'Elder Maren',ti:'Village elder',f:FACES.maren,e:'surprised',t:'You are awake! The whole village saw it: a column of dawn-light came down over Dawnmeadow, and then you came walking up the south road.'},{n:'Elder Maren',ti:'Village elder',f:FACES.maren,e:'happy',t:'Aurelia has not sent anyone in three hundred years. You may stay in the old lamplighter\'s cottage, north-east of the plaza. It is yours now.'},{n:'Elder Maren',ti:'Village elder',f:FACES.maren,e:'n',t:'And visit the Adventurers\' Guild beside the plaza. Noelle will register you. You will need companions for what comes next.'}],()=>{toast('Your cottage is north-east of the plaza. The Guild is south-west.','q');_talkTo(n)})}return _talkTo(n)};
 function buySeed(id,p){if(G.player.gold<p){toast('Not enough gold','bad');return}G.player.gold-=p;invAdd(id,1);AudioSys.play('buy');toast('+ '+ITEMS[id].name)}
 const _npcHasNews=npcHasNews;npcHasNews=function(id){if(HEROINES[id]){const r=rel(id);if(!r.met)return'new';if(questAction(id))return'done';if(r.talkDay!==G.day&&r.status>=2)return null;return null}return _npcHasNews(id)};
 const _interactObj=interactObj;interactObj=function(o){if(o.kind==='board')return openBoard();if(o.kind==='plot')return plotAct(o.i);if(o.kind==='charm'){G.flags.charm=1;invAdd('bell_charm',1);AudioSys.play('quest');toast("Found Mimi's bell charm!",'q');return}if(o.kind==='dagger'){G.flags.dagger=1;invAdd('lantern_dagger',1);AudioSys.play('quest');toast("Found Noelle's Lantern Dagger!",'q');return}if(o.kind==='shrine'&&lyraShrine())return;return _interactObj(o)};
@@ -3711,6 +3724,162 @@ const _bdie10=Boss.prototype.die;Boss.prototype.die=function(){G.slowT=1.4;G.slo
   fx2({k:'glow',x:this.x,y:this.y-14,r:80,col:'#fff3c0',a:.9,dur:1.6});
   for(let i=0;i<60;i++){const a=rnd(0,TAU),s=rnd(40,180);G.part(this.x+rnd(-8,8),this.y-rnd(4,30),Math.cos(a)*s,Math.sin(a)*s-60,1.2,pick(['#ffffff','#ffd27a',shard]),2.5,160)}
   _bdie10.call(this);banner('VICTORY',this.d.name+' defeated')};
+
+/* ================= DAWNMEADOW: the grassland where the reborn wake ================= */
+Object.assign(ENEMY,{
+  puff:{name:'Meadow Puff',hp:14,atk:4,def:0,spd:22,r:5,ai:'hopper',detect:60,range:20,windup:.5,xp:5,gold:[0,2],col:'#f4e8d8',loot:[['moonleaf',.3]]},
+  beetle:{name:'Horn Beetle',hp:22,atk:5,def:1,spd:40,r:5,ai:'lunger',detect:80,range:40,windup:.6,xp:7,gold:[1,3],col:'#3a5a8a',loot:[['iron_ore',.12]]}});
+Object.assign(BEASTS,{puff:['Fluffy grassland critters that bounce at anything that moves. Harmless, mostly.','Swing as it lands.'],beetle:['Armoured beetles that charge horn-first across the meadow.','Step aside from the charge, then strike its back.']});
+function drawPuff(g,e,t){const F=pen(g,e.drawO),wind=e.st==='windup',sq=wind?1.15:e.hop>0?.88:1+Math.sin(e.anim*4)*.05,w=Math.round(11/sq),h=Math.round(9*sq),c='#f4e8d8',d='#d8c4b0';
+  g.save();g.translate(Math.round(e.x),Math.round(e.y)-Math.round(e.z||0));
+  F(-4,-h-4,2,5,c);F(2,-h-4,2,5,c);F(-4,-h-3,1,3,'#f0b8c0');F(3,-h-3,1,3,'#f0b8c0');
+  for(let y=0;y<h;y++){const k=y/h,ww=Math.max(2,Math.round(w*Math.sqrt(1-Math.pow(1-k,2)))),x0=-ww/2|0;F(x0,-h+y,ww,1,y<2?'#ffffff':y>h-3?d:c)}
+  F(-(w/2|0)-1,-(h/2|0),1,2,c);F(w/2|0,-(h/2|0),1,2,c);
+  F(-3,-h+3,2,2,'#2a1a20');F(1,-h+3,2,2,'#2a1a20');F(-3,-h+3,1,1,'#fff');F(1,-h+3,1,1,'#fff');F(-1,-h+5,2,1,'#f08a9a');if(wind){F(-3,-h+2,2,1,'#2a1a20');F(1,-h+2,2,1,'#2a1a20')}
+  g.restore()}
+function drawBeetle(g,e,t){const F=pen(g,e.drawO),run=e.moving||e.st==='strike',f=Math.floor(e.anim*(run?14:2))%2,wind=e.st==='windup';
+  g.save();g.translate(Math.round(e.x),Math.round(e.y));if(e.face<0)g.scale(-1,1);
+  for(const lx of[-4,0,3])F(lx+(f?1:0),-2,1,2,'#1a1a24');
+  F(-6,-8,11,6,'#3a5a8a');F(-5,-9,9,1,'#5a8ac0');F(-6,-8,11,1,'#5a8ac0');F(-1,-8,1,6,'#24385a');F(-6,-3,11,1,'#24385a');F(-4,-7,2,1,'#9ac0f0');
+  F(5,-6,3,4,'#24242e');F(7,-9,1,4,wind?'#ffffff':'#c8c0a8');F(8,-10,1,2,wind?'#ffffff':'#e8e0c8');F(6,-5,1,1,'#ff5a3a');g.restore()}
+const NEWDRAW={puff:[drawPuff,6],beetle:[drawBeetle,7]};
+function eliteMark(g,e,t){g.save();g.globalAlpha=.55+Math.sin(t*6)*.25;g.strokeStyle='#ff4a3a';g.lineWidth=1.5;g.beginPath();g.ellipse(e.x,e.y,e.r+6,(e.r+6)*.4,0,0,TAU);g.stroke();g.globalAlpha=1;
+  g.font='6px DotGothic16, sans-serif';g.textAlign='center';g.fillStyle='#04061a';g.fillText(e.ename,e.x+.6,e.y-e.r*2-23.4);g.fillStyle='#ffd27a';g.fillText(e.ename,e.x,e.y-e.r*2-24);g.restore()}
+const _edraw11=Enemy.prototype.draw;Enemy.prototype.draw=function(g,t){if(this.elite&&!this.dead)eliteMark(g,this,t);const N=NEWDRAW[this.type];if(!N)return _edraw11.call(this,g,t);
+  if(this.dead&&this.deathT>.55)return;g.save();if(this.dead)g.globalAlpha=1-this.deathT/.55;outlinedDraw(g,this,t,N[0],N[1]);g.restore();
+  if(this.st==='windup'&&!this.dead){g.fillStyle='#ff5a3a';const x=Math.round(this.x),y=Math.round(this.y-this.r*2-14);g.fillRect(x-1,y,2,4);g.fillRect(x-1,y+5,2,1)}
+  if(this.alert>0&&!this.dead)bubble(g,this.x,this.y-this.r*2-22-(.7-this.alert)*6,'!','#e8463a')};
+function buildMeadow(){const W=44,H=34,m=newMap('meadow','Dawnmeadow',W,H,{seed:7,ground:'grass',floor:'path',music:'village',region:'meadow',sub:'Where the reborn wake'});
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){let t=TL.GRASS;const n=fbm(x*.15,y*.15,71);if(n>.66)t=TL.TALL;else if(n<.3&&hash2(x,y,13)<.35)t=TL.FLOWER;const e=Math.min(x,y,W-1-x,H-1-y);if(e<1.3+fbm(x*.3,y*.3,72)*2.5)t=hash2(x,y,5)<.5?TL.TREE:TL.PINE;m.set(x,y,t)}
+  for(let i=0;i<16;i++){const x=3+Math.floor(hash2(i,1,77)*(W-6)),y=3+Math.floor(hash2(i,2,77)*(H-6));if(Math.hypot(x-21.5,y-18)>8&&Math.abs(x-21.5)>2)m.set(x,y,TL.TREE)}
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(((x-34)/4.5)**2+((y-25)/3)**2<1)m.set(x,y,TL.WATER);
+  const R=(x0,y0,x1,y1,t)=>{for(let y=y0;y<=y1;y++)for(let x=x0;x<=x1;x++)m.set(x,y,t)};
+  R(16,14,27,22,TL.GRASS);R(21,0,22,17,TL.PATH);
+  addObj(m,'lantern',24,17,{solid:true,id:'L_meadow',name:'Meadow Lantern'});
+  addObj(m,'sign',20,10,{solid:true,text:['North: Eldoria, the last lit village.','Someone has carved beneath it: "the puffs are harmless, mostly."']});
+  addObj(m,'chest',7,8,{solid:true,id:'c_meadow1',items:[['health_potion',2]],gold:15});addObj(m,'chest',38,9,{solid:true,id:'c_meadow2',items:[['copper_ring',1]],gold:20});
+  for(const[x,y]of[[12,14],[30,12],[9,22],[27,28]])addObj(m,'herb',x,y,{id:'h_m'+x+'_'+y,regrow:90});
+  [[14,18],[17,24],[27,20],[29,15],[12,11],[33,18]].forEach(a=>spawn(m,'puff',a[0],a[1],1));[[10,27],[30,29],[36,14]].forEach(a=>spawn(m,'beetle',a[0],a[1],1));[[8,17],[25,27]].forEach(a=>spawn(m,'slime',a[0],a[1],1));
+  m.exits.push({x:21*T,y:0,w:2*T,h:6,to:'eldoria',px:23*T+8,py:34*T+4});return m}
+const _buildVillage11=buildVillage;buildVillage=function(){const m=_buildVillage11();for(let y=28;y<36;y++)for(let x=23;x<=24;x++)m.set(x,y,TL.PATH);
+  addObj(m,'sign',25,32,{solid:true,text:['South: Dawnmeadow, where the dawn-light came down.']});m.exits.push({x:23*T,y:35*T+10,w:2*T,h:6,to:'meadow',px:21*T+16,py:3*T});return m};
+const _buildWorld11=buildWorld;buildWorld=function(){_buildWorld11();G.maps.meadow=buildMeadow()};
+REGIONS.push({id:'meadow',name:'Dawnmeadow',x:.12,y:.82,open:true});ROADS.push(['meadow','eldoria']);
+QUESTS.first_steps={name:'The Road to Eldoria',type:'Main',giver:'Aurelia',stages:['Defeat meadow creatures to find your footing ({n}/4).','Follow the road north to Eldoria.'],reward:'50 XP · 2 Health Potions'};
+const _qProg11=qProg;qProg=function(id){if(id==='first_steps')return Math.min(4,(G.quests.first_steps&&G.quests.first_steps.n)||0);return _qProg11(id)};
+const _onKill11=onKill;onKill=function(type){_onKill11(type);const q=G.quests.first_steps;if(q&&!q.done&&q.stage===0&&['puff','beetle','slime'].includes(type)){q.n=(q.n||0)+1;if(q.n>=4)qSet('first_steps',1)}};
+BOUNTIES.unshift({id:'b0',kind:'kill',type:'puff',n:6,gold:30,pts:1,rank:0,text:'Thin out 6 Meadow Puffs'});
+
+/* ================= GUILD: adventurer card, ranks F to S, elite hunts, guild shop ================= */
+RANKS.push('A','S');RANK_PTS.push(22,32);
+Object.assign(ITEMS,{
+  guild_blade:{name:'Guildsteel Sabre',type:'weapon',wk:'sword',r:2,atk:11,crit:.03,price:260,icon:['sword','#bcd0e8'],desc:'Issued to D-rank adventurers. Light, keen and stamped with the guild crest.'},
+  hunter_cloak:{name:'Hunter\'s Mantle',type:'armor',r:2,def:7,spd:4,price:230,icon:['cloak','#5a6a3a'],desc:'Waxed canvas worn by guild hunters. Quiet in the brush.'},
+  guild_charm:{name:'Guild Sigil',type:'acc',r:2,crit:.06,hp:15,price:210,icon:['brooch','#e0b84a'],desc:'A brass sigil that opens doors and steadies the hand.'},
+  guild_elixir:{name:'Guild Elixir',type:'use',r:3,heal:400,mana:120,price:150,stack:10,icon:['potion','#ffd27a'],desc:'Restores 400 HP and 120 MP. Sold only to proven adventurers.'}});
+GEARLOOK.hunter_cloak='leather';
+const GUILD_SHOP=[['greater_potion',0],['guild_blade',2],['hunter_cloak',2],['guild_charm',3],['guild_elixir',4]];
+const PERKS=[[1,'Guild Shop opens'],[2,'+10% gold from bounties'],[2,'Elite hunts: track named monsters'],[4,'10% off at the Guild Shop'],[5,'Carry three bounties at once'],[6,'Title: Hero of Eldoria']];
+const HUNTS=[{id:'h1',type:'beetle',name:'Ironhorn',map:'meadow',tx:10,ty:26,lvl:4,rank:1,gold:120,pts:2,drop:'guild_charm'},{id:'h2',type:'wolf',name:'Ashmane the Alpha',map:'woods',tx:50,ty:38,lvl:5,rank:2,gold:200,pts:3,drop:'wolfhide_cloak'},{id:'h3',type:'goblin',name:'Skulk the Cutthroat',map:'woods',tx:58,ty:17,lvl:6,rank:3,gold:260,pts:3,drop:'guild_elixir'},{id:'h4',type:'skeleton',name:'The Drowned Captain',map:'caverns',tx:26,ty:46,lvl:8,rank:3,gold:320,pts:4,drop:'bulwark_plate'}];
+const guildSlots=()=>G.guild&&G.guild.rank>=5?3:2;
+function guildDefaults(g){return Object.assign(g||{},{done:(g&&g.done)||0,hunts:(g&&g.hunts)||{},hunt:(g&&g.hunt)||null})}
+function guildRankCheck(r0){const g=G.guild;while(g.rank<RANKS.length-1&&g.pts>=RANK_PTS[g.rank+1])g.rank++;if(g.rank>r0){banner('RANK '+RANKS[g.rank],"Adventurers' Guild");AudioSys.play('level');toast('Guild rank up: '+RANKS[g.rank],'lv')}}
+function spawnHunt(){const g=G.guild;if(!g||!g.hunt||!G.map)return;const H=HUNTS.find(h=>h.id===g.hunt);if(!H||H.map!==G.map.id||g.hunts[H.id]||G.enemies.some(e=>e.elite===H.id))return;
+  const[x,y]=openSpot(G.map,H.tx,H.ty),e=new Enemy(H.type,x*T+8,y*T+12,H.lvl);e.maxHp*=4;e.hp=e.maxHp;e.atk*=1.4;e.elite=H.id;e.ename=H.name;e.d=Object.assign({},e.d,{xp:e.d.xp*4,detect:e.d.detect*1.4});G.enemies.push(e)}
+const _edie11=Enemy.prototype.die;Enemy.prototype.die=function(){_edie11.call(this);if(this.elite&&G.guild){G.guild.hunts[this.elite]='slain';toast('Hunt target slain! Report to the guild.','q');banner('HUNT COMPLETE',this.ename)}};
+const _respawn11=respawnEnemies;respawnEnemies=function(){_respawn11();spawnHunt()};
+function openGuild(tab){guildRefresh();const g=guildDefaults(G.guild),P=G.player;tab=tab||openGuild.tab||'card';openGuild.tab=tab;
+  const tabs=[['card','Adventurer Card'],['hunts','Elite Hunts'],['shop','Guild Shop']];let body='';
+  if(!g.reg)body='<p class="hint">Register with Noelle at the guild counter first. She will make you an adventurer card.</p>';
+  else if(tab==='card'){const next=RANK_PTS[g.rank+1],base=RANK_PTS[g.rank]||0,pct=next==null?100:Math.round((g.pts-base)/(next-base)*100),slain=HUNTS.filter(h=>g.hunts[h.id]==='done').length;
+    body=`<div class="gcard"><canvas id="gcPor" width="400" height="480"></canvas><div><div class="gname">${esc(P.name)}</div><div class="gcls">Lv ${P.lvl} ${CLASSES[P.cls].name}${g.rank>=6?' · Hero of Eldoria':''}</div>
+     <div class="grank-row"><div class="grank r${g.rank}">${RANKS[g.rank]}</div><div style="flex:1"><div class="ps-bar"><span>PTS</span><i><b style="width:${Math.max(0,Math.min(100,pct))}%;background:linear-gradient(#ffe07a,#c9a24a)"></b></i><em>${g.pts}${next!=null?' / '+next:' · max'}</em></div></div></div>
+     <dl class="gstats"><dt>Bounties completed</dt><dd>${g.done}</dd><dt>Elite hunts</dt><dd>${slain} / ${HUNTS.length}</dd><dt>Active bounties</dt><dd>${g.active.length} / ${guildSlots()}</dd></dl></div></div>
+     <p class="sect">Rank perks</p><div class="perks">${PERKS.map(([r,t])=>`<div class="perk${g.rank>=r?' on':''}"><b>${RANKS[r]}</b><span>${t}</span></div>`).join('')}</div>`}
+  else if(tab==='hunts')body=(g.rank<1?'<p class="hint">Elite hunts open at rank E. Finish bounties to rank up.</p>':'')+HUNTS.map(H=>{const st=g.hunts[H.id],act=g.hunt===H.id,lock=g.rank<H.rank;
+    const btn=st==='done'?'<span class="price">Completed</span>':st==='slain'?`<button class="btn sm" data-hrep="${H.id}">Report</button>`:act?`<button class="btn ghost sm" data-hab="${H.id}">Abandon</button>`:lock?`<span class="price">Rank ${RANKS[H.rank]}</span>`:`<button class="btn sm" data-hacc="${H.id}" ${g.hunt?'disabled':''}>Accept</button>`;
+    return`<div class="srow"><img src="${iconUrl('hunt_'+H.type,'tooth','#ff7a5a')}" alt=""><div><b>${esc(H.name)}</b><small>Elite ${esc(ENEMY[H.type].name)} · ${esc(G.maps[H.map].name)} · ${H.gold} gold, ${H.pts} pts, ${esc(ITEMS[H.drop].name)}${act?' · tracking':''}</small></div>${btn}</div>`}).join('');
+  else body=g.rank<1?'<p class="hint">The Guild Shop opens at rank E.</p>':GUILD_SHOP.map(([id,r])=>{const d=ITEMS[id],pr=Math.round(d.price*(g.rank>=4?.9:1)),lock=g.rank<r;
+    return`<div class="srow"><img src="${itemIcon(id)}" alt=""><div><b style="color:${RCOL[d.r]}">${esc(d.name)}</b><small>${esc(statLines(id).map(x=>x[1]+' '+x[2]).join(' · ')||d.desc)}</small></div><div>${lock?`<span class="price">Rank ${RANKS[r]}</span>`:`<span class="price">${pr} g</span><button class="btn sm" data-gbuy="${id}" ${P.gold<pr?'disabled':''}>Buy</button>`}</div></div>`}).join('');
+  openGen("Adventurers' Guild",`<div class="bagbar">${tabs.map(([k,l])=>`<button class="${tab===k?'on':''}" data-gtab="${k}">${l}</button>`).join('')}<button class="sort" data-gboard>Bounty board</button></div>${body}`,B=>{
+    B.querySelectorAll('[data-gtab]').forEach(b=>b.onclick=()=>{AudioSys.play('ui');openGuild(b.dataset.gtab)});
+    B.querySelector('[data-gboard]').onclick=()=>{AudioSys.play('ui');openBoard()};
+    const por=B.querySelector('#gcPor');if(por)por.getContext('2d').drawImage(getPortrait(playerFace(),'happy'),0,0);
+    B.querySelectorAll('[data-hacc]').forEach(b=>b.onclick=()=>{g.hunt=b.dataset.hacc;spawnHunt();AudioSys.play('quest');toast('Hunt accepted: '+HUNTS.find(h=>h.id===g.hunt).name,'q');openGuild('hunts')});
+    B.querySelectorAll('[data-hab]').forEach(b=>b.onclick=()=>{G.enemies=G.enemies.filter(e=>e.elite!==g.hunt);g.hunt=null;AudioSys.play('ui');openGuild('hunts')});
+    B.querySelectorAll('[data-hrep]').forEach(b=>b.onclick=()=>{const H=HUNTS.find(h=>h.id===b.dataset.hrep),r0=g.rank;g.hunts[H.id]='done';if(g.hunt===H.id)g.hunt=null;P.gold+=H.gold;g.pts+=H.pts;invAdd(H.drop,1)||dropItem(P.x,P.y,H.drop,1);AudioSys.play('coin');toast(`Hunt reward: ${H.gold} gold, ${ITEMS[H.drop].name}`,'q');guildRankCheck(r0);openGuild('hunts')});
+    B.querySelectorAll('[data-gbuy]').forEach(b=>b.onclick=()=>{const id=b.dataset.gbuy,pr=Math.round(ITEMS[id].price*(g.rank>=4?.9:1));if(P.gold<pr)return;if(invAdd(id,1)<1){toast('Your bag is full','bad');return}P.gold-=pr;AudioSys.play('buy');openGuild('shop')})})}
+const _report11=reportBounties;reportBounties=function(){const g=guildDefaults(G.guild),P=G.player,r0=g.rank,gold0=P.gold,a0=g.active.length;_report11();const done=a0-g.active.length;if(done>0){g.done+=done;if(g.rank>=2){const bonus=Math.round((P.gold-gold0)*.1);if(bonus>0){P.gold+=bonus;toast(`Rank bonus: +${bonus} gold`)}}}if(g.rank>r0)banner('RANK '+RANKS[g.rank],"Adventurers' Guild")};
+const _knock11=knock;knock=function(h){if(h.id==='guild')return openGuild();return _knock11(h)};
+const _interactObj11=interactObj;interactObj=function(o){if(o.kind==='board')return openGuild();return _interactObj11(o)};
+const _objLabel11=objLabel;objLabel=function(o){return o.kind==='board'?"Guild board and services":_objLabel11(o)};
+
+/* ================= COMBAT FEEL: heavy attacks, weapon identity, perfect dodge, counters ================= */
+function flashText(main,sub){const el=$('#callout');el.innerHTML=`<small>${esc(sub)}</small>${esc(main)}`;el.classList.remove('go');void el.offsetWidth;el.classList.add('go')}
+function perfectDodge(P){G.slowT=.6;G.slowScale=.35;P.iframe=Math.max(P.iframe,.5);P.addBurst(8);flashText('PERFECT DODGE','Evade');AudioSys.play('parry');fx2({k:'shock',x:P.x,y:P.y,r:36,col:'#9fe0ff',dur:.4})}
+Player.prototype.heavy=function(){const wk=this.weaponKind||'sword';this.atkT=this.atkDur=.38;this.combo=2;this.hitDone=true;this.comboWin=0;G.shake=Math.max(G.shake,5);G.hitstop=.05;AudioSys.play('slam');AudioSys.play('swing3');this.addBurst(3);
+  const hit=(range,cone,mult,kb)=>{for(const e of G.enemies){if(e.dead)continue;const dx=e.x-this.x,dy=(e.y-e.hh)-(this.y-4),d=Math.hypot(dx,dy);if(d>range+e.r)continue;if(cone>-1&&d>8&&(dx*this.fx+dy*this.fy)/d<cone)continue;
+    const crit=Math.random()<this.crit+.15;e.hurt(rollDmg(wk==='staff'?this.mag*1.6+this.atk*.6:this.atk,e.def,mult*(crit?1.8:1)),crit,dx/(d||1)*kb,dy/(d||1)*kb,{src:this,sx:this.x,sy:this.y})}};
+  if(wk==='knife'){const sx=this.x,sy=this.y;hit(42,.2,2.1,160);moveBox(G.map,this,this.fx*34,this.fy*34);for(let i=0;i<6;i++)G.part(lerp(sx,this.x,i/5),lerp(sy,this.y,i/5)-8,0,0,.3,'#d8e4ff',2,0,'ghost');G.slash(this.x,this.y-8,this.aim,26,2,'#d8e4ff')}
+  else if(wk==='staff'){fx2({k:'shock',x:this.x,y:this.y,r:46,col:'#b48cff',dur:.5});G.ring(this.x,this.y-6,42,'#b48cff',.4);for(let i=0;i<24;i++){const a=rnd(0,TAU),s=rnd(60,140);G.part(this.x,this.y-8,Math.cos(a)*s,Math.sin(a)*s,.5,pick(['#b48cff','#ffffff']),2,0,'glow')}hit(44,-1,2,180)}
+  else{G.slash(this.x,this.y-8,this.aim,36,2,'#ffe07a');const cx=this.x+this.fx*20,cy=this.y+this.fy*14;crater(cx,cy,18);fx2({k:'shock',x:cx,y:cy,r:44,col:'#ffe07a',dur:.45});hit(36,.1,2.4,260)}
+  G.num(this.x,this.y-26,'HEAVY','#ffe07a',true)};
+const _sa11=Player.prototype.startAttack;Player.prototype.startAttack=function(ax){_sa11.call(this,ax);const wk=this.weaponKind;
+  if(wk==='knife'){this.atkDur*=.72;this.atkT=this.atkDur}
+  else if(wk==='staff'&&this.combo===2)G.timed.push({t:.1,f:()=>G.proj({x:this.x+this.fx*8,y:this.y-8+this.fy*6,vx:this.fx*200,vy:this.fy*200,r:3,dmg:this.mag*1.1+this.atk*.4,owner:'p',type:'frost',life:.45,chill:true})})};
+const _mh11=Player.prototype.meleeHit;Player.prototype.meleeHit=function(){if(this.counterT>0){const c=this.crit,a=this.atk;this.crit=1;this.atk*=1.6;_mh11.call(this);this.crit=c;this.atk=a;this.counterT=0;flashText('COUNTER','Riposte');G.slowT=.25;G.slowScale=.3;return}_mh11.call(this)};
+const _phurt11=Player.prototype.hurt;Player.prototype.hurt=function(dmg,sx,sy,o={}){if(this.dodgeT>0&&!this.dead&&G.state==='play'&&(this.pdCd||0)<=0){this.pdCd=2;perfectDodge(this)}
+  let parry=false;if(this.blocking&&this.blockT<.2&&!o.unblockable&&this.iframe<=0&&!this.dead){const dx=sx-this.x,dy=sy-this.y,d=Math.hypot(dx,dy)||1;parry=(dx*this.fx+dy*this.fy)/d>.15}
+  const r=_phurt11.call(this,dmg,sx,sy,o);if(parry){this.counterT=.9;flashText('COUNTER READY','Parry')}return r};
+const _pUpd11=Player.prototype.update;Player.prototype.update=function(dt){_pUpd11.call(this,dt);if(this.dead)return;
+  if(this.pdCd>0)this.pdCd-=dt;if(this.counterT>0)this.counterT-=dt;if(this.victoryT>0)this.victoryT-=dt;
+  if(Input.down('attack')&&!G.near&&this.dodgeT<=0&&!G.ui){this.holdT=(this.holdT||0)+dt;if(this.holdT>.45&&!this.charged){this.charged=true;AudioSys.play('magic');G.ring(this.x,this.y-8,16,'#ffe07a',.25)}
+    if(this.holdT>.2&&Math.random()<dt*25){const a=rnd(0,TAU);G.part(this.x+Math.cos(a)*12,this.y-8+Math.sin(a)*8,-Math.cos(a)*40,-Math.sin(a)*30,.25,'#ffe07a',1.5,0,'glow')}}
+  else{if(this.charged&&this.dodgeT<=0)this.heavy();this.holdT=0;this.charged=false}
+  if(this.hp<this.maxHp*.25&&Math.random()<dt*1.5)G.part(this.x+this.fx*4,this.y-17,this.fx*6,-8,.6,'#e8eef8',1,0,'smoke');
+  if(this.moving||this.atkT>0||this.blocking)this.idleT=0;else this.idleT=(this.idleT||0)+dt};
+/* idle look-around and the victory pose */
+const _pdraw11=Player.prototype.draw;Player.prototype.draw=function(g,t){if(this.dead)return _pdraw11.call(this,g,t);
+  if(this.victoryT>0&&this.atkT<=0&&!this.moving){const k={dir:this.dir,aim:this.aim,atkT:this.atkT,atkDur:this.atkDur,combo:this.combo};Object.assign(this,{dir:0,aim:.13,atkT:.3,atkDur:.3,combo:0});_pdraw11.call(this,g,t);Object.assign(this,k);if(Math.random()<.3)G.part(this.x+rnd(-8,8),this.y-rnd(10,30),0,-10,.6,'#ffe07a',1,0,'glow');return}
+  if(this.idleT>5){const ph=(this.idleT-5)%8,keep=this.dir;if(ph<.7)this.dir=3;else if(ph<1.4)this.dir=2;_pdraw11.call(this,g,t);this.dir=keep;return}
+  _pdraw11.call(this,g,t)};
+const _bdie11=Boss.prototype.die;Boss.prototype.die=function(){_bdie11.call(this);if(G.player)G.player.victoryT=2.6};
+/* ultimates: dim the world, class-coloured spectacle, slow-motion finish and a damage summary */
+const dimmer=document.createElement('div');dimmer.id='dimmer';document.body.appendChild(dimmer);
+function dimScreen(s){if(settings.fx==='reduced')return;dimmer.classList.add('on');clearTimeout(dimScreen.tm);dimScreen.tm=setTimeout(()=>dimmer.classList.remove('on'),s*1000)}
+const _burstFx11=burstFx;burstFx=function(P){cinematic(1900);dimScreen(1.3);const snap=G.enemies.filter(e=>!e.dead&&e.type!=='dummy').map(e=>[e,e.hp]),col={warden:'#ff6a3a',ranger:'#7ff0ff',arcanist:'#b48cff'}[P.cls];
+  for(let i=0;i<3;i++)fx2({k:'shock',x:P.x,y:P.y,r:90+i*40,col:i%2?'#ffffff':col,dur:.6+i*.15});
+  if(P.cls==='arcanist')for(let i=0;i<4;i++)fx2({k:'beam',x:P.x+rnd(-40,40),y:P.y+rnd(-10,10),w:6,col:'rgba(200,170,255,.9)',dur:1});
+  if(P.cls==='warden')fx2({k:'glow',x:P.x,y:P.y-10,r:70,col:'#ff7a3a',a:.8,dur:.8});if(P.cls==='ranger')fx2({k:'glow',x:P.x,y:P.y-10,r:60,col:'#7ff0ff',a:.6,dur:1.2});
+  _burstFx11(P);
+  G.timed.push({t:1.3,f:()=>{let dmg=0,kills=0;for(const[e,h0]of snap){dmg+=Math.max(0,h0-Math.max(0,e.hp));if(e.dead)kills++}if(snap.length){G.slowT=.45;G.slowScale=.3;banner(`${Math.round(dmg)} DAMAGE`,BURSTS[P.cls].name+(kills?` · ${kills} defeated`:''))}}})};
+
+/* ================= WORLD LIFE: cloud shadows and NPC daily routines ================= */
+const _render11=render;render=function(){_render11();const m=G.map;if(!m||!m.outdoor)return;const g=ctx,S=G.S,W=m.w*T,Hh=m.h*T;g.save();g.setTransform(S,0,0,S,-G.cx*S,-G.cy*S);g.fillStyle='rgba(10,10,40,.09)';
+  for(let i=0;i<4;i++){const x=((hash2(i,1,3)*W+G.t*6*(1+i*.2))%(W+320))-160,y=hash2(i,2,3)*Hh;g.beginPath();g.ellipse(x,y,90+i*20,40+i*8,0,0,TAU);g.fill()}g.restore()};
+const SOCIAL={maren:[21.5,16.6],odile:[25.5,16.6],fenn:[20.4,18.8],brannoc:[28.4,18.6],elsbeth:[26.6,19.8],tobin:[22,20.4]};
+const _npcTarget11=NPC.prototype.target;NPC.prototype.target=function(){if(HEROINES[this.id]||!SOCIAL[this.id]||G.state!=='play'||G.map.id!=='eldoria')return _npcTarget11.call(this);
+  const h=(G.time/60)%24,d=this.d;if((G.weather&&G.weather.rain>.5)||h<8||h>=21)return[d.night[0]*T,d.night[1]*T];if(h>=17)return[SOCIAL[this.id][0]*T,SOCIAL[this.id][1]*T];return[d.day[0]*T,d.day[1]*T]};
+const _npcUpd11=NPC.prototype.update;NPC.prototype.update=function(dt){_npcUpd11.call(this,dt);const h=(G.time/60)%24;if(this.moving||!SOCIAL[this.id]||h<17||h>=21||G.talkNpc===this)return;const P=G.player;if(P&&dist(P.x,P.y,this.x,this.y)<40)return;
+  let best=null,bd=60;for(const n of G.npcs){if(n===this)continue;const dd=dist(n.x,n.y,this.x,this.y);if(dd<bd){bd=dd;best=n}}if(best){const dx=best.x-this.x,dy=best.y-this.y;this.dir=Math.abs(dx)>Math.abs(dy)?(dx>0?3:2):(dy>0?0:1)}};
+
+/* ================= SETTINGS: screen effects and ambience volume ================= */
+if(settings.vAmb==null)settings.vAmb=.7;if(!settings.fx)settings.fx=matchMedia('(prefers-reduced-motion: reduce)').matches?'reduced':'full';
+const _applyVol11=AudioSys.applyVol;AudioSys.applyVol=function(){_applyVol11.call(this);if(this.ctx)this.amb.gain.value=settings.vAmb*.6};
+const _cinematic11=cinematic;cinematic=function(ms){if(settings.fx!=='reduced')_cinematic11(ms)};
+const _update11=update;update=function(dt){if(settings.fx==='reduced'){G.slowT=0;G.shake=Math.min(G.shake,2);G.flashT=Math.min(G.flashT,.15)}_update11(dt)};
+const _renderSettings11=renderSettings;renderSettings=function(){_renderSettings11();const B=$('#setBody'),lab=[...B.querySelectorAll('label')].find(l=>l.textContent==='View scale');if(!lab)return;
+  lab.insertAdjacentHTML('beforebegin',`<label for="vA">Ambience</label><input type="range" id="vA" min="0" max="1" step=".05" value="${settings.vAmb}"><label>Screen effects</label><div class="seg" id="fxSeg"><button data-fx="full" class="${settings.fx!=='reduced'?'on':''}">Full</button><button data-fx="reduced" class="${settings.fx==='reduced'?'on':''}">Reduced</button></div>`);
+  $('#vA').oninput=e=>{settings.vAmb=+e.target.value;AudioSys.applyVol();saveSettings()};$$('#fxSeg [data-fx]').forEach(b=>b.onclick=()=>{settings.fx=b.dataset.fx;saveSettings();AudioSys.play('ui');renderSettings()})};
+
+/* ================= NEW GAME, LOADING AND SAVE SAFETY ================= */
+const _newGame11=newGame;newGame=function(cls,name,slot){_newGame11(cls,name,slot);guildDefaults(G.guild);G.guild.hunts={};G.guild.hunt=null;G.guild.done=0;
+  qStart('first_steps',true);G.tracked='first_steps';const L={map:'meadow',x:24*T+8,y:17*T+23,name:'Meadow Lantern'};G.lantern=Object.assign({},L);G.lit={L_meadow:L};loadMap('meadow',21*T+16,19*T+8);saveGame(slot,true)};
+const _loadMap11=loadMap;loadMap=function(id,px,py,silent){_loadMap11(id,px,py,silent);spawnHunt();if(id==='eldoria'&&qActive('first_steps')){setTimeout(()=>{if(!qActive('first_steps'))return;qDone('first_steps');G.player.gainXp(50);invAdd('health_potion',2);G.tracked='fading_light';toast('Eldoria! Speak with Elder Maren on the hall steps.','q')},900)}};
+const _serialize11=serialize;serialize=function(){return Object.assign(_serialize11(),{v:3})};
+const _saveGame11=saveGame;saveGame=function(slot,silent){const prev=Store.get('eclipse.slot.'+slot,null);if(prev)Store.set('eclipse.slot.'+slot+'.bak',prev);return _saveGame11(slot,silent)};
+const _startFrom11=startFrom;startFrom=function(d,slot){try{d.guild=guildDefaults(Object.assign({rank:0,pts:0,board:[],day:-1,active:[],reg:false},d.guild||{}));if(d.map&&!['eldoria','woods','caverns','meadow'].includes(d.map)){d.map='eldoria';d.x=26*T+8;d.y=22*T+8}_startFrom11(d,slot)}
+  catch(err){console.error(err);const bak=Store.get('eclipse.slot.'+slot+'.bak',null);if(bak&&!d._bak){bak._bak=true;toast('That save was damaged; the previous backup was loaded.','bad');return startFrom(bak,slot)}toTitle();toast('This save could not be loaded.','bad')}};
 
 boot();
 </script>
