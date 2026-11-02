@@ -946,7 +946,7 @@ body[data-bg=divine] #dlgPor{filter:drop-shadow(0 0 18px rgba(255,215,140,.75))}
   <div class="hud-tl sh">
     <div class="lvb"><small>LV</small><b id="hLv">1</b></div>
     <div class="hbars">
-      <div class="hname" id="hName">Kael</div>
+      <div class="hname" id="hName">Ananth</div>
       <div class="bar hp"><i class="lag" id="hHpLag"></i><i id="hHp"></i><em id="hHpT"></em></div>
       <div class="bar mp"><i id="hMp"></i><em id="hMpT"></em></div>
       <div class="bar xp"><i id="hXp"></i></div>
@@ -1006,7 +1006,7 @@ body[data-bg=divine] #dlgPor{filter:drop-shadow(0 0 18px rgba(255,215,140,.75))}
   <div class="pnl cls-pnl">
     <h2>Swear your oath</h2>
     <div class="cls-cards" id="clsCards"></div>
-    <label class="namefld">Name <input id="pName" maxlength="14" value="Kael" autocomplete="off" spellcheck="false"></label>
+    <label class="namefld">Name <input id="pName" maxlength="14" value="Ananth" autocomplete="off" spellcheck="false"></label>
     <div class="row-btns"><button class="btn ghost" id="clsBack">Back</button><button class="btn" id="clsGo">Begin the journey</button></div>
   </div>
 </section>
@@ -1612,7 +1612,7 @@ function rollDmg(atk,def,mult=1,pen=0){return Math.max(1,Math.round(atk*mult*rnd
 
 /* ================= PLAYER ================= */
 class Player{
-  constructor(cls,name){this.cls=cls;this.name=name||'Kael';this.x=0;this.y=0;this.hw=4;this.hh=3;this.dir=0;this.fx=0;this.fy=1;this.walk=0;this.moving=false;this.running=false;
+  constructor(cls,name){this.cls=cls;this.name=name||'Ananth';this.x=0;this.y=0;this.hw=4;this.hh=3;this.dir=0;this.fx=0;this.fy=1;this.walk=0;this.moving=false;this.running=false;
     this.lvl=1;this.xp=0;this.sp=1;this.gold=30;this.inv=new Array(24).fill(null);this.eq={weapon:null,armor:null,acc:null};
     this.skills={ember:0,arrow:0,whirl:0,nova:0};this.pas={prec:0,vit:0,flow:0,focus:0,iron:0};this.cds={ember:0,arrow:0,whirl:0,nova:0,dodge:0,potion:0};
     this.atkT=0;this.atkDur=.28;this.combo=0;this.comboWin=0;this.buffer=0;this.hitDone=true;this.dodgeT=0;this.dvx=0;this.dvy=0;this.iframe=0;this.blocking=false;this.blockT=0;
@@ -2065,7 +2065,7 @@ function resize(){const dpr=Math.min(2,window.devicePixelRatio||1);G.dpr=dpr;con
 addEventListener('resize',resize);
 function render(){const g=ctx,W=cv.width,H=cv.height,S=G.S;g.setTransform(1,0,0,1,0,0);g.imageSmoothingEnabled=false;g.fillStyle='#000';g.fillRect(0,0,W,H);
   const m=G.map;if(!m)return;const t=G.t;
-  let tx=G.cam.x,ty=G.cam.y;if(G.state==='play'&&G.player){const P=G.player;tx=P.x+P.fx*14;ty=P.y-8+P.fy*10;if(G.boss){tx=lerp(tx,G.boss.x,.3);ty=lerp(ty,G.boss.y,.3)}const k=Math.min(1,(1/60)*6);G.cam.x+=(tx-G.cam.x)*k;G.cam.y+=(ty-G.cam.y)*k}
+  let tx=G.cam.x,ty=G.cam.y;if(G.state==='play'&&G.player){const P=G.player;tx=P.x+P.fx*14;ty=P.y-8+P.fy*10;if(G.boss){tx=lerp(tx,G.boss.x,.3);ty=lerp(ty,G.boss.y,.3)}if(G.camFocus){tx=G.camFocus.x;ty=G.camFocus.y}const k=Math.min(1,(1/60)*6);G.cam.x+=(tx-G.cam.x)*k;G.cam.y+=(ty-G.cam.y)*k}
   const vw=G.vw,vh=G.vh;let cx=G.cam.x-vw/2,cy=G.cam.y-vh/2;const mw=m.w*T,mh=m.h*T;cx=mw<vw?(mw-vw)/2:clamp(cx,0,mw-vw);cy=mh<vh?(mh-vh)/2:clamp(cy,0,mh-vh);
   if(G.shake>0&&settings.shake){cx+=rnd(-1,1)*G.shake;cy+=rnd(-1,1)*G.shake}cx=Math.round(cx);cy=Math.round(cy);G.cx=cx;G.cy=cy;
   g.setTransform(S,0,0,S,-cx*S,-cy*S);
@@ -2572,7 +2572,7 @@ function line(id,e,t,c){return{n:H(id).short,ti:H(id).title,f:H(id).face,e,t,c}}
 
 /* ================= CREATION & OPENING ================= */
 const LOOK_HAIR=['#e2e8f4','#2a2238','#6a4028','#d8a050','#ff8ab4','#5fb85a','#a684f0','#3a8ae0','#d8303e'],LOOK_EYE=['#d8343c','#3d63b8','#3ad06a','#e8a628','#a684f0','#3ac0b0'],LOOK_SKIN=['#fbe0cc','#f2cbaa','#d9a07a','#a8704a'];
-let creation={name:'Kael',gender:'male',hs:'spiky',hair:'#e2e8f4',eye:'#d8343c',skin:'#f8dac6',cls:'warden',blessing:'sun'};
+let creation={name:'Ananth',gender:'male',hs:'spiky',hair:'#e2e8f4',eye:'#d8343c',skin:'#f8dac6',cls:'warden',blessing:'sun'};
 function lookPal(cls,look){const L=look||G.look;const base=Object.assign({},CLASSES[cls].pal);if(L)Object.assign(base,{hair:L.hair,hs:L.hs,eye:L.eye,skin:L.skin,fem:L.gender==='female'});return base}
 function playerFace(){const P=G.player,L=G.look,base=Object.assign({},FACES[P?P.cls:'warden']);if(L)Object.assign(base,{hair:L.hair,hs:L.hs,eye:L.eye,skin:L.skin,fem:L.gender==='female'});return base}
 Object.defineProperty(Player.prototype,'pal',{get(){return this._pal||(this._pal=lookPal(this.cls))},configurable:true});
@@ -2613,7 +2613,7 @@ function renderCreate(){const C=creation,B=$('#createBody');const sw=(arr,k)=>ar
   const pal=lookPal(C.cls,look);clearInterval(renderCreate.tm);let k=0;const sg=$('#crSpr').getContext('2d');sg.imageSmoothingEnabled=false;
   const draw=()=>{sg.clearRect(0,0,96,140);sg.save();sg.scale(3,3);drawHumanoid(sg,16,42,{pal,dir:[0,3,1,2][Math.floor(k/8)%4],moving:true,walk:k*.5,weapon:ITEMS[CLASSES[C.cls].weapon].wk,wcol:ITEMS[CLASSES[C.cls].weapon].icon[1],time:k/10});sg.restore();k++};draw();renderCreate.tm=setInterval(draw,110)}
 $('#crBack').onclick=()=>{clearInterval(renderCreate.tm);toTitle()};
-$('#crGo').onclick=()=>{creation.name=($('#crName').value||'').trim().slice(0,14)||'Kael';clearInterval(renderCreate.tm);AudioSys.play('ui');openBless()};
+$('#crGo').onclick=()=>{creation.name=($('#crName').value||'').trim().slice(0,14)||'Ananth';clearInterval(renderCreate.tm);AudioSys.play('ui');openBless()};
 function openBless(){showScreen('sBless');const B=$('#blessBody');B.innerHTML=Object.keys(BLESSINGS).map(k=>{const b=BLESSINGS[k];return`<button class="bless${creation.blessing===k?' on':''}" data-b="${k}"><img src="${iconUrl('bl_'+k,b.icon[0],b.icon[1])}" alt=""><b>${b.name}</b><span>${b.desc}</span></button>`}).join('');
   B.querySelectorAll('.bless').forEach(b=>b.onclick=()=>{creation.blessing=b.dataset.b;AudioSys.play('ui');openBless()})}
 $('#blBack').onclick=()=>{AudioSys.play('ui');openCreate()};
@@ -3171,7 +3171,7 @@ function openClass(){showScreen('sClass');const C=$('#clsCards');C.innerHTML='';
     b.querySelector('canvas').getContext('2d').drawImage(getPortrait(FACES[k],k===pendingCls?'happy':'n'),0,0);
     b.onclick=()=>{pendingCls=k;AudioSys.play('ui');openClass()};C.appendChild(b)}}
 $('#clsBack').onclick=()=>{AudioSys.play('ui');showScreen('sTitle')};
-$('#clsGo').onclick=()=>{AudioSys.init();AudioSys.resume();const nm=($('#pName').value||'').trim().slice(0,14)||'Kael';newGame(pendingCls,nm,pendingSlot)};
+$('#clsGo').onclick=()=>{AudioSys.init();AudioSys.resume();const nm=($('#pName').value||'').trim().slice(0,14)||'Ananth';newGame(pendingCls,nm,pendingSlot)};
 $('#mNew').onclick=()=>{AudioSys.init();AudioSys.resume();AudioSys.play('ui');const free=[1,2,3].find(n=>!slotInfo(n));if(free){pendingSlot=free;startOpening()}else openSlots('new','sTitle')};
 $('#mCont').onclick=()=>{AudioSys.init();AudioSys.resume();const l=Store.get('eclipse.last',null),d=l&&slotInfo(l);if(d)startFrom(d,l)};
 $('#mLoad').onclick=()=>{AudioSys.init();AudioSys.resume();AudioSys.play('ui');openSlots('load','sTitle')};
@@ -3441,7 +3441,7 @@ renderCreate=function(){const C=creation,B=$('#createBody');
   const seg=(k,opts)=>opts.map(([v,l])=>`<button class="${C[k]===v?'on':''}" data-k="${k}" data-v="${v}">${l}</button>`).join('');
   const bar=(l,v,m,c)=>`<div class="sbar"><span>${l}</span><i><b style="width:${Math.round(Math.min(1,v/m)*100)}%;background:${c}"></b></i></div>`;
   const cards=Object.keys(CLASSES).map(k=>{const c=CLASSES[k],b=c.base;return`<button class="clscard${C.cls===k?' on':''}" data-k="cls" data-v="${k}"><canvas width="48" height="64" data-cs="${k}"></canvas><div><h4>${c.name}</h4><p>${esc(c.blurb)}</p>${bar('HP',b.hp,130,'#c8302a')}${bar('MP',b.mp,85,'#2f6ad0')}${bar('ATK',b.atk,10,'#e0962a')}${bar('MAG',b.mag,11,'#8a5ac8')}${bar('SPD',b.spd,70,'#4f8a46')}<small>Starting art: ${esc(SKILLS[c.skill].name)}</small></div></button>`}).join('');
-  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Kael')}</div><div class="cr-title">${CLASSES[C.cls].name} of Eldoria</div></div>
+  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Ananth')}</div><div class="cr-title">${CLASSES[C.cls].name} of Eldoria</div></div>
     <div class="cr-stage"><button class="rot" data-rot="-1" aria-label="Turn left">◀</button><canvas id="crSpr" width="144" height="168"></canvas><button class="rot" data-rot="1" aria-label="Turn right">▶</button></div></div>
    <div class="cr-opts"><p class="sect">Identity</p><label class="namefld">Name <input id="crName" maxlength="14" value="${esc(C.name)}" autocomplete="off" spellcheck="false"></label>
     <div class="cr-row"><span>Gender</span><div class="seg">${seg('gender',[['male','Male'],['female','Female'],['other','Other']])}</div></div>
@@ -3454,7 +3454,7 @@ renderCreate=function(){const C=creation,B=$('#createBody');
     <div class="cr-row"><span>Outfit</span><div class="seg">${seg('outfit',[['hero','Protagonist coat'],['class','Class gear']])}</div></div>
     <p class="sect">Calling</p><div class="clscards">${cards}</div></div>`;
   B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{C[b.dataset.k]=b.dataset.v;C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()});
-  $('#crName').oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
+  $('#crName').oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Ananth'};
   $('#crRand').onclick=()=>{C.hair=pick(LOOK_HAIR);C.eye=pick(LOOK_EYE);C.skin=pick(LOOK_SKIN);C.hs=pick(HAIRSTYLES)[0];C.name=$('#crName').value||C.name;AudioSys.play('ui');renderCreate()};
   B.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>{const ring=[0,3,1,2],cur=crDir==null?0:ring.indexOf(crDir);crDir=ring[(cur+ +b.dataset.rot+4)%4];AudioSys.play('ui')});
   const look={hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,gender:C.gender,band:C.band,outfit:C.outfit};const face=Object.assign({},(C.outfit==='class'?CLASSFACE:FACES)[C.cls],{hair:C.hair,hs:C.hs,eye:C.eye,skin:C.skin,band:C.band||null,fem:C.gender==='female'});
@@ -3751,13 +3751,13 @@ renderCreate=function(){const C=creation,B=$('#createBody');
   else if(crTab==='face')pane=`${row('Marks',seg('mark',MARKS))}${row('Glasses',seg('glasses',ONOFF))}${row('Earrings',seg('earrings',ONOFF))}`;
   else if(crTab==='outfit')pane=`<div class="wd-list">${Object.entries(OUTFITS).map(([k,O])=>{const own=k==='hero'||k==='class'||k==='kasavu';return`<button class="wd-item${(C.outfit||'hero')===k?' on':''}${own?'':' locked'}" data-k="outfit" data-v="${k}" ${own?'':'disabled'}><b>${O.name}</b><small>${own?O.desc:'Unlock later · '+O.lock}</small></button>`}).join('')}</div>${(C.outfit||'hero')==='hero'?`${row('Coat',dye('coat',DYE.coat))}${row('Lining',dye('lining',DYE.lining))}${row('Trim',dye('trim',DYE.trim))}`:''}`;
   else pane=`<div class="clscards">${Object.keys(CLASSES).map(k=>{const c=CLASSES[k],b=c.base;return`<button class="clscard${C.cls===k?' on':''}" data-k="cls" data-v="${k}"><canvas width="48" height="64" data-cs="${k}"></canvas><div><h4>${c.name}</h4><p>${esc(c.blurb)}</p>${bar('HP',b.hp,130,'#c8302a')}${bar('MP',b.mp,85,'#2f6ad0')}${bar('ATK',b.atk,10,'#e0962a')}${bar('MAG',b.mag,11,'#8a5ac8')}${bar('SPD',b.spd,70,'#4f8a46')}<small>Starting art: ${esc(SKILLS[c.skill].name)}</small></div></button>`}).join('')}</div>`;
-  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Kael')}</div><div class="cr-title">${CLASSES[C.cls].name} of Eldoria</div></div>
+  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Ananth')}</div><div class="cr-title">${CLASSES[C.cls].name} of Eldoria</div></div>
     <div class="cr-stage"><button class="rot" data-rot="-1" aria-label="Turn left">◀</button><canvas id="crSpr" width="144" height="168"></canvas><button class="rot" data-rot="1" aria-label="Turn right">▶</button></div>
     <button class="btn ghost sm" id="crRand" type="button">Randomize look</button></div>
    <div class="cr-opts"><div class="bagbar crtabs">${tabs.map(([k,l])=>`<button class="${crTab===k?'on':''}" data-crt="${k}">${l}</button>`).join('')}</div><div class="cr-pane">${pane}</div></div>`;
   B.querySelectorAll('[data-k]').forEach(b=>b.onclick=()=>{C[b.dataset.k]=b.dataset.v;const n=$('#crName');if(n)C.name=n.value||C.name;AudioSys.play('ui');renderCreate()});
   B.querySelectorAll('[data-crt]').forEach(b=>b.onclick=()=>{const n=$('#crName');if(n)C.name=n.value||C.name;crTab=b.dataset.crt;AudioSys.play('ui');renderCreate()});
-  const nm=$('#crName');if(nm)nm.oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
+  const nm=$('#crName');if(nm)nm.oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Ananth'};
   $('#crRand').onclick=()=>{Object.assign(C,{hair:pick(LOOK_HAIR),eye:pick(LOOK_EYE),skin:pick(LOOK_SKIN),hs:pick(HAIRSTYLES)[0],eyeShape:pick(EYESHAPES)[0],mark:Math.random()<.75?'none':pick(MARKS)[0],glasses:Math.random()<.2?'1':'',earrings:Math.random()<.3?'1':'',band:Math.random()<.3?pick(['#b8302a','#2f5aa8','#e8e0d0']):'',coat:pick(Object.values(DYE.coat)),lining:pick(Object.values(DYE.lining)),trim:pick(Object.values(DYE.trim))});AudioSys.play('ui');renderCreate()};
   B.querySelectorAll('[data-rot]').forEach(b=>b.onclick=()=>{const ring=[0,3,1,2],cur=crDir==null?0:ring.indexOf(crDir);crDir=ring[(cur+ +b.dataset.rot+4)%4];AudioSys.play('ui')});
   const look=lookFromCreation();$('#crPor').getContext('2d').drawImage(getPortrait(lookFace(C.cls,look),'happy'),0,0);
@@ -4767,7 +4767,7 @@ function afterPick(chosen){const top=chosen.map(id=>PWI[id]).sort((a,b)=>b.rar-a
 /* ================= OPENING FLOW ================= */
 startOpening=function(){AudioSys.init();AudioSys.resume();hideScreens();G.state='cine';Music.play('title');
   Scene.play('kakkanad',[{t:'Kakkanad, Kochi. 7:30 in the evening. The monsoon has not let up for three days.'},{t:'You are twenty-four, you work at Infopark, and the office cab has just left without you. Again.'},{t:'Before the night goes on, remember who you are.'}],()=>openCreate())};
-$('#crGo').onclick=()=>{const nm=$('#crName');if(nm)creation.name=(nm.value||'').trim().slice(0,14)||creation.name||'Kael';clearInterval(renderCreate.tm);AudioSys.play('ui');startKochi()};
+$('#crGo').onclick=()=>{const nm=$('#crName');if(nm)creation.name=(nm.value||'').trim().slice(0,14)||creation.name||'Ananth';clearInterval(renderCreate.tm);AudioSys.play('ui');startKochi()};
 function startKochi(){const C=creation;hideScreens();buildWorld();G.slot=pendingSlot;G.powers=null;G.pm=null;G.allies=[];G.flags={};G.quests={};G.chests={};G.harv={};G.disc={};G.kills={};G.playTime=0;G.day=1;G.time=19.5*60;G.party=[];
   G.isekaiPending=true;G.kochi={};G.cut=null;G.guild=guildDefaults({rank:0,pts:0,board:[],day:-1,active:[],reg:false});const P=new Player(C.cls,C.name);G.player=P;G.look=lookFromCreation();G.lookAfter=Object.assign({},G.look);G.look.outfit='office';P._pal=null;
   G.lantern=null;enterPlay();loadMap('kochi',9.5*T,17.6*T);document.body.classList.add('mundane');qStart('kochi_night',true);G.tracked='kochi_night';Music.play('title');
@@ -5198,7 +5198,7 @@ renderCreate=function(){const C=creation,B=$('#createBody');const dz=C.dzEdit===
   else if(crTab==='design')pane=`<div class="seg dzwhich"><button class="${C.dzEdit==='kochi'?'on':''}" data-dzw="kochi"><b>Kochi clothes</b><small>What you wear on the evening in Kakkanad</small></button><button class="${C.dzEdit==='reborn'?'on':''}" data-dzw="reborn"><b>Reborn outfit</b><small>The clothes you wake up in, in Aurel</small></button></div>
     <div class="row-btns" style="justify-content:flex-start"><button class="btn ghost sm" data-dzcopy="1">Copy ${C.dzEdit==='kochi'?'to reborn':'from Kochi'}</button></div>${dzEditorHTML(dz)}<p class="hint">Clothes are cosmetic: they never change your stats. In Aurel you can redesign them any time in the Wardrobe's Design studio.</p>`;
   else pane=`<div class="clscards">${Object.keys(CLASSES).map(k=>{const c=CLASSES[k],b=c.base;return`<button class="clscard${C.cls===k?' on':''}" data-k="cls" data-v="${k}"><canvas width="48" height="64" data-cs="${k}"></canvas><div><h4>${c.name}</h4><p>${esc(c.blurb)}</p>${bar('HP',b.hp,130,'#c8302a')}${bar('MP',b.mp,85,'#2f6ad0')}${bar('ATK',b.atk,10,'#e0962a')}${bar('MAG',b.mag,11,'#8a5ac8')}${bar('SPD',b.spd,70,'#4f8a46')}<small>Starting art: ${esc(SKILLS[c.skill].name)}</small></div></button>`}).join('')}</div>`;
-  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Kael')}</div><div class="cr-title">${CLASSES[C.cls].name} · ${C.dzEdit==='kochi'?'in Kochi':'reborn in Aurel'}</div></div>
+  B.innerHTML=`<div class="cr-left"><div class="cr-frame"><canvas id="crPor" width="400" height="480"></canvas><div class="cr-name" id="crNm">${esc(C.name||'Ananth')}</div><div class="cr-title">${CLASSES[C.cls].name} · ${C.dzEdit==='kochi'?'in Kochi':'reborn in Aurel'}</div></div>
     <div class="cr-stage bg-${C.bg}"><button class="rot" data-rot="-1" aria-label="Turn left">◀</button><canvas id="crSpr" width="144" height="168"></canvas><button class="rot" data-rot="1" aria-label="Turn right">▶</button></div>
     <div class="seg crpose">${[['walk','Walk'],['idle','Stand'],['attack','Attack']].map(([v,l])=>`<button class="${C.pose===v?'on':''}" data-k="pose" data-v="${v}">${l}</button>`).join('')}${[['studio','Studio'],['kochi','Kochi'],['meadow','Meadow']].map(([v,l])=>`<button class="${C.bg===v?'on':''}" data-k="bg" data-v="${v}">${l}</button>`).join('')}</div>
     <div class="row-btns crtools"><button class="btn ghost sm" id="crUndo" type="button" ${crHist.u.length?'':'disabled'}>Undo</button><button class="btn ghost sm" id="crRedo" type="button" ${crHist.r.length?'':'disabled'}>Redo</button><button class="btn ghost sm" id="crRand" type="button">Randomize look</button></div></div>
@@ -5210,7 +5210,7 @@ renderCreate=function(){const C=creation,B=$('#createBody');const dz=C.dzEdit===
   B.querySelectorAll('[data-dzw]').forEach(b=>b.onclick=()=>{C.dzEdit=b.dataset.dzw;AudioSys.play('ui');renderCreate()});
   B.querySelectorAll('[data-dzcopy]').forEach(b=>b.onclick=()=>{crPush();if(C.dzEdit==='kochi')C.dz=dzClone(C.dzKochi);else C.dzKochi=dzClone(C.dz);toast('Outfit copied');renderCreate()});
   if(crTab==='design')bindDzEditor(B.querySelector('.cr-pane'),dz,()=>{const sc=B.querySelector('.cr-pane').scrollTop;renderCreate();const p=$('#createBody .cr-pane');if(p)p.scrollTop=sc},crPush);
-  const nm=$('#crName');if(nm)nm.oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Kael'};
+  const nm=$('#crName');if(nm)nm.oninput=e=>{C.name=e.target.value;$('#crNm').textContent=e.target.value||'Ananth'};
   $('#crUndo').onclick=()=>{if(!crHist.u.length)return;crHist.r.push(crSnap());crRestore(crHist.u.pop());AudioSys.play('ui');renderCreate()};
   $('#crRedo').onclick=()=>{if(!crHist.r.length)return;crHist.u.push(crSnap());crRestore(crHist.r.pop());AudioSys.play('ui');renderCreate()};
   $('#crRand').onclick=()=>{crPush();Object.assign(C,{hair:pick(LOOK_HAIR),eye:pick(LOOK_EYE),skin:pick(LOOK_SKIN),hs:pick(HAIRSTYLES)[0],eyeShape:pick(EYESHAPES)[0],mark:Math.random()<.75?'none':pick(MARKS)[0],glasses:Math.random()<.2?'1':'',earrings:Math.random()<.3?'1':'',band:Math.random()<.3?pick(['#b8302a','#2f5aa8','#e8e0d0']):'',height:pick(['short','avg','tall']),beard:C.gender==='female'?'':pick(FACIAL)[0]});AudioSys.play('ui');renderCreate()};
