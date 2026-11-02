@@ -27,6 +27,7 @@ The script is organised in layers, top to bottom:
 | Outfits | design data, palette and portrait mapping, per-piece sprite drawing, creation and studio editors | `DZ_OPT`, `DZ_PRESETS`, `dzApply`, `dzPass`, `dzEditorHTML`, `openStudio` |
 | Interiors | one map per building, built with the world; floor and wall tiles above id 31 are solid through the block layer | `buildInterior`, `IN_TYPES`, `IN_SPEC`, `KEEPERS` |
 | Cutscenes | 640×360 scene canvas, camera focus and pans, transitions | `sceneTick`, `G.camFocus`, `camPan`, `camZoom` |
+| Hidden skills | 200 skill definitions keyed to action counters; levels merge into the power modifiers | `HS`, `trAdd`, `trMods`, `renderHS`, `G.tr` |
 | Difficulty | six levels and their multipliers, permadeath | `DIFFS`, `DF()`, `openDifficulty` |
 
 ### The extension pattern

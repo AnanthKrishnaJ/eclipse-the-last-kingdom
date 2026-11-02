@@ -927,6 +927,14 @@ body.mundane .hud-tl .bar,body.mundane .hud-tl .lvb,body.mundane #hBurstBar,body
 .wh-card{display:flex;gap:10px;align-items:flex-start;text-align:left;padding:8px;border-radius:6px;border:2px solid var(--rc,#ffd27a);background:#0c1450;margin:6px 0}.wh-card img{width:44px;height:44px;image-rendering:pixelated}.wh-card b{font:400 17px var(--f-dis);color:#fff3c0}.wh-card small{display:block;font:12px var(--f-txt);color:#cfd8ff}.wh-card p{font:13px var(--f-txt);margin:4px 0 0}
 .wh-card.r0{--rc:#cfd6de}.wh-card.r1{--rc:#6ab0ff}.wh-card.r2{--rc:#c08aff}.wh-card.r3{--rc:#ffc04a}.wh-card.r4{--rc:#ff7ae0}
 .wh-hint{display:block;font:12px var(--f-txt);color:#a8b4ff}.wh-hint.on{color:#ffd27a}.wh-li{color:#ffd27a}
+/* hidden skills record */
+.hs-top{padding:8px 10px;border:2px solid #6c80d8;border-radius:6px;background:#0c1450;margin-bottom:8px;font:15px var(--f-txt)}.hs-top b{font:400 20px var(--f-dis);color:#fff3c0}.hs-top small{display:block;color:#a8b4ff;font-size:12px}
+.hs-f{flex-wrap:wrap}.hs-f2{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}.hs-f2 .seg{display:flex;flex-wrap:wrap;gap:3px}.hs-f2 .seg button{font-size:12px;padding:4px 8px}.hs-f2 input{flex:1;min-width:140px;padding:6px 8px;border-radius:4px;border:2px solid #4a5aa8;background:#070c34;color:#fff;font:14px var(--f-txt)}
+.hs-list{display:flex;flex-direction:column;gap:5px}.hs-row{display:flex;gap:10px;align-items:flex-start;padding:7px 9px;border-radius:6px;border:2px solid #2a3478;background:#0a1040;opacity:.85}.hs-row.got{border-color:#c9a24a;background:linear-gradient(90deg,#2a2050,#0a1040);opacity:1}.hs-row.hid{border-style:dashed;opacity:.7}
+.hs-row img{width:28px;height:28px;image-rendering:pixelated;flex:none;margin-top:2px}.hs-main{flex:1;min-width:0}.hs-h{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hs-h b{font:400 15px var(--f-dis);color:#fff3c0}.hs-h em{font:normal 12px var(--f-dis);color:#a8b4ff;margin-left:auto}
+.pips{display:inline-flex;gap:2px}.pips i{width:7px;height:7px;transform:rotate(45deg);border:1px solid #c9a24a}.pips i.on{background:#ffd27a}
+.hs-main small{display:block;font:12px/1.35 var(--f-txt);color:#cfd8ff}.hs-main .eff{color:#9fe07a}.hs-bar{display:flex;align-items:center;gap:8px;margin:3px 0}.hs-bar i{flex:1;max-width:220px;height:6px;background:#04061a;border-radius:3px;overflow:hidden}.hs-bar i b{display:block;height:100%;background:linear-gradient(90deg,#6ab0ff,#ffd27a)}.hs-bar span{font:12px var(--f-dis);color:#a8b4ff}
+body[data-bg=divine] #dlgPor{filter:drop-shadow(0 0 18px rgba(255,215,140,.75))}
 
 </style>
 
@@ -4303,7 +4311,7 @@ function aimAt(P,r){const t=P.autoAim(r,.2)||nearestEn(P.x,P.y,r);if(t)P.setFaci
 function pStatus(e,st,P,k){if(e.dead||!st)return;if(st==='rand')st=pick(['burn','chill','stun','drain']);
   if(st==='burn')e.status.burn={t:e.boss?1.5:3,tick:.5,dps:P.mag*.45*k+2};else if(st==='chill')e.status.chill={t:e.boss?1.2:2.5};else if(st==='stun'){if(!e.status.freeze)e.status.freeze={t:e.boss?.35:1.1,stun:true}}}
 function pHit(e,base,o){const P=G.player,crit=Math.random()<P.crit,d=rollDmg(base,e.def,crit?1.8:1,o.pen||0),dx=e.x-(o.sx??P.x),dy=e.y-(o.sy??P.y),dd=Math.hypot(dx,dy)||1,kb=o.kb||40;
-  e.hurt(d,crit,dx/dd*kb,dy/dd*kb,{src:P,sx:o.sx??P.x,sy:o.sy??P.y,pw:o.id,bypass:o.pen>=1});if(o.st==='drain'||o.drain)P.hp=Math.min(P.maxHp,P.hp+d*.3);pStatus(e,o.st,P,o.k||1);return d}
+  e.hurt(d,crit,dx/dd*kb,dy/dd*kb,{src:P,sx:o.sx??P.x,sy:o.sy??P.y,pw:o.id,bypass:o.pen>=1,stone:o.stone});if(o.st==='drain'||o.drain)P.hp=Math.min(P.maxHp,P.hp+d*.3);pStatus(e,o.st,P,o.k||1);return d}
 const base=(P,p,k)=>(Math.max(P.mag,P.atk)*.9+Math.min(P.mag,P.atk)*.4+4)*(p.p.m||1)*k;
 const colOf=c=>c==='rand'?pick(['fire','ice','bolt','dark']):c;
 function inCone(P,e,r,a){const dx=e.x-P.x,dy=e.y-P.y,d=Math.hypot(dx,dy);if(d>r+e.r)return false;return d<8||(dx*P.fx+dy*P.fy)/d>Math.cos(a)}
@@ -4423,7 +4431,7 @@ const _updatePW=update;update=function(dt){const P=G.player,s=pw(),m=PM(),ally=G
     p.x+=p.vx*dt;p.y+=p.vy*dt;p.life-=dt;if(Math.random()<.7)G.part(p.x,p.y,rnd(-8,8),rnd(-8,8),.25,p.col,1.5,0,'glow');
     if(solidAtPx(G.map,p.x,p.y+4)){p.life=0;burstParts(p.x,p.y,p.col,6,50);continue}
     for(const e of G.enemies){if(e.dead||p.hit.has(e.id))continue;if(dist(p.x,p.y,e.x,e.y-e.hh-2-(e.z||0))<e.r+p.r+2){p.hit.add(e.id);
-      if(p.from){const crit=Math.random()<.1;e.hurt(rollDmg(p.dmg,e.def,crit?1.8:1),crit,p.vx*.15,p.vy*.15,{src:p.from,sx:p.x,sy:p.y})}else pHit(e,p.dmg,{id:p.id,kb:p.kind==='stone'?150:50,st:p.st,k:p.k,drain:p.drain,sx:p.x-p.vx*.05,sy:p.y-p.vy*.05});
+      if(p.from){const crit=Math.random()<.1;e.hurt(rollDmg(p.dmg,e.def,crit?1.8:1),crit,p.vx*.15,p.vy*.15,{src:p.from,sx:p.x,sy:p.y})}else pHit(e,p.dmg,{id:p.id,stone:p.stone,kb:p.kind==='stone'?150:50,st:p.st,k:p.k,drain:p.drain,sx:p.x-p.vx*.05,sy:p.y-p.vy*.05});
       burstParts(p.x,p.y,p.col,8,70);if(p.chain>0){const n=nearestEn(e.x,e.y,90,p.hit);if(n){const a=Math.atan2(n.y-e.y,n.x-e.x),v=Math.hypot(p.vx,p.vy);p.x=e.x;p.y=e.y-e.hh;p.vx=Math.cos(a)*v;p.vy=Math.sin(a)*v;p.dmg*=.8;p.chain--;p.life=.6;G.pfx.push({k:'zap',x1:e.x,y1:e.y-8,x2:n.x,y2:n.y-8,col:p.col,t:0,dur:.2});break}}
       if(p.pierce>0)p.pierce--;else{p.life=0;break}}}}
   G.pp=G.pp.filter(p=>p.life>0);
@@ -4729,7 +4737,7 @@ function drawDivine(g,t){const W=320,Hh=180,e=t-DIV.t0,z=1+.12*Math.min(1,e/24)+
   const isl=(x,y,w,s)=>{const b=Math.sin(t*.8+s)*3;g.fillStyle='#3a2a5a';g.beginPath();g.moveTo(x-w,y+b);g.lineTo(x+w,y+b);g.lineTo(x+w*.4,y+b+w*.7);g.lineTo(x-w*.3,y+b+w*.5);g.closePath();g.fill();g.fillStyle='#ffe7c8';g.fillRect(x-w,y+b-2,w*2,3);g.fillStyle='rgba(255,230,180,.35)';g.fillRect(x+w*.2,y+b+2,2,30+w)};
   isl(46,118,22,1);isl(276,104,18,2);isl(92,52,10,3);isl(240,40,8,4);
   const P=getPortrait(GODDESS,DIV.expr||'happy'),bob=Math.sin(t*1.1)*3;g.save();g.globalCompositeOperation='lighter';const ag=g.createRadialGradient(160,92+bob,4,160,92+bob,80);ag.addColorStop(0,'rgba(255,230,170,.55)');ag.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=ag;g.fillRect(70,0,180,180);g.restore();
-  g.save();g.setTransform(1,0,0,1,0,0);g.imageSmoothingEnabled=false;g.globalAlpha=Math.min(1,e/2.5);const gx=Math.round(220+Math.sin(t*.13)*6),gy=Math.round(80+bob*2);g.drawImage(P,0,0,400,480,gx,gy,200,240);g.restore();
+  
   g.fillStyle='rgba(255,250,240,.75)';for(let i=0;i<7;i++){g.beginPath();g.ellipse((i*64+t*5)%420-50,168+hash2(i,4,2)*10,58,10,0,0,TAU);g.fill()}
   for(let i=0;i<50;i++){const s=hash2(i,5,9),x=(s*W+Math.sin(t*.7+i)*12),y=Hh-((t*(10+s*16)+i*37)%(Hh+20));g.fillStyle=i%3?'#fff3c0':'#ffc8e8';g.globalAlpha=.6;g.fillRect(x,y,s>.7?2:1,s>.7?2:1)}g.globalAlpha=1;g.restore()}
 const _drawSceneK=drawScene;drawScene=function(g,bg,t){if(bg==='divine')return drawDivine(g,t);if(bg==='cartride')return drawCartRide(g,t);if(bg==='guildhall')return drawGuildHall(g,t);return _drawSceneK(g,bg,t)};
@@ -4818,7 +4826,7 @@ const _npcNewsS=npcHasNews;npcHasNews=function(id){if(id==='gareth')return qStag
 function renderCraft(B){const P=G.player,dbl=PM().craftDouble;B.innerHTML=`<p class="hint">Primitive crafting: no workbench needed. Gather stones, branches, reeds and berries in the wild.${dbl?' Alchemist\'s Hand doubles everything you make.':''}</p>`+SURV.map((r,i)=>{const d=ITEMS[r.out],ok=r.need.every(([id,n])=>invCount(id)>=n);
     return`<div class="srow"><img src="${itemIcon(r.out)}" alt=""><div><b style="color:${RCOL[d.r]}">${esc(d.name)}${dbl?' ×2':''}</b><small>${esc(statLines(r.out).map(x=>x[1]+' '+x[2]).join(' · ')||d.desc)}</small><small>${r.need.map(([id,n])=>`<span class="${invCount(id)>=n?'ok':'miss'}">${esc(ITEMS[id].name)} ${invCount(id)}/${n}</span>`).join(' · ')}</small></div><button class="btn sm" data-cr="${i}" ${ok?'':'disabled'}>Craft</button></div>`}).join('');
   B.querySelectorAll('[data-cr]').forEach(b=>b.onclick=()=>{const r=SURV[+b.dataset.cr];if(!r.need.every(([id,n])=>invCount(id)>=n))return;const n=dbl?2:1;if(invFree()<1&&!(ITEMS[r.out].stack&&invCount(r.out))){toast('Your bag is full','bad');return}
-    for(const[id,k]of r.need)invRemove(id,k);if(invAdd(r.out,n)<n)dropItem(P.x,P.y,r.out,n);AudioSys.play('chest');toast('Crafted '+ITEMS[r.out].name+(n>1?' ×2':''),'lv');renderCraft(B)})}
+    for(const[id,k]of r.need)invRemove(id,k);if(typeof trAdd==='function'){trAdd('crafts');trAdd('craft_'+r.out)}const n2=n+(PM().craftChance&&Math.random()<PM().craftChance?1:0);if(invAdd(r.out,n2)<n2)dropItem(P.x,P.y,r.out,n2);AudioSys.play('chest');toast('Crafted '+ITEMS[r.out].name+(n2>1?' ×'+n2:''),'lv');renderCraft(B)})}
 const _renderCodexS=renderCodex;renderCodex=function(){if(cdxTab==='craft'){$$('#cdxTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab==='craft'));return renderCraft($('#cdxB'))}return _renderCodexS()};
 /* waking in the grass */
 const _pupdW=Player.prototype.update;Player.prototype.update=function(dt){if(this.wakeT>0&&G.state==='play'){this.wakeT-=dt;this.moving=false;if(this.wakeT<=0)G.ring(this.x,this.y-6,18,'#fff3c0',.4);return}_pupdW.call(this,dt)};
@@ -5582,6 +5590,210 @@ const _renderPickW=renderPick;renderPick=function(){_renderPickW();const ft=sPow
   const full=pickSpent()>=PICK_RULES.soul,hint=sPow.querySelector('.pick-sp span');if(hint)hint.insertAdjacentHTML('afterend',`<small class="wh-hint${full?' on':''}">${full?"All points spent: Fate's Wheel will add one more gift":"Spend every soul point to earn a spin of Fate's Wheel"}</small>`);
   if(!PK.confirm)return;const ul=sPow.querySelector('.pick-cf ul');if(full&&ul)ul.insertAdjacentHTML('beforeend','<li class="wh-li">✦ One more gift from Fate\'s Wheel <small>Bonus</small></li>');
   const yes=$('#cfYes');if(!yes||!full)return;const orig=yes.onclick;yes.onclick=()=>{openWheel(id=>{PK.chosen.push(id);G.lastWheel=id;orig()})}};
+
+/* ================= HIDDEN SKILLS: learned by doing, levelled by repetition ================= */
+const HS=[],HSI={},HS_BY={};const TH=b=>[b,b*3,b*7,b*15,b*30].map(Math.round);
+function hs(id,name,cat,counter,cond,th,eff,o={}){const s=Object.assign({id,name,cat,counter,cond,th,eff},o);HS.push(s);HSI[id]=s;(HS_BY[counter]=HS_BY[counter]||[]).push(s)}
+const EN8=[['slime','Bog Slime'],['venom','Venom Slime'],['wolf','Ashen Wolf'],['goblin','Gloomfang Goblin'],['skeleton','Barrow Skeleton'],['mage','Umbral Acolyte'],['puff','Meadow Puff'],['beetle','Horn Beetle']];
+for(const[t,n]of EN8){hs('slay_'+t,n.split(' ').pop()+' Slayer','Hunting','kill_'+t,`Defeat ${n}s`,TH(8),{['dmgVs_'+t]:.06});
+  hs('ward_'+t,n.split(' ').pop()+' Ward','Hunting','hitBy_'+t,`Survive hits from ${n}s`,TH(8),{['wardVs_'+t]:.04});
+  hs('lore_'+t,n.split(' ').pop()+' Lore','Hunting','kill_'+t,`Defeat ${n}s and study what they leave behind`,TH(5),{['lootVs_'+t]:.08})}
+for(const[t,n]of[['grukk','Grukk'],['sentinel','the Sentinel'],['sovereign','the Hollow Sovereign']])hs('bane_'+t,'Bane of '+n.replace('the ','').split(' ').pop(),'Hunting','kill_'+t,`Defeat ${n}`,[1],{allPct:.03,bossDmg:.06});
+const WK=[['none','Bare-Handed'],['sword','Sword'],['knife','Knife'],['staff','Staff'],['mace','Club'],['axe','Axe']];
+for(const[k,n]of WK){hs('wm_'+k,n+' Mastery','Weapons','kill_wk_'+k,`Defeat foes ${k==='none'?'with your bare hands':'with a '+n.toLowerCase()}`,TH(10),{['wkDmg_'+k]:.05});
+  hs('wr_'+k,n+' Rhythm','Weapons','hit_wk_'+k,`Land hits ${k==='none'?'unarmed':'with a '+n.toLowerCase()}`,TH(40),{['wkSpd_'+k]:.03});
+  hs('wp_'+k,n+' Precision','Weapons','crit_wk_'+k,`Land critical hits ${k==='none'?'unarmed':'with a '+n.toLowerCase()}`,TH(8),{['wkCrit_'+k]:.015})}
+const COLN={fire:'Flame',water:'Tide',ice:'Frost',bolt:'Storm',wind:'Gale',earth:'Stone',light:'Radiance',dark:'Shadow',grav:'Gravity',space:'Void-Space',arcane:'Arcane',holy:'Holy',nature:'Verdant',gold:'Golden',void:'Abyssal'};
+for(const c in COLN){hs('aff_'+c,COLN[c]+' Affinity','Magic','cast_col_'+c,`Cast ${COLN[c].toLowerCase()} powers`,TH(10),{['elemDmg_'+c]:.05});hs('res_'+c,COLN[c]+' Resonance','Magic','killcol_'+c,`Defeat foes with ${COLN[c].toLowerCase()} powers`,TH(6),{['elemRef_'+c]:.05})}
+for(const c of['Elemental','Physical','Magical','Summoning','Special']){hs('cm_'+c,c+' Mastery','Magic','cast_cat_'+c,`Use ${c.toLowerCase()} powers`,TH(12),{['catDmg_'+c]:.04});hs('cf_'+c,c+' Flow','Magic','cast_cat_'+c,`Use ${c.toLowerCase()} powers often`,TH(20),{['catCd_'+c]:.03})}
+for(const[i,n]of[['stone','Stones'],['branch','Branches'],['plant_fiber','Reeds'],['berries','Berries'],['moonleaf','Moonleaf'],['iron_ore','Ore']])hs('gf_'+i,n+' Forager','Survival','gather_'+i,`Gather ${n.toLowerCase()}`,TH(8),{['gather_'+i]:.08});
+hs('tinker','Tinkerer','Survival','crafts','Craft anything',TH(5),{craftChance:.05});
+for(const[i,n]of[['stone_knife','Knapper'],['branch_club','Club Carver'],['wood_staff','Staff Whittler'],['grass_wrap','Reed Weaver'],['poultice','Field Medic'],['berry_mash','Forage Cook']])hs('cr_'+i,n,'Survival','craft_'+i,`Craft ${ITEMS[i]?ITEMS[i].name:i}`,[2,5,12,25,50],i==='poultice'||i==='berry_mash'?{foodPct:.05}:{craftChance:.03});
+for(const[m,n]of[['meadow','Dawnmeadow'],['woods','the Whispering Woods'],['caverns','the Crystal Caverns'],['eldoria','Eldoria'],['solmere','Solmere']]){const s=n.replace('the ','').split(' ').pop();
+  hs('nat_'+m,s+' Native','Exploration','map_'+m,`Spend time in ${n} (seconds)`,TH(120),{['mapRegen_'+m]:.002});hs('path_'+m,s+' Pathfinder','Exploration','walk_'+m,`Walk the paths of ${n} (steps)`,TH(150),{['mapSpd_'+m]:.03});hs('home_'+m,s+' Home Ground','Exploration','killmap_'+m,`Defeat foes in ${n}`,TH(10),{['mapDmg_'+m]:.04})}
+hs('nightowl','Night Owl','Exploration','nightTime','Stay out at night (seconds)',TH(120),{nightPct:.03});hs('midnight','Midnight Hunter','Hunting','killsNight','Defeat foes at night',TH(10),{nightPct:.03});
+hs('rainwalk','Rain Walker','Exploration','rainTime','Walk in the rain (seconds)',TH(90),{rainSpd:.04});hs('stormborn','Storm Born','Hunting','killsRain','Defeat foes in the rain',TH(8),{rainDmg:.05});hs('sunchild','Sun Child','Exploration','dayTime','Spend daylight hours outdoors (seconds)',TH(200),{dayRegen:.0015});
+hs('poisonres','Poison Resistance','Body','poisonTime','Endure poison and live (seconds poisoned)',[20,60,150,300,600],{poisonRes:.14});hs('antitoxin','Antitoxin Blood','Body','poisonCured','Recover from poison',TH(3),{poisonImm:.08});
+hs('coldres','Cold Tolerance','Body','chillTime','Endure being chilled (seconds)',[15,45,120,250,500],{chillRes:.14});hs('thaw','Quick Thaw','Body','chillCured','Shake off chills',TH(3),{chillImm:.08});
+hs('thickskin','Thick Skin','Body','hitsTaken','Take hits and keep standing',TH(25),{defAdd:1});hs('paintol','Pain Tolerance','Body','dmgTaken','Absorb damage over time',TH(300),{hpPct:.02});hs('ironwill','Iron Will','Body','bigHits','Survive heavy blows (over 20% of your health)',TH(4),{bigHitRes:.06});
+hs('laststand','Last Stand','Body','lowHpTime','Fight on below a quarter of your health (seconds)',TH(15),{lowHpDef:.06});hs('survivor','Survivor','Body','nearDeath','Recover from the brink of death',TH(2),{lowHpRegen:.004});hs('spellward','Spellward','Body','magicHits','Survive magic attacks',TH(10),{magicResist:.04});
+hs('undying','Undying','Body','revived','Be lifted back from death',[1,2,4,7,10],{hpPct:.03});hs('lessons','Lessons of Defeat','Body','deaths','Fall in battle, and learn',[1,3,6,10,15],{xpPct:.04});hs('guardian','Guardian','Combat','blocks','Block attacks',TH(15),{blockRes:.05});
+hs('duelist','Duelist','Combat','parries','Parry attacks',TH(5),{parryWin:.02,parryHeal:.01});hs('ghoststep','Ghost Step','Combat','perfectDodges','Perfectly dodge attacks',TH(5),{autoDodge:.015,dodgeHeal:.01});hs('tumbler','Tumbler','Combat','dodges','Roll out of the way',TH(30),{dodgeCd:.05});
+hs('brawler','Brawler','Combat','hitsDealt','Land hits of any kind',TH(80),{atkPct:.02});hs('executioner','Executioner','Combat','kills','Defeat foes of any kind',TH(20),{critAdd:.01});hs('criteye','Critical Eye','Combat','crits','Land critical hits',TH(15),{critDmg:.06});
+hs('heavyhand','Heavy Hand','Combat','heavies','Unleash heavy attacks',TH(10),{heavyDmg:.08});hs('chainmaster','Chain Master','Combat','combo10','Reach 10-hit combos',TH(3),{comboDmg:.05});hs('counterart','Counter Artist','Combat','counters','Land counter-attacks after a parry',TH(4),{counterDmg:.1});
+hs('slinger','Slinger','Combat','stones','Throw stones',TH(10),{stoneDmg:.15});hs('desperado','Desperado','Combat','killsLowHp','Defeat foes while badly hurt',TH(5),{rage:.06});hs('clean','Clean Fighter','Combat','killsFullHp','Defeat foes without a scratch',TH(10),{fullHpAtk:.04});
+hs('butcher','Relentless','Combat','dmgDealt','Deal damage over time',TH(1500),{atkPct:.015});hs('elitebane','Elite Breaker','Hunting','eliteKills','Defeat elite hunt targets',[1,2,3,4,6],{bossDmg:.05,allPct:.01});hs('giantslayer','Giant Slayer','Hunting','bossKills','Defeat bosses',[1,2,3,5,8],{bossDmg:.08});
+hs('spellweave','Spellweaver','Magic','casts','Cast powers',TH(25),{manaCost:.03});hs('deepwell','Deep Well','Magic','mpSpent','Spend mana',TH(300),{mpPct:.03});hs('bond','Summoner\'s Bond','Magic','summons','Summon allies',TH(5),{summonDmg:.06});
+hs('healtouch','Healer\'s Touch','Magic','heals','Cast healing powers',TH(5),{healPow:.08});hs('enchanter','Enchanter','Magic','buffs','Cast buffs and barriers',TH(5),{buffDur:.08});hs('powerkill','Power Feeder','Magic','killsPower','Defeat foes with powers',TH(10),{killMp:1});
+hs('ironstomach','Iron Stomach','Survival','foods','Eat food',TH(6),{foodPct:.08});hs('potiontol','Potion Tolerance','Survival','potions','Drink potions',TH(5),{potPct:.06});hs('deepsleep','Deep Sleeper','Survival','sleeps','Sleep through the night',TH(3),{regen:.001});
+hs('lanternkeep','Lantern Keeper','Survival','rests','Rest at lanterns',TH(3),{mpRegen:.2});hs('enduring','Enduring','Survival','days','Live through the days in Aurel',TH(3),{hpPct:.015});hs('walker','Long Walker','Exploration','walk','Walk anywhere (steps)',TH(600),{spdPct:.015});
+hs('sprinter','Sprinter','Exploration','run','Run anywhere (steps)',TH(300),{runSpd:.03});hs('explorer','Explorer','Exploration','mapsSeen','Visit new places',[3,5,8,12,20],{xpPct:.02});hs('visitor','Welcome Guest','Social','doors','Step inside buildings',TH(5),{affPct:.03});
+hs('thrifty','Thrifty','Social','goldSpent','Spend gold',TH(150),{buyDisc:.02});hs('merchant','Born Merchant','Social','sells','Sell items',TH(6),{sellPct:.05});hs('collector','Coin Collector','Social','goldEarned','Earn gold',TH(150),{goldPct:.03});
+hs('chatter','Chatterbox','Social','talks','Talk to people',TH(10),{affPct:.04});hs('treasurenose','Treasure Nose','Exploration','chests','Open chests',TH(3),{chestGold:.15});hs('luckyfind','Lucky Finder','Exploration','pickups','Pick up dropped items',TH(20),{lootPct:.03});
+hs('patron','Loyal Patron','Social','buys','Buy from shops',TH(6),{buyDisc:.02});hs('questor','Quest Taker','Social','quests','Complete quests',[1,3,6,10,15],{xpPct:.03});hs('climber','Climber','Body','levels','Grow stronger (levels gained)',[2,4,7,11,16],{hpPct:.015,mpPct:.015});
+hs('secondbreath','Second Breath','Body','lowHpTime','Keep fighting while close to death (seconds)',[30,90,240,500,1000],{regen:.0008});hs('marathon','Marathoner','Exploration','walk','Cover enormous distances on foot (steps)',[3000,8000,20000,40000,80000],{dodgeCd:.04,spdPct:.01});
+hs('spellsponge','Spell Sponge','Body','magicHits','Soak up enemy magic',[25,75,180,400,800],{mpRegen:.25});hs('venomeater','Venom Eater','Body','hitBy_venom','Get bitten by Venom Slimes again and again',[15,45,100,220,450],{poisonImm:.06});hs('powerhitter','Spell Striker','Magic','powerHits','Hit foes with powers',TH(40),{mpOnHit:.4});
+/* secret skills: their names stay hidden until you make progress */
+const SEC=(id,name,cat,counter,cond,th,eff)=>hs(id,name,cat,counter,cond,th,eff,{secret:true});
+SEC('lanternmoth','Lantern Moth','Secret','restNight','Rest at a lantern in the dead of night',[1,3,6,10,15],{nightPct:.03,regen:.0005});SEC('stoneage','Stone Age','Secret','killStone','Defeat a foe with a thrown stone',[1,3,8,15,30],{stoneDmg:.2});
+SEC('closecall','Close Call','Secret','pdLow','Perfectly dodge while badly hurt',[1,3,6,10,20],{autoDodge:.02,dodgeHeal:.02});SEC('coffee','Coffee Addict','Secret','cast_chai','Take Coffee Breaks',[3,8,20,40,80],{mpRegen:.3});
+SEC('nightwalk','Night Walker','Secret','walkNight','Walk under the night sky (steps)',[200,600,1500,3000,6000],{nightPct:.04});SEC('woodsnight','Child of the Dark Woods','Secret','woodsNight','Stay in the Whispering Woods at night (seconds)',[60,180,400,800,1500],{mapDmg_woods:.06,mapRegen_woods:.002});
+SEC('overkill','Overkill','Secret','overkill','Finish a foe with damage far beyond its health',[3,10,25,50,100],{critAdd:.012});SEC('combo25','Unbroken Chain','Secret','combo25','Reach a 25-hit combo',[1,2,4,7,10],{comboDmg:.08});
+SEC('ironlung','Iron Lung','Secret','runPoison','Run while poisoned (steps)',[30,100,250,500,1000],{poisonRes:.1});SEC('frostbite','Frostbite Fighter','Secret','killChill','Defeat foes while chilled',[1,3,8,15,30],{chillRes:.1});
+SEC('lastbreath','Last Breath','Secret','killVeryLow','Defeat a foe with almost no health left',[1,2,4,7,12],{rage:.1});SEC('raincaster','Rain Caster','Secret','castRain','Cast powers in the rain',[5,15,40,80,150],{elemDmg_water:.06,elemDmg_bolt:.06});
+SEC('nightparry','Moonlit Parry','Secret','parryNight','Parry at night',[1,3,8,15,30],{parryWin:.02});SEC('lowwalk','Limping Onward','Secret','walkLow','Keep walking while badly hurt (steps)',[50,150,400,800,1500],{lowHpRegen:.003});
+SEC('rainroll','Puddle Dancer','Secret','dodgeRain','Roll through the rain',[10,30,80,160,300],{dodgeCd:.05});SEC('oneshot','One Strike','Secret','oneHit','Defeat a foe with a single blow',[3,10,25,60,120],{critDmg:.08});
+SEC('rainsleep','Rain Lullaby','Secret','sleepRain','Sleep while it rains',[1,3,6,10,15],{regen:.0008});SEC('chestnight','Midnight Plunder','Secret','chestNight','Open chests at night',[1,2,4,7,10],{chestGold:.2});
+SEC('nighttalk','Night Owl Gossip','Secret','talkNight','Chat with people at night',[3,10,25,50,100],{affPct:.05});SEC('foodbuy','Street Food Lover','Secret','buyFood','Buy food from shops and stalls',[3,10,25,50,100],{foodPct:.08});
+SEC('barebrave','Kalari Spirit','Secret','crit_unarmed_low','Land unarmed critical hits while badly hurt',[1,3,8,15,30],{wkDmg_none:.08,aspd:.02});SEC('pacifistwalk','Wanderer\'s Peace','Secret','walkCalm','Walk long distances between fights (steps)',[500,1500,4000,8000,15000],{spdPct:.02,regen:.0005});
+SEC('hoarder','Pack Rat','Secret','bagFull','Fill your bag to the brim',[1,3,6,10,20],{lootPct:.04});SEC('earlybird','Early Bird','Secret','dawnTime','Be up and about at dawn (seconds)',[60,180,400,800,1500],{xpPct:.02});
+SEC('bossnohit','Untouchable','Secret','bossNoHit','Defeat a boss after taking very few hits',[1,2,3,4,5],{autoDodge:.02,bossDmg:.05});
+/* values and effects */
+G.tr={c:{},lv:{}};const trLv=id=>(G.tr.lv[id]||0);
+function trMods(){const m={};for(const id in G.tr.lv){const s=HSI[id],L=G.tr.lv[id];if(!s||!L)continue;for(const k in s.eff)m[k]=(m[k]||0)+s.eff[k]*L}return m}
+const TRCAP={poisonRes:.8,chillRes:.8,poisonImm:.5,chillImm:.5,bigHitRes:.5,lowHpDef:.4,manaCost:.4,buyDisc:.3,blockRes:.5};
+const _pmRecalcHS=pmRecalc;pmRecalc=function(){_pmRecalcHS();const m=G.pm||(G.pm={}),t=trMods();for(const k in t)m[k]=(m[k]||0)+t[k];for(const k in m){if(TRCAP[k])m[k]=Math.min(TRCAP[k],m[k]);if(/^(wardVs|catCd)_/.test(k))m[k]=Math.min(.4,m[k])}
+  if(m.autoDodge)m.autoDodge=Math.min(.35,m.autoDodge);if(m.magicResist)m.magicResist=Math.min(.75,m.magicResist);if(G.player)G.player.recalc()};
+function trAdd(key,n=1){if(!G.player||G.state!=='play'||inKochi())return;const c=G.tr.c;c[key]=(c[key]||0)+n;const list=HS_BY[key];if(!list)return;let ch=false;
+  for(const s of list){const L=trLv(s.id);if(L>=s.th.length||c[key]<s.th[L])continue;let nl=L;while(nl<s.th.length&&c[key]>=s.th[nl])nl++;G.tr.lv[s.id]=nl;ch=true;
+    if(L===0){banner(s.name,'Hidden skill learned');AudioSys.play('level')}else toast(`${s.name} reached level ${nl}`,'lv')}if(ch)pmRecalc()}
+/* tracking: things that happen over time */
+let trAcc=0;const trT={};const tAdd=(k,v)=>{trT[k]=(trT[k]||0)+v};
+const _updHS=update;update=function(dt){const P=G.player,pre=P&&{x:P.x,y:P.y,gold:P.gold,poison:!!P.status.poison,chill:!!P.status.chill,dodge:P.dodgeT>0,hp:P.hp,full:P.inv.every(Boolean)};_updHS(dt);if(!P||G.state!=='play'||P.dead||inKochi())return;
+  const m=G.map,night=nightF()>.6,rain=m.outdoor&&G.weather.rain>.3,h=(G.time/60)%24,low=P.hp<P.maxHp*.25;
+  const d=Math.hypot(P.x-pre.x,P.y-pre.y)/T;if(d>0&&d<2){tAdd('walk',d);tAdd('walk_'+m.id,d);if(P.running){tAdd('run',d);if(P.status.poison)tAdd('runPoison',d)}if(night&&m.outdoor)tAdd('walkNight',d);if(low)tAdd('walkLow',d);if(!G.enemies.some(e=>!e.dead&&e.st!=='idle'&&e.st!=='return'))tAdd('walkCalm',d)}
+  tAdd('map_'+m.id,dt);if(m.outdoor){if(night)tAdd('nightTime',dt);else if(h>=7&&h<18)tAdd('dayTime',dt);if(h>=5&&h<7)tAdd('dawnTime',dt);if(rain)tAdd('rainTime',dt);if(m.id==='woods'&&night)tAdd('woodsNight',dt)}
+  if(P.status.poison)tAdd('poisonTime',dt);else if(pre.poison)trAdd('poisonCured');if(P.status.chill)tAdd('chillTime',dt);else if(pre.chill)trAdd('chillCured');
+  if(low)tAdd('lowHpTime',dt);if(P.hp<P.maxHp*.1)P._brink=true;if(P._brink&&P.hp>P.maxHp*.5){P._brink=false;trAdd('nearDeath')}
+  if(P.dodgeT>0&&!pre.dodge){trAdd('dodges');if(rain)trAdd('dodgeRain')}
+  const dg=P.gold-pre.gold;if(dg>0){trAdd('goldEarned',dg);if(G.ui==='shop'){trAdd('sells');const k=PM().sellPct;if(k)P.gold+=Math.round(dg*k)}}else if(dg<0){trAdd('goldSpent',-dg);if(G.ui==='shop'){trAdd('buys');const k=PM().buyDisc;if(k)P.gold+=Math.round(-dg*k)}}
+  if(!pre.full&&P.inv.every(Boolean))trAdd('bagFull');
+  const mp=PM();if(mp['mapRegen_'+m.id]&&P.lastHurt>2)P.hp=Math.min(P.maxHp,P.hp+P.maxHp*mp['mapRegen_'+m.id]*dt);if(mp.dayRegen&&m.outdoor&&!night)P.hp=Math.min(P.maxHp,P.hp+P.maxHp*mp.dayRegen*dt);if(mp.lowHpRegen&&low)P.hp=Math.min(P.maxHp,P.hp+P.maxHp*mp.lowHpRegen*dt);
+  trAcc+=dt;if(trAcc>=.5){trAcc=0;for(const k in trT){const v=Math.floor(trT[k]);if(v>=1){trT[k]-=v;trAdd(k,v)}}}};
+/* movement speed bonuses that depend on where you are */
+const _pupdHS=Player.prototype.update;Player.prototype.update=function(dt){const m=PM(),M=G.map;let k=0;if(M){k+=m['mapSpd_'+M.id]||0;if(M.outdoor&&G.weather.rain>.3)k+=m.rainSpd||0;if(this.running)k+=m.runSpd||0}if(!k)return _pupdHS.call(this,dt);const s=this.spd;this.spd=s*(1+k);try{_pupdHS.call(this,dt)}finally{this.spd=s}};
+/* combat hooks */
+const _ehurtHS=Enemy.prototype.hurt;Enemy.prototype.hurt=function(dmg,crit,kx,ky,o={}){if(this.dead||this.invuln)return _ehurtHS.call(this,dmg,crit,kx,ky,o);const P=G.player,m=PM(),src=o.src,mine=P&&(src===P||(src&&src.isAlly)),hp0=this.hp,fresh=this.hp>=this.maxHp;
+  if(mine&&!o.dot){let k=1+(m['dmgVs_'+this.type]||0)+(G.map?m['mapDmg_'+G.map.id]||0:0);if(this.boss||this.elite)k+=m.bossDmg||0;if(G.map&&G.map.outdoor&&G.weather.rain>.3)k+=m.rainDmg||0;
+    if(src===P){const wk=P.weaponKind||'none';if(P._melee)k+=m['wkDmg_'+wk]||0;if(crit)k+=m.critDmg||0;if(P._heavyHS)k+=m.heavyDmg||0;if(G.combo&&G.t-G.combo.last<1.8&&G.combo.n>=5)k+=m.comboDmg||0;if(P.hp>=P.maxHp*.95)k+=m.fullHpAtk||0;if(P._counterHS)k+=m.counterDmg||0;
+      if(o.pw){const p=PWI[o.pw];if(p){k+=(m['elemDmg_'+p.p.col]||0)+(m['catDmg_'+p.cat]||0)}}}else k+=m.summonDmg||0;dmg=Math.max(1,Math.round(dmg*k))}
+  if(mine&&!o.dot)this._hsCtx={wk:src===P&&P._melee?(P.weaponKind||'none'):null,pw:o.pw,stone:o.stone};_ehurtHS.call(this,dmg,crit,kx,ky,o);if(!mine||o.dot)return;
+  if(src===P){trAdd('hitsDealt');trAdd('dmgDealt',Math.round(Math.min(dmg,hp0)));const wk=P.weaponKind||'none';if(P._melee)trAdd('hit_wk_'+wk);if(crit){trAdd('crits');if(P._melee){trAdd('crit_wk_'+wk);if(wk==='none'&&P.hp<P.maxHp*.3)trAdd('crit_unarmed_low')}}if(o.pw)trAdd('powerHits')}
+  if(this.dead){if(dmg>hp0*2.5&&hp0>0)trAdd('overkill');if(fresh)trAdd('oneHit')}};
+const _edieHS=Enemy.prototype.die;Enemy.prototype.die=function(){_edieHS.call(this);const P=G.player,m=PM(),c=this._hsCtx;if(!P||this.type==='dummy')return;
+  trAdd('kills');trAdd('kill_'+this.type);if(G.map)trAdd('killmap_'+G.map.id);if(this.boss)trAdd('bossKills');if(this.elite)trAdd('eliteKills');if(nightF()>.6)trAdd('killsNight');if(G.map&&G.map.outdoor&&G.weather.rain>.3)trAdd('killsRain');
+  if(P.hp<P.maxHp*.3)trAdd('killsLowHp');if(P.hp<P.maxHp*.1)trAdd('killVeryLow');if(P.hp>=P.maxHp*.95)trAdd('killsFullHp');if(P.status.chill)trAdd('killChill');
+  if(c){if(c.wk)trAdd('kill_wk_'+c.wk);if(c.pw){trAdd('killsPower');const p=PWI[c.pw];if(p)trAdd('killcol_'+p.p.col)}if(c.stone)trAdd('killStone')}
+  if(this.boss&&(G.bossHits||0)<=3)trAdd('bossNoHit');
+  const lv=m['lootVs_'+this.type];if(lv)for(const[id,ch]of this.d.loot||[])if(Math.random()<ch*lv)dropItem(this.x,this.y,id,1);
+  if(m.killHeal)P.hp=Math.min(P.maxHp,P.hp+P.maxHp*m.killHeal);if(m.killMp)P.mp=Math.min(P.maxMp,P.mp+m.killMp)};
+const _phurtHS=Player.prototype.hurt;Player.prototype.hurt=function(dmg,sx,sy,o={}){if(this.iframe>0||this.dead||G.state!=='play')return _phurtHS.call(this,dmg,sx,sy,o);const m=PM(),src=o.src,hp0=this.hp;
+  const facing=(()=>{const dx=sx-this.x,dy=sy-this.y,d=Math.hypot(dx,dy)||1;return(dx*this.fx+dy*this.fy)/d>.15})(),parry=this.blocking&&this.blockT<.2&&facing&&!o.unblockable,block=this.blocking&&facing&&!o.unblockable&&!parry;
+  if(src&&src.type)dmg*=1-(m['wardVs_'+src.type]||0);if(dmg>this.maxHp*.2)dmg*=1-(m.bigHitRes||0);if(this.hp<this.maxHp*.3)dmg*=1-(m.lowHpDef||0);if(block)dmg*=1-(m.blockRes||0);
+  const r=_phurtHS.call(this,dmg,sx,sy,o);if(parry){trAdd('parries');if(nightF()>.6)trAdd('parryNight');if(m.parryHeal)this.hp=Math.min(this.maxHp,this.hp+this.maxHp*m.parryHeal)}
+  if(r){const lost=hp0-this.hp;trAdd('hitsTaken');if(lost>0)trAdd('dmgTaken',Math.round(lost));if(lost>this.maxHp*.2&&!this.dead)trAdd('bigHits');if(src&&src.type)trAdd('hitBy_'+src.type);if(block)trAdd('blocks');if(G.boss)G.bossHits=(G.bossHits||0)+1;
+    if((src&&src.d&&src.d.ai==='caster')||(!src&&o.unblockable))trAdd('magicHits');
+    const S=this.status;if(o.poison&&S.poison){if(Math.random()<(m.poisonImm||0)){delete S.poison;G.num(this.x,this.y-30,'RESIST','#8fe070')}else if(m.poisonRes){S.poison.t*=1-m.poisonRes;S.poison.dps=Math.max(1,Math.round(S.poison.dps*(1-m.poisonRes)))}}
+    if(o.chill&&S.chill){if(Math.random()<(m.chillImm||0))delete S.chill;else if(m.chillRes)S.chill.t*=1-m.chillRes}}return r};
+const _gstartBoss=G.startBoss.bind(G);G.startBoss=function(b){G.bossHits=0;_gstartBoss(b)};
+if(typeof perfectDodge==='function'){const _pdHS=perfectDodge;perfectDodge=function(p){_pdHS(p);trAdd('perfectDodges');const P=G.player;if(P.hp<P.maxHp*.3)trAdd('pdLow');const k=PM().dodgeHeal;if(k)P.hp=Math.min(P.maxHp,P.hp+P.maxHp*k)}}
+const _heavyHS=Player.prototype.heavy;Player.prototype.heavy=function(){const stone=!this.eq.weapon&&invCount('stone')>0;this._heavyHS=true;try{_heavyHS.call(this)}finally{this._heavyHS=false}if(!inKochi()){trAdd(stone?'stones':'heavies')}};
+const _shootHS=shootPP;shootPP=function(o){if(o.kind==='stone'){o.dmg*=1+(PM().stoneDmg||0);o.stone=true}return _shootHS(o)};
+{const _pHitHS=pHit;}
+const _mhHS=Player.prototype.meleeHit;Player.prototype.meleeHit=function(){const m=PM(),wk=this.weaponKind||'none',c=this.crit,ctr=this.counterT>0;this.crit+=m['wkCrit_'+wk]||0;this._counterHS=ctr;try{_mhHS.call(this)}finally{this.crit=c;this._counterHS=false}if(ctr)trAdd('counters')};
+const _saHS=Player.prototype.startAttack;Player.prototype.startAttack=function(ax){_saHS.call(this,ax);const s=PM()['wkSpd_'+(this.weaponKind||'none')];if(s&&this.atkT>0){this.atkDur/=1+s;this.atkT=this.atkDur}};
+const _comboHS=comboHit;comboHit=function(){_comboHS();const c=G.combo;if(!c)return;if(c.n===10)trAdd('combo10');if(c.n===25)trAdd('combo25')};
+/* powers */
+const _castHS=castPower;castPower=function(i){const P=G.player,s=pw(),id=s.slots[i],p=id&&PWI[id];if(!P||!p||p.type!=='A'){return _castHS(i)}const mp0=P.mp,hp0=P.hp,cd0=s.cds[id]||0,nb=(P.pbuffs||[]).length;_castHS(i);if((s.cds[id]||0)<=cd0)return;
+  const m=PM(),spent=Math.max(0,mp0-P.mp);trAdd('casts');trAdd('cast_cat_'+p.cat);trAdd('cast_col_'+p.p.col);if(spent)trAdd('mpSpent',Math.round(spent));if(id==='chai')trAdd('cast_chai');if(G.map&&G.map.outdoor&&G.weather.rain>.3)trAdd('castRain');
+  if(p.arch==='summon')trAdd('summons');if(p.arch==='heal'){trAdd('heals');const k=m.healPow;if(k&&P.hp>hp0)P.hp=Math.min(P.maxHp,P.hp+(P.hp-hp0)*k)}if(p.arch==='buff'||p.arch==='barrier'){trAdd('buffs');const k=m.buffDur;if(k){const b=P.pbuffs&&P.pbuffs[P.pbuffs.length-1];if(b&&P.pbuffs.length>=nb)b.t*=1+k;if(p.arch==='barrier')P.shieldT*=1+k}}
+  const ref=(m.manaCost||0)+(m['elemRef_'+p.p.col]||0)*.5;if(ref&&spent)P.mp=Math.min(P.maxMp,P.mp+spent*ref);const cd=m['catCd_'+p.cat];if(cd)s.cds[id]*=1-cd};
+/* gathering, crafting, items, the world */
+const _gatherHS=gatherObj;gatherObj=function(o){const ready=herbReady(o);_gatherHS(o);if(!ready)return;const it=GATHER[o.kind][0];trAdd('gather_'+it);const k=PM()['gather_'+it];if(k&&Math.random()<k){invAdd(it,1)||dropItem(o.x,o.y-4,it,1);G.num(o.x,o.y-16,'+1','#9fe07a')}};
+const _harvestHS=harvest;harvest=function(o){const r=herbReady(o);_harvestHS(o);if(r)trAdd(o.kind==='herb'?'gather_moonleaf':'gather_iron_ore')};
+const _useHS=useItem;useItem=function(idx){const P=G.player,s=P.inv[idx],d=s&&ITEMS[s.id],h0=P.hp,r=_useHS(idx);if(r&&d&&d.type==='use'){const pot=/potion|elixir/.test(s.id);trAdd(pot?'potions':s.id==='antidote'?'antidotes':'foods');if(pot&&PM().potPct&&P.hp>h0)P.hp=Math.min(P.maxHp,P.hp+(P.hp-h0)*PM().potPct)}return r};
+const _invAddHS=invAdd;invAdd=function(id,n=1){const r=_invAddHS(id,n);if(G.ui==='shop'&&r&&ITEMS[id]&&ITEMS[id].type==='use'&&!/potion|elixir|antidote/.test(id))trAdd('buyFood');return r};
+const _talkHS=talkTo;talkTo=function(n){const r=_talkHS(n);if(n&&!n.isAlly){trAdd('talks');if(nightF()>.6)trAdd('talkNight')}return r};
+const _sleepHS=sleep;sleep=function(){const rain=G.weather&&G.weather.rain>.3;_sleepHS();trAdd('sleeps');if(rain)trAdd('sleepRain')};
+const _restHS=restAtLantern;restAtLantern=function(o){_restHS(o);trAdd('rests');if(nightF()>.6)trAdd('restNight')};
+const _intHS=interactObj;interactObj=function(o){const chest=o.kind==='chest'&&!G.chests[o.id];_intHS(o);if(chest&&G.chests[o.id]){trAdd('chests');if(nightF()>.6)trAdd('chestNight');const k=PM().chestGold;if(k)dropGold(o.x,o.y-4,Math.max(3,Math.round((o.gold||10)*k)))}};
+const _qDoneHS=qDone;qDone=function(id){const q=G.quests[id],was=q&&!q.done;_qDoneHS(id);if(was&&G.quests[id].done)trAdd('quests')};
+const _gainHS=Player.prototype.gainXp;Player.prototype.gainXp=function(n){const l=this.lvl;_gainHS.call(this,n);if(this.lvl>l)trAdd('levels',this.lvl-l)};
+const _loadHS=loadMap;loadMap=function(id,px,py,silent){_loadHS(id,px,py,silent);const m=G.map,seen=G.tr.seen||(G.tr.seen={});if(m.interior)trAdd('doors');const key=m.interior?null:id;if(key&&!seen[key]){seen[key]=1;trAdd('mapsSeen')}};
+const _dieHS=Player.prototype.die;Player.prototype.die=function(){_dieHS.call(this);if(!this.dead)trAdd('revived')};
+const _showDeathHS=showDeath;showDeath=function(){if(!(typeof DF==='function'&&DF().perma)){G.tr.c.deaths=(G.tr.c.deaths||0);trAdd('deaths')}_showDeathHS()};
+{let lastDay=null;const _u2=update;update=function(dt){_u2(dt);if(G.state!=='play'||!G.player||inKochi())return;if(lastDay===null)lastDay=G.day;if(G.day>lastDay){trAdd('days',G.day-lastDay);lastDay=G.day}}}
+{const _pk=G.pickups;const _upd3=update;update=function(dt){const n0=G.pickups.filter(k=>k.k==='item').length;_upd3(dt);const n1=G.pickups.filter(k=>k.k==='item').length;if(n1<n0&&G.player&&!inKochi()){const got=n0-n1;if(got>0&&got<5)trAdd('pickups',got)}}}
+/* saving */
+const _serHS=serialize;serialize=function(){return Object.assign(_serHS(),{tr:G.tr})};
+const _startHS=startFrom;startFrom=function(data,slot){G.tr=Object.assign({c:{},lv:{},seen:{}},data.tr||{});_startHS(data,slot);pmRecalc()};
+const _startKochiHS=startKochi;startKochi=function(){G.tr={c:{},lv:{},seen:{}};_startKochiHS()};
+
+/* ================= HIDDEN SKILLS: the record ================= */
+const pctS=v=>Math.round(v*1000)/10+'%',ENN=t=>(ENEMY[t]&&ENEMY[t].name)||t;
+const EFX={atkPct:v=>`+${pctS(v)} attack`,defAdd:v=>`+${Math.round(v)} defense`,hpPct:v=>`+${pctS(v)} max HP`,mpPct:v=>`+${pctS(v)} max MP`,critAdd:v=>`+${pctS(v)} critical chance`,spdPct:v=>`+${pctS(v)} move speed`,aspd:v=>`+${pctS(v)} attack speed`,
+  regen:v=>`regenerate ${pctS(v)} HP/s`,mpRegen:v=>`+${Math.round(v*10)/10} MP/s`,dodgeCd:v=>`rolls recover ${pctS(v)} faster`,autoDodge:v=>`${pctS(v)} chance to evade`,parryWin:v=>`wider parry window (+${Math.round(v*1000)}ms)`,xpPct:v=>`+${pctS(v)} experience`,goldPct:v=>`+${pctS(v)} gold`,lootPct:v=>`+${pctS(v)} loot`,
+  foodPct:v=>`food heals +${pctS(v)}`,potPct:v=>`potions heal +${pctS(v)}`,magicResist:v=>`-${pctS(v)} magic damage taken`,nightPct:v=>`+${pctS(v)} damage at night`,rage:v=>`up to +${pctS(v)} damage when hurt`,affPct:v=>`affection +${pctS(v)} faster`,allPct:v=>`+${pctS(v)} to all stats`,
+  bossDmg:v=>`+${pctS(v)} damage to bosses and elites`,poisonRes:v=>`poison ${pctS(v)} weaker and shorter`,poisonImm:v=>`${pctS(v)} chance to shrug off poison`,chillRes:v=>`chills ${pctS(v)} shorter`,chillImm:v=>`${pctS(v)} chance to shrug off chills`,bigHitRes:v=>`-${pctS(v)} damage from huge blows`,
+  lowHpDef:v=>`-${pctS(v)} damage taken when below 30% HP`,lowHpRegen:v=>`regenerate ${pctS(v)} HP/s when badly hurt`,blockRes:v=>`blocked hits deal ${pctS(v)} less`,parryHeal:v=>`parries heal ${pctS(v)} HP`,dodgeHeal:v=>`perfect dodges heal ${pctS(v)} HP`,critDmg:v=>`critical hits +${pctS(v)} damage`,
+  heavyDmg:v=>`heavy attacks +${pctS(v)} damage`,comboDmg:v=>`+${pctS(v)} damage during 5+ hit combos`,counterDmg:v=>`counter-attacks +${pctS(v)} damage`,stoneDmg:v=>`thrown stones +${pctS(v)} damage`,fullHpAtk:v=>`+${pctS(v)} damage at full health`,manaCost:v=>`powers refund ${pctS(v)} of their mana`,
+  summonDmg:v=>`summons deal +${pctS(v)} damage`,healPow:v=>`healing powers +${pctS(v)}`,buffDur:v=>`buffs and barriers last +${pctS(v)}`,killMp:v=>`+${Math.round(v)} MP per power kill`,craftChance:v=>`${pctS(v)} chance to craft double`,rainSpd:v=>`+${pctS(v)} speed in rain`,rainDmg:v=>`+${pctS(v)} damage in rain`,
+  dayRegen:v=>`regenerate ${pctS(v)} HP/s in daylight`,runSpd:v=>`+${pctS(v)} running speed`,buyDisc:v=>`${pctS(v)} cashback on purchases`,sellPct:v=>`items sell for +${pctS(v)}`,chestGold:v=>`chests hold +${pctS(v)} extra gold`};
+function effTxt(eff,L){return Object.entries(eff).map(([k,v])=>{v*=L;if(EFX[k])return EFX[k](v);const[p,a]=k.split('_').length>2?[k.split('_')[0],k.slice(k.indexOf('_')+1)]:k.split('_');
+  switch(p){case'dmgVs':return`+${pctS(v)} damage to ${ENN(a)}s`;case'wardVs':return`-${pctS(v)} damage from ${ENN(a)}s`;case'lootVs':return`+${pctS(v)} loot from ${ENN(a)}s`;case'wkDmg':return`+${pctS(v)} ${a==='none'?'unarmed':a} damage`;case'wkSpd':return`+${pctS(v)} ${a==='none'?'unarmed':a} attack speed`;case'wkCrit':return`+${pctS(v)} ${a==='none'?'unarmed':a} critical chance`;
+    case'elemDmg':return`+${pctS(v)} ${COLN[a]||a} power damage`;case'elemRef':return`${pctS(v/2)} mana back from ${COLN[a]||a} powers`;case'catDmg':return`+${pctS(v)} ${a} power damage`;case'catCd':return`${a} powers recharge ${pctS(v)} faster`;case'gather':return`${pctS(v)} chance of an extra ${ITEMS[a]?ITEMS[a].name:a}`;
+    case'mapRegen':return`regenerate ${pctS(v)} HP/s in ${G.maps[a]?G.maps[a].name:a}`;case'mapSpd':return`+${pctS(v)} speed in ${G.maps[a]?G.maps[a].name:a}`;case'mapDmg':return`+${pctS(v)} damage in ${G.maps[a]?G.maps[a].name:a}`}return k}).join(', ')}
+const HSCATS=['Hunting','Weapons','Magic','Combat','Body','Survival','Exploration','Social','Secret'],HSICON={Hunting:['tooth','#ff9a7a'],Weapons:['sword','#d8e4ff'],Magic:['flow','#b48cff'],Combat:['shield','#ffd27a'],Body:['heart','#ff7a8a'],Survival:['herb','#7ce07a'],Exploration:['eye','#8ac0ff'],Social:['ring','#ffd84a'],Secret:['moon','#c9b8ff']};
+let hsF={cat:'All',show:'all',q:''};
+function renderHS(B){const c=G.tr.c,learned=HS.filter(s=>trLv(s.id)>0).length,lv=HS.reduce((a,s)=>a+trLv(s.id),0);
+  const rows=HS.filter(s=>(hsF.cat==='All'||s.cat===hsF.cat)&&(hsF.show==='all'||(hsF.show==='learned'?trLv(s.id)>0:hsF.show==='progress'?trLv(s.id)===0&&(c[s.counter]||0)>0:(c[s.counter]||0)===0))&&(!hsF.q||(s.name+s.cond).toLowerCase().includes(hsF.q.toLowerCase())));
+  B.innerHTML=`<div class="hs-top"><div><b>${learned}</b> of ${HS.length} hidden skills learned · ${lv} levels in total</div><small>Hidden skills are never chosen. Your body learns them from what you actually do, and they work on their own.</small></div>
+   <div class="bagbar hs-f">${['All',...HSCATS].map(k=>`<button class="${hsF.cat===k?'on':''}" data-hc="${k}">${k}</button>`).join('')}</div>
+   <div class="hs-f2"><div class="seg">${[['all','All'],['learned','Learned'],['progress','In progress'],['none','Not started']].map(([v,l])=>`<button class="${hsF.show===v?'on':''}" data-hw="${v}">${l}</button>`).join('')}</div><input id="hsQ" placeholder="Search skills" value="${esc(hsF.q)}" autocomplete="off"></div>
+   <div class="hs-list">${rows.map(s=>{const L=trLv(s.id),n=c[s.counter]||0,max=s.th.length,next=s.th[L],prev=L?s.th[L-1]:0,hid=s.secret&&n===0,ic=HSICON[s.cat];
+     const pct=L>=max?100:Math.round(Math.min(1,(n-prev)/Math.max(1,next-prev))*100);
+     return`<div class="hs-row${L?' got':''}${hid?' hid':''}"><img src="${iconUrl('hs_'+s.cat,ic[0],ic[1])}" alt=""><div class="hs-main"><div class="hs-h"><b>${hid?'??? (secret)':esc(s.name)}</b><span class="pips">${Array.from({length:max},(_,i)=>`<i class="${i<L?'on':''}"></i>`).join('')}</span><em>${L?'Lv '+L+(L>=max?' · MAX':''):'Not learned'}</em></div>
+       <small class="cond">${hid?'A secret condition. Some say it has to do with '+({restNight:'lanterns',killStone:'stones',pdLow:'close calls',cast_chai:'coffee',walkNight:'the night',woodsNight:'the dark woods',overkill:'excess',combo25:'long chains',runPoison:'running sick',killChill:'the cold',killVeryLow:'last breaths',castRain:'rain',parryNight:'moonlight',walkLow:'limping on',dodgeRain:'puddles',oneHit:'single blows',sleepRain:'rainy nights',chestNight:'midnight',talkNight:'late talks',buyFood:'street food',crit_unarmed_low:'old lessons from home',walkCalm:'peace',bagFull:'full pockets',dawnTime:'dawn',bossNoHit:'never being touched'}[s.counter]||'patience')+'.':'Condition: '+esc(s.cond)}</small>
+       ${hid?'':`<div class="hs-bar"><i><b style="width:${pct}%"></b></i><span>${L>=max?'Mastered ('+n+')':`${Math.floor(n)} / ${next} for ${L?'level '+(L+1):'learning it'}`}</span></div>
+       <small class="eff">${L?'Now: '+esc(effTxt(s.eff,L)):'When learned: '+esc(effTxt(s.eff,1))}${L&&L<max?' · Next: '+esc(effTxt(s.eff,L+1)):''}</small>`}</div></div>`}).join('')||'<p class="hint">No skills match.</p>'}</div>`;
+  B.querySelectorAll('[data-hc]').forEach(b=>b.onclick=()=>{hsF.cat=b.dataset.hc;AudioSys.play('ui');renderHS(B)});B.querySelectorAll('[data-hw]').forEach(b=>b.onclick=()=>{hsF.show=b.dataset.hw;AudioSys.play('ui');renderHS(B)});
+  const q=$('#hsQ');q.oninput=e=>{hsF.q=e.target.value;const p=q.selectionStart;renderHS(B);const n=$('#hsQ');n.focus();n.setSelectionRange(p,p)}}
+{const nav=$('#cdxTabs'),b=document.createElement('button');b.dataset.tab='hidden';b.textContent='Hidden Skills';nav.querySelector('[data-tab=craft]').after(b);b.onclick=()=>{cdxTab='hidden';AudioSys.play('ui');renderCodex()}}
+const _renderCodexHS=renderCodex;renderCodex=function(){if(cdxTab==='hidden'){$$('#cdxTabs button').forEach(b=>b.classList.toggle('on',b.dataset.tab==='hidden'));return renderHS($('#cdxB'))}return _renderCodexHS()};
+/* divine scenes: the dialogue portrait glows */
+const _showBgN=showBg;showBg=function(bg){_showBgN(bg);document.body.dataset.bg=bg||''};
+
+/* ================= VEHICLES: detailed sprites, smooth motion ================= */
+const VSPR={};
+function busSprite(d=1){const key='bus'+(d<0?'L':'R');if(VSPR[key])return VSPR[key];const base=busBody(),c=mkCanvas(128,56),g=c.getContext('2d');if(d<0){g.save();g.translate(128,0);g.scale(-1,1);g.drawImage(base,0,0);g.restore()}else g.drawImage(base,0,0);
+  const X=x=>d<0?128-x:x;g.fillStyle='#ffb35a';g.font='bold 6px monospace';g.textAlign='center';g.fillText('VYTTILA',X(107),7);g.fillStyle='#c8302a';g.font='bold italic 9px Georgia,serif';g.fillText('Mahadeva',X(52),45);VSPR[key]=c;return c}
+function busBody(){if(VSPR.busBody)return VSPR.busBody;const c=mkCanvas(128,56),g=c.getContext('2d'),F=(x,y,w,h,col)=>{g.fillStyle=col;g.fillRect(x,y,w,h)};
+  F(4,6,116,38,'#f4f0e6');F(4,6,116,4,'#2a6ac8');F(4,10,116,2,'#1a4a98');g.fillStyle='#f4f0e6';g.beginPath();g.moveTo(108,6);g.lineTo(124,14);g.lineTo(124,44);g.lineTo(108,44);g.fill();
+  F(4,30,120,4,'#c8302a');F(4,34,120,2,'#e8c040');F(4,36,120,2,'#3a9a5a');for(let x=8;x<120;x+=22){g.fillStyle='#e87aa8';g.beginPath();g.moveTo(x,30);g.lineTo(x+10,30);g.lineTo(x+4,38);g.fill()}
+  for(let i=0;i<8;i++){const x=10+i*12;F(x,13,10,13,'#2a3448');F(x,13,10,2,'#4a5a78');F(x+1,15,3,10,'rgba(140,180,220,.35)');if(i%3!==1){F(x+4,18,4,4,['#3a2a20','#1a1410','#5a3a24'][i%3]);F(x+3,22,6,4,['#c8302a','#3a6ad0','#e8c040'][i%3])}}
+  g.fillStyle='#2a3448';g.beginPath();g.moveTo(108,13);g.lineTo(121,18);g.lineTo(121,28);g.lineTo(108,28);g.fill();F(110,15,3,10,'rgba(160,200,230,.4)');F(100,13,7,27,'#2a1a14');F(101,14,5,25,'#4a5a6a');F(100,40,8,2,'#5a5a60');
+  F(92,2,30,6,'#1a1a1a');
+  F(120,34,4,6,'#fff8d0');F(119,40,6,4,'#3a3a40');F(2,32,3,6,'#c8302a');F(0,42,128,3,'#3a3a40');F(4,44,120,2,'#1a1a1a');for(let x=8;x<120;x+=6)F(x,26,3,1,'#e8c040');VSPR.busBody=c;return c}
+function carSprite(col){const k='car'+col;if(VSPR[k])return VSPR[k];const c=mkCanvas(64,28),g=c.getContext('2d'),F=(x,y,w,h,cc)=>{g.fillStyle=cc;g.fillRect(x,y,w,h)};
+  g.fillStyle=col;g.beginPath();g.moveTo(4,14);g.lineTo(16,14);g.lineTo(22,4);g.lineTo(44,4);g.lineTo(52,14);g.lineTo(60,15);g.lineTo(62,22);g.lineTo(2,22);g.closePath();g.fill();F(2,20,60,2,shade(col,-.35));
+  g.fillStyle='#2a3448';g.beginPath();g.moveTo(24,6);g.lineTo(33,6);g.lineTo(33,13);g.lineTo(19,13);g.closePath();g.moveTo(35,6);g.lineTo(43,6);g.lineTo(49,13);g.lineTo(35,13);g.closePath();g.fill();F(26,7,4,2,'rgba(180,210,240,.5)');F(58,15,4,3,'#fff8d0');F(2,15,3,3,'#c8302a');F(30,15,6,1,shade(col,-.25));VSPR[k]=c;return c}
+function wheel(g,x,y,r,a){g.fillStyle='#1a1a1a';g.beginPath();g.arc(x,y,r,0,TAU);g.fill();g.fillStyle='#8a8a90';g.beginPath();g.arc(x,y,r*.45,0,TAU);g.fill();g.strokeStyle='#5a5a60';g.lineWidth=.6;g.beginPath();for(let i=0;i<4;i++){const q=a+i*Math.PI/2;g.moveTo(x,y);g.lineTo(x+Math.cos(q)*r*.85,y+Math.sin(q)*r*.85)}g.stroke()}
+drawVehicle=function(g,c,t){const S=G.S||3,snap=v=>Math.round(v*S)/S,x=snap(c.x),y=snap(c.y),d=c.dir||1;c.spin=(c.spin||0)+(c.lastX!=null?(c.x-c.lastX):0)/4;c.lastX=c.x;
+  if(c.kind==='auto'){drawAuto(g,Math.round(c.x),Math.round(c.y),d,t,true);return}
+  g.save();g.translate(x,y);g.imageSmoothingEnabled=false;
+  if(c.kind==='bus'){const sway=snap(Math.sin(t*9+c.x*.05)*.4);g.fillStyle='rgba(0,0,0,.35)';g.fillRect(-30,-1,62,3);g.drawImage(busSprite(d),-32,-27+sway,64,28);wheel(g,-20,-3,3.4,c.spin*d);wheel(g,20,-3,3.4,c.spin*d);
+    g.globalCompositeOperation='lighter';g.fillStyle='rgba(255,250,210,.5)';g.fillRect(d*31-1,-9+sway,2,2);g.fillStyle='rgba(255,90,60,.7)';g.fillRect(-d*32,-11+sway,1,3)}
+  else if(d<0)g.scale(-1,1);
+  if(c.kind==='bus'){}
+  else if(c.kind==='car'){g.fillStyle='rgba(0,0,0,.3)';g.fillRect(-15,-1,30,2);g.drawImage(carSprite(c.col||'#c83a2a'),-16,-12,32,14);wheel(g,-9,-2,2.2,c.spin);wheel(g,9,-2,2.2,c.spin)}
+  else{g.fillStyle='rgba(0,0,0,.3)';g.fillRect(-7,-1,14,2);wheel(g,-5,-3,2.6,c.spin);wheel(g,5,-3,2.6,c.spin);g.fillStyle='#2a2a30';g.fillRect(-5,-7,10,2);g.fillStyle=c.col||'#c83a2a';g.fillRect(-3,-9,7,3);g.fillStyle='#2a3a6a';g.fillRect(-2,-16,4,7);g.fillStyle='#e8e0d0';g.fillRect(-2,-19,4,3);g.fillStyle='#1a1a1a';g.fillRect(-2,-20,4,2)}
+  g.restore();
+  const L=c.kind==='bus'?32:c.kind==='car'?16:7,fx=x+d*L;g.save();g.globalCompositeOperation='lighter';const gr=g.createLinearGradient(fx,0,fx+d*90,0);gr.addColorStop(0,'rgba(255,250,215,.32)');gr.addColorStop(1,'rgba(255,250,215,0)');g.fillStyle=gr;g.beginPath();g.moveTo(fx,y-(c.kind==='bus'?9:5));g.lineTo(fx+d*90,y-22);g.lineTo(fx+d*90,y+12);g.closePath();g.fill();
+  g.fillStyle='rgba(255,240,200,.18)';g.beginPath();g.ellipse(fx+d*30,y+1,26,4,0,0,TAU);g.fill();g.restore()};
+/* exhaust and spray behind moving vehicles */
+const _updVeh=update;update=function(dt){_updVeh(dt);if(!G.map||G.map.id!=='kochi'||G.state!=='play')return;const list=G.ktraf.concat(G.cut&&G.cut.bus?[G.cut.bus]:[]);
+  for(const c of list){if(c.kind==='auto'&&Math.random()>dt*8)continue;const back=c.x-(c.dir||1)*(c.kind==='bus'?32:14);if(Math.random()<dt*(c.kind==='bus'?14:6))G.part(back,c.y-3,-(c.dir||1)*rnd(8,20),-rnd(4,10),.8,'#8a8a94',2,0,'smoke');
+    if(G.weather.rain>.3&&Math.random()<dt*20)G.part(c.x+rnd(-14,14),c.y,rnd(-20,20)-(c.dir||1)*20,-rnd(10,30),.35,'#b8c8e8',1,200)}};
 
 boot();
 </script>
