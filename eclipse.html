@@ -935,6 +935,9 @@ body.mundane .hud-tl .bar,body.mundane .hud-tl .lvb,body.mundane #hBurstBar,body
 .pips{display:inline-flex;gap:2px}.pips i{width:7px;height:7px;transform:rotate(45deg);border:1px solid #c9a24a}.pips i.on{background:#ffd27a}
 .hs-main small{display:block;font:12px/1.35 var(--f-txt);color:#cfd8ff}.hs-main .eff{color:#9fe07a}.hs-bar{display:flex;align-items:center;gap:8px;margin:3px 0}.hs-bar i{flex:1;max-width:220px;height:6px;background:#04061a;border-radius:3px;overflow:hidden}.hs-bar i b{display:block;height:100%;background:linear-gradient(90deg,#6ab0ff,#ffd27a)}.hs-bar span{font:12px var(--f-dis);color:#a8b4ff}
 body[data-bg=divine] #dlgPor{filter:drop-shadow(0 0 18px rgba(255,215,140,.75))}
+.wh-b.big{max-width:min(96vw,1100px);padding:10px 14px}.wh-b.big .wh-stage{width:min(92vw,74vh);max-width:880px}.wh-b.big .wh-ptr{border-left-width:18px;border-right-width:18px;border-top-width:34px;top:-8px}
+.wh-live{display:flex;align-items:center;gap:8px;min-height:30px;font:15px var(--f-dis)}.wh-live img{width:26px;height:26px;image-rendering:pixelated}.wh-live span{font:12px var(--f-txt);color:#a8b4ff}.wh-live.won{animation:qtePulse .35s ease-in-out 4 alternate}
+#wheel{overflow:auto}
 
 </style>
 
@@ -5573,19 +5576,23 @@ function pickRandom(){let best=null;const pool=PW.filter(p=>!p.hidden).map(p=>p.
     const sc=PK.chosen.length*10+pickSpent();if(!best||sc>best.sc)best={sc,c:PK.chosen.slice()};PK.chosen=save;if(best.sc>=PICK_RULES.picks*10+PICK_RULES.soul)break}
   PK.chosen=best.c;PK.sel=best.c[0];AudioSys.play('quest');renderPick()}
 const wheelEl=document.createElement('div');wheelEl.id='wheel';wheelEl.hidden=true;document.body.appendChild(wheelEl);
-function wheelPool(){const taken=new Set(PK.chosen),W=[34,30,20,11,5],out=[];const cand=PW.filter(p=>!p.hidden&&!taken.has(p.id));
-  while(out.length<12){let r=Math.random()*W.reduce((a,b)=>a+b),rar=0;for(;rar<5;rar++){r-=W[rar];if(r<0)break}const opts=cand.filter(p=>p.rar===Math.min(4,rar)&&!out.includes(p));if(!opts.length)continue;out.push(pick(opts))}return out}
-function openWheel(done){const segs=wheelPool(),n=segs.length,win=Math.floor(Math.random()*n);wheelEl.hidden=false;
-  wheelEl.innerHTML=`<div class="wh-b"><small>All soul points spent</small><h3>Fate's Wheel</h3><p>Aurelia lets fate choose one last gift.</p><div class="wh-stage"><canvas id="whCv" width="360" height="360"></canvas><i class="wh-ptr"></i></div><button class="btn" id="whSpin">Spin the wheel</button><div class="wh-res" id="whRes"></div></div>`;
-  const cv=$('#whCv'),g=cv.getContext('2d'),imgs=segs.map(p=>{const i=new Image();i.src=pwIcon(p.id);return i});let ang=0;
-  const draw=()=>{g.clearRect(0,0,360,360);g.save();g.translate(180,180);for(let i=0;i<n;i++){const a0=ang+i/n*TAU-Math.PI/2,a1=a0+TAU/n,p=segs[i];g.fillStyle=i%2?shade(PRCOL[p.rar],-.35):shade(PRCOL[p.rar],-.5);g.beginPath();g.moveTo(0,0);g.arc(0,0,170,a0,a1);g.closePath();g.fill();g.strokeStyle='#ffd27a';g.lineWidth=2;g.stroke();
-      g.save();g.rotate(a0+TAU/n/2);g.translate(118,0);g.rotate(Math.PI/2);if(imgs[i].complete)g.drawImage(imgs[i],-16,-16,32,32);g.fillStyle='#fff';g.font='bold 10px sans-serif';g.textAlign='center';g.fillText(p.name.length>14?p.name.slice(0,13)+'…':p.name,0,30);g.restore()}
-    g.fillStyle='#1a1440';g.beginPath();g.arc(0,0,30,0,TAU);g.fill();g.strokeStyle='#ffd27a';g.lineWidth=3;g.stroke();g.fillStyle='#ffd27a';g.font='bold 12px Georgia,serif';g.textAlign='center';g.fillText('FATE',0,4);g.restore()};
-  imgs.forEach(i=>i.onload=draw);draw();
-  $('#whSpin').onclick=()=>{$('#whSpin').disabled=true;const start=ang,want=-(win+.5)/n*TAU,delta=(((want-start)%TAU)+TAU)%TAU,end=start+TAU*6+delta,dur=4800,t0=performance.now();let lastSeg=-1;
-    const step=now=>{const k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,4);ang=start+(end-start)*e;const seg=Math.floor(((-ang/TAU*n)%n+n)%n);if(seg!==lastSeg){lastSeg=seg;AudioSys.play('ui')}draw();
-      if(k<1)requestAnimationFrame(step);else{const p=segs[win];AudioSys.play('level');$('#whRes').innerHTML=`<div class="wh-card r${p.rar}"><img src="${pwIcon(p.id)}" alt=""><div><b>${esc(p.name)}</b><small>${PRAR[p.rar]} ${esc(p.cat)} · ${p.type==='A'?'Active':'Passive'}</small><p>${esc(p.desc)}</p></div></div><button class="btn" id="whTake">Accept the gift</button>`;
-        $('#whTake').onclick=()=>{wheelEl.hidden=true;done(p.id)}}};requestAnimationFrame(step)}}
+function wheelPool(){const taken=new Set(PK.chosen),out=PW.filter(p=>!p.hidden&&!taken.has(p.id));for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
+function openWheel(done){const segs=wheelPool(),n=segs.length,win=Math.floor(Math.random()*n),D=1000,R=480;wheelEl.hidden=false;
+  wheelEl.innerHTML=`<div class="wh-b big"><small>All soul points spent · ${n} gifts on the wheel</small><h3>Fate's Wheel</h3><p>Every gift you did not choose is on the wheel. Fate picks one.</p><div class="wh-stage"><canvas id="whCv" width="${D}" height="${D}"></canvas><i class="wh-ptr"></i></div><div class="wh-live" id="whLive"></div><button class="btn" id="whSpin">Spin the wheel</button><div class="wh-res" id="whRes"></div></div>`;
+  const cv=$('#whCv'),g=cv.getContext('2d'),imgs=segs.map(p=>{const im=new Image();im.src=pwIcon(p.id);return im});let ang=Math.random()*TAU;const live=$('#whLive');
+  const segAt=a=>Math.floor(((-a/TAU*n)%n+n)%n),show=i=>{const p=segs[i];live.innerHTML=`<img src="${pwIcon(p.id)}" alt=""><b style="color:${PRCOL[p.rar]}">${esc(p.name)}</b><span>${PRAR[p.rar]}</span>`};
+  const draw=()=>{g.clearRect(0,0,D,D);g.save();g.translate(D/2,D/2);const w=TAU/n;
+    for(let i=0;i<n;i++){const a0=ang+i*w-Math.PI/2,p=segs[i],col=PRCOL[p.rar];g.fillStyle=i%2?shade(col,-.45):shade(col,-.6);g.beginPath();g.moveTo(0,0);g.arc(0,0,R,a0,a0+w);g.closePath();g.fill();
+      g.save();g.rotate(a0+w/2);g.strokeStyle='rgba(255,210,122,.35)';g.lineWidth=1;g.beginPath();g.moveTo(70,0);g.lineTo(R,0);g.stroke();
+      if(imgs[i].complete){g.save();g.translate(R-26,0);g.rotate(Math.PI/2);g.drawImage(imgs[i],-11,-11,22,22);g.restore()}
+      g.rotate(w/2);g.fillStyle=p.rar>=3?'#fff3c0':'#e8eaff';g.font=`${p.rar>=3?'bold ':''}12px sans-serif`;g.textAlign='right';g.textBaseline='middle';g.fillText(p.name.length>20?p.name.slice(0,19)+'…':p.name,R-44,0);g.restore()}
+    g.strokeStyle='#ffd27a';g.lineWidth=6;g.beginPath();g.arc(0,0,R,0,TAU);g.stroke();for(let i=0;i<48;i++){const a=i/48*TAU;g.fillStyle=i%2?'#ffd27a':'#fff8e0';g.beginPath();g.arc(Math.cos(a)*(R-3),Math.sin(a)*(R-3),3.5,0,TAU);g.fill()}
+    g.fillStyle='#120a30';g.beginPath();g.arc(0,0,68,0,TAU);g.fill();g.strokeStyle='#ffd27a';g.lineWidth=4;g.stroke();g.fillStyle='#ffd27a';g.font='bold 26px Georgia,serif';g.textAlign='center';g.textBaseline='middle';g.fillText('FATE',0,0);g.restore()};
+  imgs.forEach(im=>im.onload=()=>{if(!wheelEl.hidden)draw()});draw();show(segAt(ang));
+  $('#whSpin').onclick=()=>{$('#whSpin').disabled=true;const start=ang,want=-(win+.5)/n*TAU,delta=(((want-start)%TAU)+TAU)%TAU,end=start+TAU*8+delta,dur=8000,t0=performance.now();let last=-1,lastTick=0;
+    const step=now=>{const k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,4);ang=start+(end-start)*e;const sg=segAt(ang);if(sg!==last){last=sg;show(sg);if(now-lastTick>45){lastTick=now;AudioSys.play('ui')}}draw();
+      if(k<1)requestAnimationFrame(step);else{const p=segs[win];AudioSys.play('level');show(win);live.classList.add('won');$('#whRes').innerHTML=`<div class="wh-card r${p.rar}"><img src="${pwIcon(p.id)}" alt=""><div><b>${esc(p.name)}</b><small>${PRAR[p.rar]} ${esc(p.cat)} · ${p.type==='A'?'Active':'Passive'}</small><p>${esc(p.desc)}</p></div></div><button class="btn" id="whTake">Accept the gift</button>`;
+        $('#whTake').onclick=()=>{wheelEl.hidden=true;done(p.id)};$('#whRes').scrollIntoView({behavior:'smooth',block:'end'})}};requestAnimationFrame(step)}}
 const _renderPickW=renderPick;renderPick=function(){_renderPickW();const ft=sPow.querySelector('.pick-ft');if(ft&&!ft.querySelector('#pkRnd')){const b=document.createElement('button');b.className='btn ghost';b.id='pkRnd';b.textContent='Random gifts';b.onclick=pickRandom;ft.insertBefore(b,$('#pkGo'))}
   const full=pickSpent()>=PICK_RULES.soul,hint=sPow.querySelector('.pick-sp span');if(hint)hint.insertAdjacentHTML('afterend',`<small class="wh-hint${full?' on':''}">${full?"All points spent: Fate's Wheel will add one more gift":"Spend every soul point to earn a spin of Fate's Wheel"}</small>`);
   if(!PK.confirm)return;const ul=sPow.querySelector('.pick-cf ul');if(full&&ul)ul.insertAdjacentHTML('beforeend','<li class="wh-li">✦ One more gift from Fate\'s Wheel <small>Bonus</small></li>');
