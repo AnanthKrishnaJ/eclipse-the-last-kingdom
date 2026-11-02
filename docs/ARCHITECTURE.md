@@ -25,6 +25,8 @@ The script is organised in layers, top to bottom:
 | Opening | Kochi map, conversations, kalari drill, incident, divine space, weaponless arrival | `buildKochi`, `startKochi`, `startIncident`, `divineScene`, `afterPick` |
 | City | Solmere map, grand guild hall, shops, inn, temple, carts, guild registration | `buildSolmere`, `genGrand`, `genFacade`, `CTALK`, `cartRide`, `guildRegister` |
 | Outfits | design data, palette and portrait mapping, per-piece sprite drawing, creation and studio editors | `DZ_OPT`, `DZ_PRESETS`, `dzApply`, `dzPass`, `dzEditorHTML`, `openStudio` |
+| Interiors | one map per building, built with the world; floor and wall tiles above id 31 are solid through the block layer | `buildInterior`, `IN_TYPES`, `IN_SPEC`, `KEEPERS` |
+| Cutscenes | 640×360 scene canvas, camera focus and pans, transitions | `sceneTick`, `G.camFocus`, `camPan`, `camZoom` |
 | Difficulty | six levels and their multipliers, permadeath | `DIFFS`, `DF()`, `openDifficulty` |
 
 ### The extension pattern
