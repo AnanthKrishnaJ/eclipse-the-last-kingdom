@@ -939,6 +939,8 @@ body[data-bg=divine] #dlgPor{filter:drop-shadow(0 0 18px rgba(255,215,140,.75))}
 .wh-live{display:flex;align-items:center;gap:8px;min-height:30px;font:15px var(--f-dis)}.wh-live img{width:26px;height:26px;image-rendering:pixelated}.wh-live span{font:12px var(--f-txt);color:#a8b4ff}.wh-live.won{animation:qtePulse .35s ease-in-out 4 alternate}
 #wheel{overflow:auto}
 
+.ga-stage{width:min(80vw,62vh);max-width:640px;aspect-ratio:8/9}.ga-stage canvas{width:100%;height:100%;cursor:pointer;filter:drop-shadow(0 10px 30px rgba(0,0,0,.6))}.wh-live{flex-direction:column;align-items:center}.wh-live span{display:block}
+
 </style>
 
 <canvas id="cv"></canvas>
@@ -5569,7 +5571,7 @@ const _loadMapK=loadMap;loadMap=function(id,px,py,silent){if(G.cut&&G.cut.phase=
 /* waking in the meadow: letterbox while the hero gets up */
 const _newGameK=newGame;newGame=function(cls,name,slot){const p=G.isekaiPending;_newGameK(cls,name,slot);if(p){cinematic(3000)}};
 
-/* ================= GIFTS: random picks, Fate's Wheel, Coffee Break ================= */
+/* ================= GIFTS: random picks, Fate's Gacha, Coffee Break ================= */
 Object.assign(PWI.chai,{name:'Coffee Break',desc:'Pause for an imaginary cup of strong Kerala filter coffee: restore 25% of your health and mana.',evo:'Bottomless Coffee'});PWICON.chai=null;delete PWICON.chai;
 function pickRandom(){let best=null;const pool=PW.filter(p=>!p.hidden).map(p=>p.id);
   for(let a=0;a<300;a++){const save=PK.chosen;PK.chosen=[];const sh=pool.slice().sort(()=>Math.random()-.5);for(const id of sh){if(PK.chosen.length>=PICK_RULES.picks)break;if(!pickWhy(id))PK.chosen.push(id)}
@@ -5577,25 +5579,53 @@ function pickRandom(){let best=null;const pool=PW.filter(p=>!p.hidden).map(p=>p.
   PK.chosen=best.c;PK.sel=best.c[0];AudioSys.play('quest');renderPick()}
 const wheelEl=document.createElement('div');wheelEl.id='wheel';wheelEl.hidden=true;document.body.appendChild(wheelEl);
 function wheelPool(){const taken=new Set(PK.chosen),out=PW.filter(p=>!p.hidden&&!taken.has(p.id));for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
-function openWheel(done){const segs=wheelPool(),n=segs.length,win=Math.floor(Math.random()*n),D=1000,R=480;wheelEl.hidden=false;
-  wheelEl.innerHTML=`<div class="wh-b big"><small>All soul points spent · ${n} gifts on the wheel</small><h3>Fate's Wheel</h3><p>Every gift you did not choose is on the wheel. Fate picks one.</p><div class="wh-stage"><canvas id="whCv" width="${D}" height="${D}"></canvas><i class="wh-ptr"></i></div><div class="wh-live" id="whLive"></div><button class="btn" id="whSpin">Spin the wheel</button><div class="wh-res" id="whRes"></div></div>`;
-  const cv=$('#whCv'),g=cv.getContext('2d'),imgs=segs.map(p=>{const im=new Image();im.src=pwIcon(p.id);return im});let ang=Math.random()*TAU;const live=$('#whLive');
-  const segAt=a=>Math.floor(((-a/TAU*n)%n+n)%n),show=i=>{const p=segs[i];live.innerHTML=`<img src="${pwIcon(p.id)}" alt=""><b style="color:${PRCOL[p.rar]}">${esc(p.name)}</b><span>${PRAR[p.rar]}</span>`};
-  const draw=()=>{g.clearRect(0,0,D,D);g.save();g.translate(D/2,D/2);const w=TAU/n;
-    for(let i=0;i<n;i++){const a0=ang+i*w-Math.PI/2,p=segs[i],col=PRCOL[p.rar];g.fillStyle=i%2?shade(col,-.45):shade(col,-.6);g.beginPath();g.moveTo(0,0);g.arc(0,0,R,a0,a0+w);g.closePath();g.fill();
-      g.save();g.rotate(a0+w/2);g.strokeStyle='rgba(255,210,122,.35)';g.lineWidth=1;g.beginPath();g.moveTo(70,0);g.lineTo(R,0);g.stroke();
-      if(imgs[i].complete){g.save();g.translate(R-26,0);g.rotate(Math.PI/2);g.drawImage(imgs[i],-11,-11,22,22);g.restore()}
-      g.rotate(w/2);g.fillStyle=p.rar>=3?'#fff3c0':'#e8eaff';g.font=`${p.rar>=3?'bold ':''}12px sans-serif`;g.textAlign='right';g.textBaseline='middle';g.fillText(p.name.length>20?p.name.slice(0,19)+'…':p.name,R-44,0);g.restore()}
-    g.strokeStyle='#ffd27a';g.lineWidth=6;g.beginPath();g.arc(0,0,R,0,TAU);g.stroke();for(let i=0;i<48;i++){const a=i/48*TAU;g.fillStyle=i%2?'#ffd27a':'#fff8e0';g.beginPath();g.arc(Math.cos(a)*(R-3),Math.sin(a)*(R-3),3.5,0,TAU);g.fill()}
-    g.fillStyle='#120a30';g.beginPath();g.arc(0,0,68,0,TAU);g.fill();g.strokeStyle='#ffd27a';g.lineWidth=4;g.stroke();g.fillStyle='#ffd27a';g.font='bold 26px Georgia,serif';g.textAlign='center';g.textBaseline='middle';g.fillText('FATE',0,0);g.restore()};
-  imgs.forEach(im=>im.onload=()=>{if(!wheelEl.hidden)draw()});draw();show(segAt(ang));
-  $('#whSpin').onclick=()=>{$('#whSpin').disabled=true;const start=ang,want=-(win+.5)/n*TAU,delta=(((want-start)%TAU)+TAU)%TAU,end=start+TAU*8+delta,dur=8000,t0=performance.now();let last=-1,lastTick=0;
-    const step=now=>{const k=Math.min(1,(now-t0)/dur),e=1-Math.pow(1-k,4);ang=start+(end-start)*e;const sg=segAt(ang);if(sg!==last){last=sg;show(sg);if(now-lastTick>45){lastTick=now;AudioSys.play('ui')}}draw();
-      if(k<1)requestAnimationFrame(step);else{const p=segs[win];AudioSys.play('level');show(win);live.classList.add('won');$('#whRes').innerHTML=`<div class="wh-card r${p.rar}"><img src="${pwIcon(p.id)}" alt=""><div><b>${esc(p.name)}</b><small>${PRAR[p.rar]} ${esc(p.cat)} · ${p.type==='A'?'Active':'Passive'}</small><p>${esc(p.desc)}</p></div></div><button class="btn" id="whTake">Accept the gift</button>`;
-        $('#whTake').onclick=()=>{wheelEl.hidden=true;done(p.id)};$('#whRes').scrollIntoView({behavior:'smooth',block:'end'})}};requestAnimationFrame(step)}}
+function openWheel(done){const segs=wheelPool(),n=segs.length,win=Math.floor(Math.random()*n),W=800,H=900,CX=400,CY=330,DR=250,BR=19;wheelEl.hidden=false;
+  wheelEl.innerHTML=`<div class="wh-b big"><small>All soul points spent · ${n} capsules in the machine</small><h3>Fate's Gacha</h3><p>Every gift you did not choose sits in a capsule. Turn the crank and fate drops one.</p><div class="ga-stage"><canvas id="whCv" width="${W}" height="${H}"></canvas></div><div class="wh-live" id="whLive"></div><button class="btn" id="whSpin">Turn the crank</button><div class="wh-res" id="whRes"></div></div>`;
+  const cv=$('#whCv'),g=cv.getContext('2d'),live=$('#whLive'),icon=new Image();icon.src=pwIcon(segs[win].id);
+  const balls=segs.map((p,i)=>{const a=Math.random()*TAU,r=Math.sqrt(Math.random())*(DR-BR-6);return{p,i,x:CX+Math.cos(a)*r,y:CY+Math.sin(a)*r*.9+40,vx:0,vy:0,rot:Math.random()*TAU}});
+  let phase='idle',t=0,crank=0,prize=null,parts=[];const PATH=[[CX,CY+DR-10],[CX,612],[CX+40,648],[CX+130,700],[CX+150,762]];
+  const ballDraw=(b,x,y,r,open=0)=>{const col=PRCOL[b.p.rar];g.save();g.translate(x,y);g.rotate(b.rot);
+      if(open>0){const sep=open*r*1.6;g.save();g.translate(0,-sep);g.beginPath();g.arc(0,0,r,Math.PI,0);g.closePath();g.fillStyle=col;g.fill();g.restore();g.save();g.translate(0,sep);g.beginPath();g.arc(0,0,r,0,Math.PI);g.closePath();g.fillStyle='#f4f4f0';g.fill();g.restore();g.restore();return}
+      g.beginPath();g.arc(0,0,r,Math.PI,0);g.fillStyle=col;g.fill();g.beginPath();g.arc(0,0,r,0,Math.PI);g.fillStyle='#f4f4f0';g.fill();g.fillStyle=shade(col,-.4);g.fillRect(-r,-1.5,r*2,3);g.fillStyle='rgba(255,255,255,.55)';g.beginPath();g.ellipse(-r*.35,-r*.45,r*.28,r*.16,-.6,0,TAU);g.fill();
+      g.strokeStyle='rgba(0,0,0,.35)';g.lineWidth=1.5;g.beginPath();g.arc(0,0,r,0,TAU);g.stroke();g.restore()};
+  const physics=dt=>{const stir=phase==='crank';for(const b of balls){if(b===prize)continue;b.vy+=900*dt;if(stir&&Math.random()<.25){b.vx+=rnd(-500,500);b.vy-=rnd(200,700)}else if(phase==='idle'&&Math.random()<.004){b.vy-=rnd(40,120);b.vx+=rnd(-40,40)}
+      b.x+=b.vx*dt;b.y+=b.vy*dt;b.vx*=.985;b.vy*=.985;b.rot+=b.vx*dt*.03;const dx=b.x-CX,dy=b.y-CY,d=Math.hypot(dx,dy),lim=DR-BR-6;if(d>lim){const nx=dx/d,ny=dy/d;b.x=CX+nx*lim;b.y=CY+ny*lim;const vn=b.vx*nx+b.vy*ny;if(vn>0){b.vx-=1.6*vn*nx;b.vy-=1.6*vn*ny}}}
+    for(let k=0;k<2;k++)for(let a=0;a<balls.length;a++){const A=balls[a];if(A===prize)continue;for(let c=a+1;c<balls.length;c++){const B=balls[c];if(B===prize)continue;const dx=B.x-A.x,dy=B.y-A.y,d2=dx*dx+dy*dy;if(d2<4*BR*BR&&d2>.01){const d=Math.sqrt(d2),o=(2*BR-d)/2,nx=dx/d,ny=dy/d;A.x-=nx*o;A.y-=ny*o;B.x+=nx*o;B.y+=ny*o;const rv=(B.vx-A.vx)*nx+(B.vy-A.vy)*ny;if(rv<0){const im=-rv*.5;A.vx-=im*nx;A.vy-=im*ny;B.vx+=im*nx;B.vy+=im*ny}}}}};
+  const drawMachine=()=>{g.clearRect(0,0,W,H);const gl=g.createRadialGradient(CX,CY,40,CX,CY,DR+60);gl.addColorStop(0,'rgba(255,215,140,.15)');gl.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gl;g.fillRect(0,0,W,H);
+    g.fillStyle='#b8202a';g.beginPath();g.moveTo(CX-210,560);g.lineTo(CX+210,560);g.lineTo(CX+250,870);g.lineTo(CX-250,870);g.closePath();g.fill();g.fillStyle='#d8343c';g.fillRect(CX-210,560,420,18);g.fillStyle='#8a1520';g.fillRect(CX-250,858,500,12);
+    g.fillStyle='#ffd27a';g.font='bold 34px Georgia,serif';g.textAlign='center';g.fillText('FATE',CX-90,640);g.font='bold 15px Georgia,serif';g.fillText('one gift · one turn',CX-90,666);
+    for(let i=0;i<5;i++){g.fillStyle=i%2?'#ffd27a':'#fff3c0';g.beginPath();g.arc(CX-170+i*22,700,4,0,TAU);g.fill()}
+    g.fillStyle='#2a1018';g.fillRect(CX-60,600,120,24);g.fillStyle='#120608';g.beginPath();g.ellipse(CX,606,26,12,0,0,TAU);g.fill();
+    g.fillStyle='#5a0a14';g.beginPath();g.moveTo(CX+20,640);g.quadraticCurveTo(CX+150,660,CX+170,720);g.lineTo(CX+130,730);g.quadraticCurveTo(CX+110,690,CX+20,676);g.closePath();g.fill();
+    g.fillStyle='#3a0810';g.beginPath();g.ellipse(CX+150,780,74,40,0,0,TAU);g.fill();g.fillStyle='#1a0408';g.beginPath();g.ellipse(CX+150,784,60,28,0,0,TAU);g.fill();g.strokeStyle='#ffd27a';g.lineWidth=3;g.beginPath();g.ellipse(CX+150,780,74,40,0,0,TAU);g.stroke();
+    g.save();g.translate(CX-120,770);g.fillStyle='#c9a24a';g.beginPath();g.arc(0,0,44,0,TAU);g.fill();g.fillStyle='#8a6a2a';g.beginPath();g.arc(0,0,30,0,TAU);g.fill();g.rotate(crank);g.fillStyle='#e8c66a';g.fillRect(-8,-62,16,62);g.fillStyle='#f4f0e6';g.beginPath();g.arc(0,-64,14,0,TAU);g.fill();g.fillStyle='#fff3c0';g.beginPath();g.arc(0,0,10,0,TAU);g.fill();g.restore();
+    g.fillStyle='#d8343c';g.beginPath();g.ellipse(CX,CY+DR-6,DR*.82,30,0,0,TAU);g.fill();
+    g.save();g.beginPath();g.arc(CX,CY,DR,0,TAU);g.clip();g.fillStyle='rgba(180,220,255,.12)';g.fillRect(CX-DR,CY-DR,DR*2,DR*2);for(const b of balls)if(b!==prize)ballDraw(b,b.x,b.y,BR);g.restore();
+    g.strokeStyle='rgba(220,240,255,.75)';g.lineWidth=6;g.beginPath();g.arc(CX,CY,DR,0,TAU);g.stroke();g.fillStyle='rgba(255,255,255,.22)';g.beginPath();g.ellipse(CX-120,CY-140,40,90,-.6,0,TAU);g.fill();g.fillStyle='rgba(255,255,255,.12)';g.beginPath();g.ellipse(CX+150,CY-90,16,50,-.4,0,TAU);g.fill();
+    g.fillStyle='#d8343c';g.beginPath();g.ellipse(CX,CY-DR+6,120,34,0,Math.PI,0);g.fill();g.fillStyle='#b8202a';g.fillRect(CX-120,CY-DR+4,240,14);g.fillStyle='#ffd27a';g.beginPath();g.arc(CX,CY-DR-30,14,0,TAU);g.fill();
+    for(const q of parts){g.globalAlpha=Math.max(0,q.l);g.fillStyle=q.c;g.fillRect(q.x-3,q.y-3,6,6);g.globalAlpha=1}};
+  const pathAt=k=>{const seg=Math.min(PATH.length-2,Math.floor(k*(PATH.length-1))),f=k*(PATH.length-1)-seg,a=PATH[seg],b=PATH[seg+1];return[lerp(a[0],b[0],f),lerp(a[1],b[1],f)]};
+  let last=performance.now(),openK=0,tickT=0;
+  const reveal=()=>{const p=segs[win];AudioSys.play('level');live.innerHTML=`<img src="${pwIcon(p.id)}" alt=""><b style="color:${PRCOL[p.rar]}">${esc(p.name)}</b><span>${PRAR[p.rar]}</span>`;live.classList.add('won');$('#whSpin').hidden=true;
+    $('#whRes').innerHTML=`<div class="wh-card r${p.rar}"><img src="${pwIcon(p.id)}" alt=""><div><b>${esc(p.name)}</b><small>${PRAR[p.rar]} ${esc(p.cat)} · ${p.type==='A'?'Active':'Passive'}</small><p>${esc(p.desc)}</p></div></div><button class="btn" id="whTake">Accept the gift</button>`;
+    $('#whTake').onclick=()=>{wheelEl.hidden=true;done(p.id)};$('#whRes').scrollIntoView({behavior:'smooth',block:'end'})};
+  const loop=now=>{if(wheelEl.hidden||!document.body.contains(cv))return;const dt=Math.max(0,Math.min(.033,(now-last)/1000));last=Math.max(last,now);t+=dt;physics(dt);
+    if(phase==='crank'){crank+=dt*8;tickT-=dt;if(tickT<=0){tickT=.12;AudioSys.play('ui')}if(t>1.8){phase='drop';t=0;prize=balls[win];AudioSys.play('pickup')}}
+    else if(phase==='drop'){const k=Math.min(1,t/1.3),[x,y]=pathAt(easeInOut(k));prize.x=x;prize.y=y;prize.rot+=dt*9;if(k>=1){phase='tray';t=0;AudioSys.play('block')}}
+    else if(phase==='tray'){prize.y=762-Math.abs(Math.sin(t*9))*Math.max(0,22-t*30);if(t>.9){phase='ready';t=0;live.innerHTML='<b>A capsule rolls into the tray.</b><span>Tap it or press the button to open it.</span>';$('#whSpin').disabled=false;$('#whSpin').textContent='Open the capsule'}}
+    else if(phase==='open'){openK=Math.min(1,t/.9);if(!parts.length&&t<.1)for(let i=0;i<60;i++){const a=rnd(0,TAU),v=rnd(80,420);parts.push({x:prize.x,y:prize.y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-150,l:1.4,c:pick([PRCOL[prize.p.rar],'#ffffff','#ffd27a'])})}if(t>1.1&&!$('#whTake'))reveal()}
+    for(const q of parts){q.x+=q.vx*dt;q.y+=q.vy*dt;q.vy+=500*dt;q.l-=dt}parts=parts.filter(q=>q.l>0);
+    drawMachine();if(prize){if(phase==='open'){const col=PRCOL[prize.p.rar];g.save();g.translate(prize.x,prize.y);g.globalCompositeOperation='lighter';for(let i=0;i<14;i++){g.rotate(TAU/14+t*.02);g.fillStyle=col;g.globalAlpha=.18*openK;g.fillRect(-6,0,12,260*openK)}g.restore();
+        const gr=g.createRadialGradient(prize.x,prize.y,0,prize.x,prize.y,120*openK+1);gr.addColorStop(0,'rgba(255,255,255,'+.8*openK+')');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.fillRect(prize.x-140,prize.y-140,280,280);
+        ballDraw(prize,prize.x,prize.y,BR*1.6,openK);if(icon.complete){const s=56*openK;g.drawImage(icon,prize.x-s/2,prize.y-s/2-40*openK,s,s)}}else ballDraw(prize,prize.x,prize.y,BR*(phase==='drop'?1:1.25))}
+    requestAnimationFrame(loop)};
+  const act=()=>{if(phase==='idle'){phase='crank';t=0;$('#whSpin').disabled=true;live.innerHTML='<b>The capsules tumble...</b>'}else if(phase==='ready'){phase='open';t=0;$('#whSpin').disabled=true;AudioSys.play('chest')}};
+  $('#whSpin').onclick=act;cv.onclick=e=>{const r=cv.getBoundingClientRect(),x=(e.clientX-r.left)/r.width*W,y=(e.clientY-r.top)/r.height*H;if(phase==='ready'&&prize&&Math.hypot(x-prize.x,y-prize.y)<60)act();else if(phase==='idle'&&Math.hypot(x-(CX-120),y-770)<70)act()};
+  wheelEl._step=loop;live.innerHTML='<b>Turn the crank to draw a capsule.</b>';requestAnimationFrame(loop)}
+
 const _renderPickW=renderPick;renderPick=function(){_renderPickW();const ft=sPow.querySelector('.pick-ft');if(ft&&!ft.querySelector('#pkRnd')){const b=document.createElement('button');b.className='btn ghost';b.id='pkRnd';b.textContent='Random gifts';b.onclick=pickRandom;ft.insertBefore(b,$('#pkGo'))}
-  const full=pickSpent()>=PICK_RULES.soul,hint=sPow.querySelector('.pick-sp span');if(hint)hint.insertAdjacentHTML('afterend',`<small class="wh-hint${full?' on':''}">${full?"All points spent: Fate's Wheel will add one more gift":"Spend every soul point to earn a spin of Fate's Wheel"}</small>`);
-  if(!PK.confirm)return;const ul=sPow.querySelector('.pick-cf ul');if(full&&ul)ul.insertAdjacentHTML('beforeend','<li class="wh-li">✦ One more gift from Fate\'s Wheel <small>Bonus</small></li>');
+  const full=pickSpent()>=PICK_RULES.soul,hint=sPow.querySelector('.pick-sp span');if(hint)hint.insertAdjacentHTML('afterend',`<small class="wh-hint${full?' on':''}">${full?"All points spent: Fate's Gacha will drop one more gift":"Spend every soul point to earn a turn of Fate's Gacha"}</small>`);
+  if(!PK.confirm)return;const ul=sPow.querySelector('.pick-cf ul');if(full&&ul)ul.insertAdjacentHTML('beforeend','<li class="wh-li">✦ One more gift from Fate\'s Gacha <small>Bonus</small></li>');
   const yes=$('#cfYes');if(!yes||!full)return;const orig=yes.onclick;yes.onclick=()=>{openWheel(id=>{PK.chosen.push(id);G.lastWheel=id;orig()})}};
 
 /* ================= HIDDEN SKILLS: learned by doing, levelled by repetition ================= */
