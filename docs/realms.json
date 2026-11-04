@@ -1,0 +1,2644 @@
+{
+ "provinces": [
+  {
+   "name": "The Greenreach",
+   "biome": "meadow",
+   "lvl": 4,
+   "foes": [
+    "slime",
+    "wolf",
+    "goblin",
+    "beetle"
+   ],
+   "cities": [
+    {
+     "city": "Hollowford",
+     "wild": "Hollowford Fields",
+     "lvl": 4,
+     "boss": "Kelkesh Ironjaw",
+     "role": "Warlord",
+     "arch": "warlord",
+     "variant": "orc",
+     "sig": [
+      "Ring of Force",
+      "Shard Burst"
+     ],
+     "adorn": [
+      "wings",
+      "crown"
+     ],
+     "scale": 0.95,
+     "hp": 370,
+     "atk": 15.8,
+     "def": 5,
+     "xp": 179,
+     "gold": 108
+    },
+    {
+     "city": "Coldbrook",
+     "wild": "Coldbrook Downs",
+     "lvl": 4,
+     "boss": "Ishdra the Hollow-Eyed",
+     "role": "Fallen Knight",
+     "arch": "knight",
+     "variant": "dark",
+     "sig": [
+      "Meteor Fall",
+      "Ward"
+     ],
+     "adorn": [
+      "wings",
+      "tail"
+     ],
+     "scale": 1.26,
+     "hp": 568,
+     "atk": 19.5,
+     "def": 8,
+     "xp": 289,
+     "gold": 108
+    },
+    {
+     "city": "Larkreach",
+     "wild": "Larkreach Downs",
+     "lvl": 4,
+     "boss": "Sevith Grimhold",
+     "role": "Hollow King",
+     "arch": "sorcerer",
+     "variant": "hollow",
+     "sig": [
+      "Shadow Step",
+      "Vortex"
+     ],
+     "adorn": [
+      "crown",
+      "runes"
+     ],
+     "scale": 1.22,
+     "hp": 774,
+     "atk": 20.5,
+     "def": 7,
+     "xp": 482,
+     "gold": 108
+    },
+    {
+     "city": "Stonedale",
+     "wild": "Stonedale Barrows",
+     "lvl": 5,
+     "boss": "Helos Emberheart",
+     "role": "Alpha Wolf",
+     "arch": "beast",
+     "variant": "wolf",
+     "sig": [
+      "Seeker Orbs",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "halo",
+      "runes"
+     ],
+     "scale": 1.17,
+     "hp": 480,
+     "atk": 18,
+     "def": 5,
+     "xp": 240,
+     "gold": 120
+    },
+    {
+     "city": "Hollowwell",
+     "wild": "Hollowwell Downs",
+     "lvl": 5,
+     "boss": "Nyxren the Hungry",
+     "role": "Stone Colossus",
+     "arch": "golem",
+     "variant": "stone",
+     "sig": [
+      "Meteor Fall",
+      "Starfall"
+     ],
+     "adorn": [
+      "flames",
+      "tail"
+     ],
+     "scale": 1.13,
+     "hp": 760,
+     "atk": 20,
+     "def": 11,
+     "xp": 352,
+     "gold": 120
+    },
+    {
+     "city": "Saltwell",
+     "wild": "Saltwell Downs",
+     "lvl": 5,
+     "boss": "Ishion Nightfang",
+     "role": "Flame Wisp",
+     "arch": "spirit",
+     "variant": "wisp",
+     "sig": [
+      "Call Minions",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "runes",
+      "tail"
+     ],
+     "scale": 1.08,
+     "hp": 820,
+     "atk": 21,
+     "def": 7,
+     "xp": 512,
+     "gold": 120
+    },
+    {
+     "city": "Ivygate",
+     "wild": "Ivygate Downs",
+     "lvl": 6,
+     "boss": "Ulgar the Hungry",
+     "role": "Gnoll Packlord",
+     "arch": "warlord",
+     "variant": "gnoll",
+     "sig": [
+      "Vortex",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "wings",
+      "flames"
+     ],
+     "scale": 1.08,
+     "hp": 490,
+     "atk": 18.2,
+     "def": 6,
+     "xp": 237,
+     "gold": 132
+    },
+    {
+     "city": "Moonhaven",
+     "wild": "Moonhaven Fields",
+     "lvl": 6,
+     "boss": "Sevgath Emberheart",
+     "role": "Gilded Paladin",
+     "arch": "knight",
+     "variant": "gold",
+     "sig": [
+      "Shard Burst",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "crown",
+      "halo"
+     ],
+     "scale": 0.99,
+     "hp": 752,
+     "atk": 22.5,
+     "def": 9,
+     "xp": 383,
+     "gold": 132
+    },
+    {
+     "city": "Sunfield",
+     "wild": "Sunfield Fields",
+     "lvl": 6,
+     "boss": "Keldun Oathbreaker",
+     "role": "Bloom Witch",
+     "arch": "sorcerer",
+     "variant": "bloom",
+     "sig": [
+      "Call Minions",
+      "Vortex"
+     ],
+     "adorn": [
+      "crown",
+      "chains"
+     ],
+     "scale": 0.95,
+     "hp": 1026,
+     "atk": 23.5,
+     "def": 8,
+     "xp": 638,
+     "gold": 132
+    }
+   ]
+  },
+  {
+   "name": "Amberwood Marches",
+   "biome": "autumn",
+   "lvl": 8,
+   "foes": [
+    "wolf",
+    "goblin",
+    "beetle",
+    "puff"
+   ],
+   "cities": [
+    {
+     "city": "Kingsdale",
+     "wild": "Kingsdale Glade",
+     "lvl": 8,
+     "boss": "Helvenn the Unbroken",
+     "role": "Thorn Warden",
+     "arch": "knight",
+     "variant": "verdant",
+     "sig": [
+      "Cross Blast",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "halo",
+      "chains"
+     ],
+     "scale": 1.26,
+     "hp": 937,
+     "atk": 25.4,
+     "def": 10,
+     "xp": 477,
+     "gold": 156
+    },
+    {
+     "city": "Ashglen",
+     "wild": "Ashglen Thicket",
+     "lvl": 8,
+     "boss": "Kelzar Skullcrown",
+     "role": "Bloom Witch",
+     "arch": "sorcerer",
+     "variant": "bloom",
+     "sig": [
+      "Shard Burst",
+      "Regenerate"
+     ],
+     "adorn": [
+      "spikes",
+      "runes"
+     ],
+     "scale": 1.22,
+     "hp": 1278,
+     "atk": 26.6,
+     "def": 9,
+     "xp": 795,
+     "gold": 156
+    },
+    {
+     "city": "Glenbrook",
+     "wild": "Glenbrook Glade",
+     "lvl": 8,
+     "boss": "Gorkesh Dawnbane",
+     "role": "Ursine Titan",
+     "arch": "beast",
+     "variant": "bear",
+     "sig": [
+      "Call Minions",
+      "Shadow Step"
+     ],
+     "adorn": [
+      "tail",
+      "chains"
+     ],
+     "scale": 1.17,
+     "hp": 682,
+     "atk": 21.8,
+     "def": 6,
+     "xp": 341,
+     "gold": 156
+    },
+    {
+     "city": "Glenfield",
+     "wild": "Glenfield Woods",
+     "lvl": 9,
+     "boss": "Goros Dawnbane",
+     "role": "Elder Treant",
+     "arch": "golem",
+     "variant": "wood",
+     "sig": [
+      "Ward",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "wings",
+      "runes"
+     ],
+     "scale": 1.13,
+     "hp": 1186,
+     "atk": 25.6,
+     "def": 12,
+     "xp": 549,
+     "gold": 168
+    },
+    {
+     "city": "Stormmere",
+     "wild": "Stormmere Glade",
+     "lvl": 9,
+     "boss": "Yraeth the Cruel",
+     "role": "Masked Spirit",
+     "arch": "spirit",
+     "variant": "mask",
+     "sig": [
+      "Shard Burst",
+      "Meteor Fall"
+     ],
+     "adorn": [
+      "crown",
+      "spikes"
+     ],
+     "scale": 1.08,
+     "hp": 1279,
+     "atk": 26.9,
+     "def": 8,
+     "xp": 799,
+     "gold": 168
+    },
+    {
+     "city": "Northwick",
+     "wild": "Northwick Woods",
+     "lvl": 9,
+     "boss": "Rukos Dawnbane",
+     "role": "Gnoll Packlord",
+     "arch": "warlord",
+     "variant": "gnoll",
+     "sig": [
+      "Starfall",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "halo",
+      "spikes"
+     ],
+     "scale": 1.08,
+     "hp": 671,
+     "atk": 21.8,
+     "def": 7,
+     "xp": 324,
+     "gold": 168
+    },
+    {
+     "city": "Amberwatch",
+     "wild": "Amberwatch Woods",
+     "lvl": 10,
+     "boss": "Bruthul the Weeping",
+     "role": "Blood Knight",
+     "arch": "knight",
+     "variant": "crimson",
+     "sig": [
+      "Ward",
+      "Vortex"
+     ],
+     "adorn": [
+      "flames",
+      "runes"
+     ],
+     "scale": 0.99,
+     "hp": 1122,
+     "atk": 28.4,
+     "def": 11,
+     "xp": 571,
+     "gold": 180
+    },
+    {
+     "city": "Copperglen",
+     "wild": "Copperglen Thicket",
+     "lvl": 10,
+     "boss": "Thalul the Weeping",
+     "role": "Ember Lord",
+     "arch": "sorcerer",
+     "variant": "ember",
+     "sig": [
+      "Ring of Force",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "spikes",
+      "chains"
+     ],
+     "scale": 0.95,
+     "hp": 1530,
+     "atk": 29.7,
+     "def": 10,
+     "xp": 952,
+     "gold": 180
+    },
+    {
+     "city": "Fairmere",
+     "wild": "Fairmere Woods",
+     "lvl": 10,
+     "boss": "Goros the Gilded",
+     "role": "Antlered King",
+     "arch": "beast",
+     "variant": "stag",
+     "sig": [
+      "Starfall",
+      "Regenerate"
+     ],
+     "adorn": [
+      "wings",
+      "halo"
+     ],
+     "scale": 1.26,
+     "hp": 816,
+     "atk": 24.3,
+     "def": 7,
+     "xp": 408,
+     "gold": 180
+    }
+   ]
+  },
+  {
+   "name": "The Mirefen",
+   "biome": "swamp",
+   "lvl": 12,
+   "foes": [
+    "slime",
+    "venom",
+    "puff",
+    "skeleton"
+   ],
+   "cities": [
+    {
+     "city": "Ashreach",
+     "wild": "Ashreach Fen",
+     "lvl": 12,
+     "boss": "Kellor Emberheart",
+     "role": "Lich Lord",
+     "arch": "sorcerer",
+     "variant": "lich",
+     "sig": [
+      "Regenerate",
+      "Frenzy"
+     ],
+     "adorn": [
+      "wings",
+      "chains"
+     ],
+     "scale": 1.22,
+     "hp": 1782,
+     "atk": 32.8,
+     "def": 10,
+     "xp": 1109,
+     "gold": 204
+    },
+    {
+     "city": "Silverbarrow",
+     "wild": "Silverbarrow Fen",
+     "lvl": 12,
+     "boss": "Sevlor the Gilded",
+     "role": "Elder Drake",
+     "arch": "beast",
+     "variant": "drake",
+     "sig": [
+      "Ring of Force",
+      "Regenerate"
+     ],
+     "adorn": [
+      "crown",
+      "tail"
+     ],
+     "scale": 1.17,
+     "hp": 950,
+     "atk": 26.8,
+     "def": 7,
+     "xp": 475,
+     "gold": 204
+    },
+    {
+     "city": "Briarfall",
+     "wild": "Briarfall Fen",
+     "lvl": 12,
+     "boss": "Sevash the Hollow-Eyed",
+     "role": "Elder Treant",
+     "arch": "golem",
+     "variant": "wood",
+     "sig": [
+      "Meteor Fall",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "halo",
+      "tail"
+     ],
+     "scale": 1.13,
+     "hp": 1505,
+     "atk": 29.8,
+     "def": 13,
+     "xp": 697,
+     "gold": 204
+    },
+    {
+     "city": "Sunhelm",
+     "wild": "Sunhelm Fen",
+     "lvl": 13,
+     "boss": "Caellor the Patient",
+     "role": "Abyssal Jelly",
+     "arch": "spirit",
+     "variant": "jelly",
+     "sig": [
+      "Regenerate",
+      "Ward"
+     ],
+     "adorn": [
+      "flames",
+      "chains"
+     ],
+     "scale": 1.08,
+     "hp": 1738,
+     "atk": 32.8,
+     "def": 10,
+     "xp": 1085,
+     "gold": 216
+    },
+    {
+     "city": "Moonmere",
+     "wild": "Moonmere Bog",
+     "lvl": 13,
+     "boss": "Ostgath the Faithless",
+     "role": "Scale Tyrant",
+     "arch": "warlord",
+     "variant": "lizard",
+     "sig": [
+      "Ring of Force",
+      "Meteor Fall"
+     ],
+     "adorn": [
+      "runes",
+      "chains"
+     ],
+     "scale": 1.04,
+     "hp": 912,
+     "atk": 26.5,
+     "def": 9,
+     "xp": 441,
+     "gold": 216
+    },
+    {
+     "city": "Ambermere",
+     "wild": "Ambermere Fen",
+     "lvl": 13,
+     "boss": "Yravenn the Red",
+     "role": "Bone Knight",
+     "arch": "knight",
+     "variant": "bone",
+     "sig": [
+      "Meteor Fall",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "wings",
+      "spikes"
+     ],
+     "scale": 0.99,
+     "hp": 1399,
+     "atk": 32.8,
+     "def": 12,
+     "xp": 712,
+     "gold": 216
+    },
+    {
+     "city": "Emberford",
+     "wild": "Emberford Bog",
+     "lvl": 14,
+     "boss": "Vorrax the Hollow-Eyed",
+     "role": "Tide Priest",
+     "arch": "sorcerer",
+     "variant": "tide",
+     "sig": [
+      "Shadow Step",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "crown",
+      "flames"
+     ],
+     "scale": 0.95,
+     "hp": 2034,
+     "atk": 35.9,
+     "def": 11,
+     "xp": 1266,
+     "gold": 228
+    },
+    {
+     "city": "Goldcross",
+     "wild": "Goldcross Mire",
+     "lvl": 14,
+     "boss": "Zorvenn the Cruel",
+     "role": "Tusk Lord",
+     "arch": "beast",
+     "variant": "boar",
+     "sig": [
+      "Frenzy",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "halo",
+      "flames"
+     ],
+     "scale": 1.26,
+     "hp": 1085,
+     "atk": 29.3,
+     "def": 8,
+     "xp": 542,
+     "gold": 228
+    },
+    {
+     "city": "Swanbrook",
+     "wild": "Swanbrook Mire",
+     "lvl": 14,
+     "boss": "Skargoth the Pale",
+     "role": "Ossuary Golem",
+     "arch": "golem",
+     "variant": "bone",
+     "sig": [
+      "Meteor Fall",
+      "Call Minions"
+     ],
+     "adorn": [
+      "flames",
+      "spikes"
+     ],
+     "scale": 1.22,
+     "hp": 1718,
+     "atk": 32.6,
+     "def": 14,
+     "xp": 796,
+     "gold": 228
+    }
+   ]
+  },
+  {
+   "name": "Sunscar Desert",
+   "biome": "desert",
+   "lvl": 16,
+   "foes": [
+    "beetle",
+    "skeleton",
+    "mage",
+    "venom"
+   ],
+   "cities": [
+    {
+     "city": "Ravengate",
+     "wild": "Ravengate Wastes",
+     "lvl": 16,
+     "boss": "Caelmire the Patient",
+     "role": "Mane Tyrant",
+     "arch": "beast",
+     "variant": "lion",
+     "sig": [
+      "Shadow Step",
+      "Regenerate"
+     ],
+     "adorn": [
+      "spikes",
+      "tail"
+     ],
+     "scale": 1.17,
+     "hp": 1219,
+     "atk": 31.9,
+     "def": 9,
+     "xp": 610,
+     "gold": 252
+    },
+    {
+     "city": "Thornbrook",
+     "wild": "Thornbrook Wastes",
+     "lvl": 16,
+     "boss": "Caelren the Cruel",
+     "role": "Stone Colossus",
+     "arch": "golem",
+     "variant": "stone",
+     "sig": [
+      "Vortex",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "wings",
+      "crown"
+     ],
+     "scale": 1.13,
+     "hp": 1930,
+     "atk": 35.4,
+     "def": 15,
+     "xp": 894,
+     "gold": 252
+    },
+    {
+     "city": "Stoneridge",
+     "wild": "Stoneridge Wastes",
+     "lvl": 16,
+     "boss": "Vexthul the Hollow-Eyed",
+     "role": "Flame Wisp",
+     "arch": "spirit",
+     "variant": "wisp",
+     "sig": [
+      "Shard Burst",
+      "Frenzy"
+     ],
+     "adorn": [
+      "wings",
+      "tail"
+     ],
+     "scale": 1.08,
+     "hp": 2083,
+     "atk": 37.2,
+     "def": 11,
+     "xp": 1300,
+     "gold": 252
+    },
+    {
+     "city": "Silverhelm",
+     "wild": "Silverhelm Dunes",
+     "lvl": 17,
+     "boss": "Kradra Oathbreaker",
+     "role": "Scale Tyrant",
+     "arch": "warlord",
+     "variant": "lizard",
+     "sig": [
+      "Call Minions",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "crown",
+      "runes"
+     ],
+     "scale": 1.04,
+     "hp": 1152,
+     "atk": 31.3,
+     "def": 10,
+     "xp": 557,
+     "gold": 264
+    },
+    {
+     "city": "Fairfield",
+     "wild": "Fairfield Wastes",
+     "lvl": 17,
+     "boss": "Helgar the Cruel",
+     "role": "Dune Templar",
+     "arch": "knight",
+     "variant": "sand",
+     "sig": [
+      "Cross Blast",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "halo",
+      "runes"
+     ],
+     "scale": 0.99,
+     "hp": 1769,
+     "atk": 38.6,
+     "def": 13,
+     "xp": 900,
+     "gold": 264
+    },
+    {
+     "city": "Wolfdale",
+     "wild": "Wolfdale Dunes",
+     "lvl": 17,
+     "boss": "Gorzar Oathbreaker",
+     "role": "Sand Pharaoh",
+     "arch": "sorcerer",
+     "variant": "pharaoh",
+     "sig": [
+      "Shard Burst",
+      "Ward"
+     ],
+     "adorn": [
+      "flames",
+      "tail"
+     ],
+     "scale": 0.95,
+     "hp": 2412,
+     "atk": 40.5,
+     "def": 12,
+     "xp": 1501,
+     "gold": 264
+    },
+    {
+     "city": "Willowgate",
+     "wild": "Willowgate Wastes",
+     "lvl": 18,
+     "boss": "Zulvenn Grimhold",
+     "role": "Elder Drake",
+     "arch": "beast",
+     "variant": "drake",
+     "sig": [
+      "Call Minions",
+      "Regenerate"
+     ],
+     "adorn": [
+      "runes",
+      "tail"
+     ],
+     "scale": 1.26,
+     "hp": 1354,
+     "atk": 34.4,
+     "def": 9,
+     "xp": 677,
+     "gold": 276
+    },
+    {
+     "city": "Mistgate",
+     "wild": "Mistgate Wastes",
+     "lvl": 18,
+     "boss": "Ramok Dawnbane",
+     "role": "Iron Juggernaut",
+     "arch": "golem",
+     "variant": "iron",
+     "sig": [
+      "Cross Blast",
+      "Vortex"
+     ],
+     "adorn": [
+      "wings",
+      "flames"
+     ],
+     "scale": 1.22,
+     "hp": 2143,
+     "atk": 38.2,
+     "def": 15,
+     "xp": 993,
+     "gold": 276
+    },
+    {
+     "city": "Dawndale",
+     "wild": "Dawndale Dunes",
+     "lvl": 18,
+     "boss": "Sarrax Bonegrinder",
+     "role": "Masked Spirit",
+     "arch": "spirit",
+     "variant": "mask",
+     "sig": [
+      "Shard Burst",
+      "Starfall"
+     ],
+     "adorn": [
+      "crown",
+      "halo"
+     ],
+     "scale": 1.17,
+     "hp": 2312,
+     "atk": 40.1,
+     "def": 11,
+     "xp": 1444,
+     "gold": 276
+    }
+   ]
+  },
+  {
+   "name": "Saltwind Coast",
+   "biome": "coast",
+   "lvl": 20,
+   "foes": [
+    "slime",
+    "wolf",
+    "goblin",
+    "mage"
+   ],
+   "cities": [
+    {
+     "city": "Willowhelm",
+     "wild": "Willowhelm Cliffs",
+     "lvl": 20,
+     "boss": "Caeldra Ashborn",
+     "role": "Stone Colossus",
+     "arch": "golem",
+     "variant": "stone",
+     "sig": [
+      "Starfall",
+      "Frenzy"
+     ],
+     "adorn": [
+      "crown",
+      "chains"
+     ],
+     "scale": 1.13,
+     "hp": 2356,
+     "atk": 41,
+     "def": 16,
+     "xp": 1091,
+     "gold": 300
+    },
+    {
+     "city": "Brightgate",
+     "wild": "Brightgate Shore",
+     "lvl": 20,
+     "boss": "Gorith the Hungry",
+     "role": "Abyssal Jelly",
+     "arch": "spirit",
+     "variant": "jelly",
+     "sig": [
+      "Ward",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "halo",
+      "chains"
+     ],
+     "scale": 1.08,
+     "hp": 2542,
+     "atk": 43,
+     "def": 12,
+     "xp": 1587,
+     "gold": 300
+    },
+    {
+     "city": "Kingswall",
+     "wild": "Kingswall Strand",
+     "lvl": 20,
+     "boss": "Azvenn the Hollow-Eyed",
+     "role": "Troll King",
+     "arch": "warlord",
+     "variant": "troll",
+     "sig": [
+      "Ring of Force",
+      "Frenzy"
+     ],
+     "adorn": [
+      "spikes",
+      "runes"
+     ],
+     "scale": 1.16,
+     "hp": 1333,
+     "atk": 34.8,
+     "def": 11,
+     "xp": 645,
+     "gold": 300
+    },
+    {
+     "city": "Sunmere",
+     "wild": "Sunmere Shore",
+     "lvl": 21,
+     "boss": "Malren the Weeping",
+     "role": "Gilded Paladin",
+     "arch": "knight",
+     "variant": "gold",
+     "sig": [
+      "Starfall",
+      "Ward"
+     ],
+     "adorn": [
+      "tail",
+      "chains"
+     ],
+     "scale": 0.99,
+     "hp": 2138,
+     "atk": 44.5,
+     "def": 14,
+     "xp": 1089,
+     "gold": 312
+    },
+    {
+     "city": "Brightbarrow",
+     "wild": "Brightbarrow Cliffs",
+     "lvl": 21,
+     "boss": "Yramire the Patient",
+     "role": "Tide Priest",
+     "arch": "sorcerer",
+     "variant": "tide",
+     "sig": [
+      "Regenerate",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "wings",
+      "runes"
+     ],
+     "scale": 0.95,
+     "hp": 2916,
+     "atk": 46.6,
+     "def": 13,
+     "xp": 1814,
+     "gold": 312
+    },
+    {
+     "city": "Fairwall",
+     "wild": "Fairwall Strand",
+     "lvl": 21,
+     "boss": "Thalos Emberheart",
+     "role": "Elder Drake",
+     "arch": "beast",
+     "variant": "drake",
+     "sig": [
+      "Ring of Force",
+      "Ward"
+     ],
+     "adorn": [
+      "crown",
+      "spikes"
+     ],
+     "scale": 1.26,
+     "hp": 1555,
+     "atk": 38.2,
+     "def": 10,
+     "xp": 778,
+     "gold": 312
+    },
+    {
+     "city": "Goldwick",
+     "wild": "Goldwick Shore",
+     "lvl": 22,
+     "boss": "Ulnak Nightfang",
+     "role": "Rime Colossus",
+     "arch": "golem",
+     "variant": "ice",
+     "sig": [
+      "Meteor Fall",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "halo",
+      "spikes"
+     ],
+     "scale": 1.22,
+     "hp": 2569,
+     "atk": 43.8,
+     "def": 17,
+     "xp": 1190,
+     "gold": 324
+    },
+    {
+     "city": "Stormhaven",
+     "wild": "Stormhaven Strand",
+     "lvl": 22,
+     "boss": "Kraash the Silent",
+     "role": "Watcher",
+     "arch": "spirit",
+     "variant": "eye",
+     "sig": [
+      "Regenerate",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "flames",
+      "runes"
+     ],
+     "scale": 1.17,
+     "hp": 2772,
+     "atk": 46,
+     "def": 13,
+     "xp": 1731,
+     "gold": 324
+    },
+    {
+     "city": "Stormhold",
+     "wild": "Stormhold Strand",
+     "lvl": 22,
+     "boss": "Helkesh Skullcrown",
+     "role": "Scale Tyrant",
+     "arch": "warlord",
+     "variant": "lizard",
+     "sig": [
+      "Ring of Force",
+      "Starfall"
+     ],
+     "adorn": [
+      "spikes",
+      "chains"
+     ],
+     "scale": 1.13,
+     "hp": 1453,
+     "atk": 37.2,
+     "def": 12,
+     "xp": 703,
+     "gold": 324
+    }
+   ]
+  },
+  {
+   "name": "Highcrown Hills",
+   "biome": "highland",
+   "lvl": 24,
+   "foes": [
+    "wolf",
+    "goblin",
+    "skeleton",
+    "beetle"
+   ],
+   "cities": [
+    {
+     "city": "Mistrest",
+     "wild": "Mistrest Crags",
+     "lvl": 24,
+     "boss": "Rukgoth Thornhide",
+     "role": "Masked Spirit",
+     "arch": "spirit",
+     "variant": "mask",
+     "sig": [
+      "Meteor Fall",
+      "Vortex"
+     ],
+     "adorn": [
+      "wings",
+      "halo"
+     ],
+     "scale": 1.08,
+     "hp": 3001,
+     "atk": 48.9,
+     "def": 13,
+     "xp": 1874,
+     "gold": 348
+    },
+    {
+     "city": "Umberrest",
+     "wild": "Umberrest Fells",
+     "lvl": 24,
+     "boss": "Grimren the Cruel",
+     "role": "Ogre Chieftain",
+     "arch": "warlord",
+     "variant": "ogre",
+     "sig": [
+      "Shadow Step",
+      "Frenzy"
+     ],
+     "adorn": [
+      "wings",
+      "chains"
+     ],
+     "scale": 1.23,
+     "hp": 1574,
+     "atk": 39.6,
+     "def": 12,
+     "xp": 761,
+     "gold": 348
+    },
+    {
+     "city": "Embervale",
+     "wild": "Embervale Crags",
+     "lvl": 24,
+     "boss": "Kraion Nightfang",
+     "role": "Fallen Knight",
+     "arch": "knight",
+     "variant": "dark",
+     "sig": [
+      "Frenzy",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "crown",
+      "tail"
+     ],
+     "scale": 0.99,
+     "hp": 2416,
+     "atk": 48.9,
+     "def": 15,
+     "xp": 1230,
+     "gold": 348
+    },
+    {
+     "city": "Coldmarsh",
+     "wild": "Coldmarsh Fells",
+     "lvl": 25,
+     "boss": "Grimvenn the Drowned",
+     "role": "Frost Witch",
+     "arch": "sorcerer",
+     "variant": "frost",
+     "sig": [
+      "Meteor Fall",
+      "Shadow Step"
+     ],
+     "adorn": [
+      "halo",
+      "tail"
+     ],
+     "scale": 0.95,
+     "hp": 3420,
+     "atk": 52.8,
+     "def": 15,
+     "xp": 2128,
+     "gold": 360
+    },
+    {
+     "city": "Saltport",
+     "wild": "Saltport Crags",
+     "lvl": 25,
+     "boss": "Yrarax the Cruel",
+     "role": "Antlered King",
+     "arch": "beast",
+     "variant": "stag",
+     "sig": [
+      "Shadow Step",
+      "Ward"
+     ],
+     "adorn": [
+      "flames",
+      "chains"
+     ],
+     "scale": 1.26,
+     "hp": 1824,
+     "atk": 43.2,
+     "def": 12,
+     "xp": 912,
+     "gold": 360
+    },
+    {
+     "city": "Dunmarsh",
+     "wild": "Dunmarsh Crags",
+     "lvl": 25,
+     "boss": "Voreth Emberheart",
+     "role": "Stone Colossus",
+     "arch": "golem",
+     "variant": "stone",
+     "sig": [
+      "Seeker Orbs",
+      "Frenzy"
+     ],
+     "adorn": [
+      "runes",
+      "chains"
+     ],
+     "scale": 1.22,
+     "hp": 2888,
+     "atk": 48,
+     "def": 18,
+     "xp": 1338,
+     "gold": 360
+    },
+    {
+     "city": "Saltbrook",
+     "wild": "Saltbrook Fells",
+     "lvl": 26,
+     "boss": "Vexash the Drowned",
+     "role": "Watcher",
+     "arch": "spirit",
+     "variant": "eye",
+     "sig": [
+      "Shard Burst",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "wings",
+      "spikes"
+     ],
+     "scale": 1.17,
+     "hp": 3231,
+     "atk": 51.9,
+     "def": 14,
+     "xp": 2017,
+     "gold": 372
+    },
+    {
+     "city": "Starford",
+     "wild": "Starford Heights",
+     "lvl": 26,
+     "boss": "Ragoth Thornhide",
+     "role": "Warlord",
+     "arch": "warlord",
+     "variant": "orc",
+     "sig": [
+      "Call Minions",
+      "Frenzy"
+     ],
+     "adorn": [
+      "crown",
+      "flames"
+     ],
+     "scale": 1.13,
+     "hp": 1694,
+     "atk": 42,
+     "def": 13,
+     "xp": 820,
+     "gold": 372
+    },
+    {
+     "city": "Dawnbrook",
+     "wild": "Dawnbrook Fells",
+     "lvl": 26,
+     "boss": "Zornak the Silent",
+     "role": "Thorn Warden",
+     "arch": "knight",
+     "variant": "verdant",
+     "sig": [
+      "Vortex",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "halo",
+      "flames"
+     ],
+     "scale": 1.08,
+     "hp": 2600,
+     "atk": 51.9,
+     "def": 16,
+     "xp": 1324,
+     "gold": 372
+    }
+   ]
+  },
+  {
+   "name": "The Frostmarch",
+   "biome": "snow",
+   "lvl": 28,
+   "foes": [
+    "wolf",
+    "skeleton",
+    "mage",
+    "puff"
+   ],
+   "cities": [
+    {
+     "city": "Wolfridge",
+     "wild": "Wolfridge Drifts",
+     "lvl": 28,
+     "boss": "Malgar the Patient",
+     "role": "Frost Jarl",
+     "arch": "warlord",
+     "variant": "frostgiant",
+     "sig": [
+      "Shard Burst",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "flames",
+      "spikes"
+     ],
+     "scale": 1.27,
+     "hp": 1815,
+     "atk": 44.4,
+     "def": 14,
+     "xp": 878,
+     "gold": 396
+    },
+    {
+     "city": "Larkstead",
+     "wild": "Larkstead Drifts",
+     "lvl": 28,
+     "boss": "Ostmire the Silent",
+     "role": "Rime Knight",
+     "arch": "knight",
+     "variant": "frost",
+     "sig": [
+      "Call Minions",
+      "Ward"
+     ],
+     "adorn": [
+      "spikes",
+      "tail"
+     ],
+     "scale": 0.99,
+     "hp": 2785,
+     "atk": 54.8,
+     "def": 17,
+     "xp": 1418,
+     "gold": 396
+    },
+    {
+     "city": "Amberford",
+     "wild": "Amberford Glacier",
+     "lvl": 28,
+     "boss": "Zorlor Ashborn",
+     "role": "Frost Witch",
+     "arch": "sorcerer",
+     "variant": "frost",
+     "sig": [
+      "Cross Blast",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "wings",
+      "crown"
+     ],
+     "scale": 0.95,
+     "hp": 3798,
+     "atk": 57.4,
+     "def": 16,
+     "xp": 2363,
+     "gold": 396
+    },
+    {
+     "city": "Stoneglen",
+     "wild": "Stoneglen Glacier",
+     "lvl": 29,
+     "boss": "Caeldra Emberheart",
+     "role": "Alpha Wolf",
+     "arch": "beast",
+     "variant": "wolf",
+     "sig": [
+      "Shard Burst",
+      "Call Minions"
+     ],
+     "adorn": [
+      "wings",
+      "tail"
+     ],
+     "scale": 1.26,
+     "hp": 2093,
+     "atk": 48.2,
+     "def": 13,
+     "xp": 1046,
+     "gold": 408
+    },
+    {
+     "city": "Saltwall",
+     "wild": "Saltwall Tundra",
+     "lvl": 29,
+     "boss": "Belash the Cruel",
+     "role": "Rime Colossus",
+     "arch": "golem",
+     "variant": "ice",
+     "sig": [
+      "Starfall",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "crown",
+      "runes"
+     ],
+     "scale": 1.22,
+     "hp": 3314,
+     "atk": 53.6,
+     "def": 19,
+     "xp": 1535,
+     "gold": 408
+    },
+    {
+     "city": "Glencross",
+     "wild": "Glencross Tundra",
+     "lvl": 29,
+     "boss": "Grimvok Grimhold",
+     "role": "Flame Wisp",
+     "arch": "spirit",
+     "variant": "wisp",
+     "sig": [
+      "Ward",
+      "Frenzy"
+     ],
+     "adorn": [
+      "halo",
+      "runes"
+     ],
+     "scale": 1.17,
+     "hp": 3575,
+     "atk": 56.3,
+     "def": 15,
+     "xp": 2232,
+     "gold": 408
+    },
+    {
+     "city": "Ivywatch",
+     "wild": "Ivywatch Tundra",
+     "lvl": 30,
+     "boss": "Caelos the Red",
+     "role": "Troll King",
+     "arch": "warlord",
+     "variant": "troll",
+     "sig": [
+      "Ring of Force",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "flames",
+      "tail"
+     ],
+     "scale": 1.27,
+     "hp": 1935,
+     "atk": 46.8,
+     "def": 15,
+     "xp": 936,
+     "gold": 420
+    },
+    {
+     "city": "Amberport",
+     "wild": "Amberport Glacier",
+     "lvl": 30,
+     "boss": "Yraul the Pale",
+     "role": "Gilded Paladin",
+     "arch": "knight",
+     "variant": "gold",
+     "sig": [
+      "Starfall",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "runes",
+      "tail"
+     ],
+     "scale": 1.08,
+     "hp": 2970,
+     "atk": 57.8,
+     "def": 18,
+     "xp": 1512,
+     "gold": 420
+    },
+    {
+     "city": "Eldercross",
+     "wild": "Eldercross Glacier",
+     "lvl": 30,
+     "boss": "Belith the Cruel",
+     "role": "Tide Priest",
+     "arch": "sorcerer",
+     "variant": "tide",
+     "sig": [
+      "Regenerate",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "wings",
+      "flames"
+     ],
+     "scale": 1.04,
+     "hp": 4050,
+     "atk": 60.5,
+     "def": 17,
+     "xp": 2520,
+     "gold": 420
+    }
+   ]
+  },
+  {
+   "name": "The Verdant Deep",
+   "biome": "jungle",
+   "lvl": 32,
+   "foes": [
+    "venom",
+    "beetle",
+    "goblin",
+    "puff"
+   ],
+   "cities": [
+    {
+     "city": "Starwatch",
+     "wild": "Starwatch Jungle",
+     "lvl": 32,
+     "boss": "Azkesh Emberheart",
+     "role": "Thorn Warden",
+     "arch": "knight",
+     "variant": "verdant",
+     "sig": [
+      "Ring of Force",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "crown",
+      "halo"
+     ],
+     "scale": 0.99,
+     "hp": 3155,
+     "atk": 60.7,
+     "def": 18,
+     "xp": 1606,
+     "gold": 444
+    },
+    {
+     "city": "Ivybarrow",
+     "wild": "Ivybarrow Jungle",
+     "lvl": 32,
+     "boss": "Gorthul the Patient",
+     "role": "Bloom Witch",
+     "arch": "sorcerer",
+     "variant": "bloom",
+     "sig": [
+      "Starfall",
+      "Call Minions"
+     ],
+     "adorn": [
+      "crown",
+      "chains"
+     ],
+     "scale": 0.95,
+     "hp": 4302,
+     "atk": 63.6,
+     "def": 17,
+     "xp": 2677,
+     "gold": 444
+    },
+    {
+     "city": "Tallwatch",
+     "wild": "Tallwatch Jungle",
+     "lvl": 32,
+     "boss": "Zulgoth Ironjaw",
+     "role": "Mane Tyrant",
+     "arch": "beast",
+     "variant": "lion",
+     "sig": [
+      "Regenerate",
+      "Vortex"
+     ],
+     "adorn": [
+      "halo",
+      "chains"
+     ],
+     "scale": 1.26,
+     "hp": 2294,
+     "atk": 52,
+     "def": 14,
+     "xp": 1147,
+     "gold": 444
+    },
+    {
+     "city": "Rosegate",
+     "wild": "Rosegate Wilds",
+     "lvl": 33,
+     "boss": "Zulion Ashborn",
+     "role": "Elder Treant",
+     "arch": "golem",
+     "variant": "wood",
+     "sig": [
+      "Ring of Force",
+      "Call Minions"
+     ],
+     "adorn": [
+      "spikes",
+      "runes"
+     ],
+     "scale": 1.22,
+     "hp": 3739,
+     "atk": 59.2,
+     "def": 21,
+     "xp": 1732,
+     "gold": 456
+    },
+    {
+     "city": "Fairvale",
+     "wild": "Fairvale Canopy",
+     "lvl": 33,
+     "boss": "Tordra Grimhold",
+     "role": "Watcher",
+     "arch": "spirit",
+     "variant": "eye",
+     "sig": [
+      "Meteor Fall",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "tail",
+      "chains"
+     ],
+     "scale": 1.17,
+     "hp": 4034,
+     "atk": 62.2,
+     "def": 17,
+     "xp": 2519,
+     "gold": 456
+    },
+    {
+     "city": "Ashford",
+     "wild": "Ashford Wilds",
+     "lvl": 33,
+     "boss": "Thalul the Unbroken",
+     "role": "Scale Tyrant",
+     "arch": "warlord",
+     "variant": "lizard",
+     "sig": [
+      "Shadow Step",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "wings",
+      "runes"
+     ],
+     "scale": 1.13,
+     "hp": 2116,
+     "atk": 50.3,
+     "def": 16,
+     "xp": 1023,
+     "gold": 456
+    },
+    {
+     "city": "Briarwatch",
+     "wild": "Briarwatch Wilds",
+     "lvl": 34,
+     "boss": "Thalmire the Cruel",
+     "role": "Bone Knight",
+     "arch": "knight",
+     "variant": "bone",
+     "sig": [
+      "Ring Quake",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "crown",
+      "spikes"
+     ],
+     "scale": 1.08,
+     "hp": 3340,
+     "atk": 63.6,
+     "def": 19,
+     "xp": 1700,
+     "gold": 468
+    },
+    {
+     "city": "Jadeglen",
+     "wild": "Jadeglen Wilds",
+     "lvl": 34,
+     "boss": "Gorvok the Cruel",
+     "role": "Tide Priest",
+     "arch": "sorcerer",
+     "variant": "tide",
+     "sig": [
+      "Meteor Fall",
+      "Regenerate"
+     ],
+     "adorn": [
+      "halo",
+      "spikes"
+     ],
+     "scale": 1.04,
+     "hp": 4554,
+     "atk": 66.7,
+     "def": 18,
+     "xp": 2834,
+     "gold": 468
+    },
+    {
+     "city": "Silverwall",
+     "wild": "Silverwall Wilds",
+     "lvl": 34,
+     "boss": "Helash the Hollow-Eyed",
+     "role": "Tusk Lord",
+     "arch": "beast",
+     "variant": "boar",
+     "sig": [
+      "Shadow Step",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "flames",
+      "runes"
+     ],
+     "scale": 0.99,
+     "hp": 2429,
+     "atk": 54.5,
+     "def": 15,
+     "xp": 1214,
+     "gold": 468
+    }
+   ]
+  },
+  {
+   "name": "Ashfall Barrens",
+   "biome": "ash",
+   "lvl": 36,
+   "foes": [
+    "skeleton",
+    "mage",
+    "beetle",
+    "venom"
+   ],
+   "cities": [
+    {
+     "city": "Northrest",
+     "wild": "Northrest Scar",
+     "lvl": 36,
+     "boss": "Sarion the Unbroken",
+     "role": "Ember Lord",
+     "arch": "sorcerer",
+     "variant": "ember",
+     "sig": [
+      "Seeker Orbs",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "spikes",
+      "chains"
+     ],
+     "scale": 0.95,
+     "hp": 4806,
+     "atk": 69.7,
+     "def": 19,
+     "xp": 2990,
+     "gold": 492
+    },
+    {
+     "city": "Dawnmere",
+     "wild": "Dawnmere Cinders",
+     "lvl": 36,
+     "boss": "Ishmire the Gilded",
+     "role": "Elder Drake",
+     "arch": "beast",
+     "variant": "drake",
+     "sig": [
+      "Shard Burst",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "wings",
+      "halo"
+     ],
+     "scale": 1.26,
+     "hp": 2563,
+     "atk": 57.1,
+     "def": 16,
+     "xp": 1282,
+     "gold": 492
+    },
+    {
+     "city": "Emberglen",
+     "wild": "Emberglen Scar",
+     "lvl": 36,
+     "boss": "Ostgar Grimhold",
+     "role": "Magma Golem",
+     "arch": "golem",
+     "variant": "lava",
+     "sig": [
+      "Call Minions",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "wings",
+      "chains"
+     ],
+     "scale": 1.22,
+     "hp": 4058,
+     "atk": 63.4,
+     "def": 22,
+     "xp": 1880,
+     "gold": 492
+    },
+    {
+     "city": "Saltmarsh",
+     "wild": "Saltmarsh Scar",
+     "lvl": 37,
+     "boss": "Zulmire Oathbreaker",
+     "role": "Flame Wisp",
+     "arch": "spirit",
+     "variant": "wisp",
+     "sig": [
+      "Vortex",
+      "Frenzy"
+     ],
+     "adorn": [
+      "crown",
+      "tail"
+     ],
+     "scale": 1.17,
+     "hp": 4494,
+     "atk": 68,
+     "def": 18,
+     "xp": 2806,
+     "gold": 504
+    },
+    {
+     "city": "Rosehaven",
+     "wild": "Rosehaven Scar",
+     "lvl": 37,
+     "boss": "Voros the Red",
+     "role": "Cinder Brute",
+     "arch": "warlord",
+     "variant": "ember",
+     "sig": [
+      "Shard Burst",
+      "Vortex"
+     ],
+     "adorn": [
+      "halo",
+      "tail"
+     ],
+     "scale": 1.24,
+     "hp": 2356,
+     "atk": 55.1,
+     "def": 17,
+     "xp": 1140,
+     "gold": 504
+    },
+    {
+     "city": "Thornglen",
+     "wild": "Thornglen Caldera",
+     "lvl": 37,
+     "boss": "Toreth the Red",
+     "role": "Blood Knight",
+     "arch": "knight",
+     "variant": "crimson",
+     "sig": [
+      "Call Minions",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "flames",
+      "chains"
+     ],
+     "scale": 1.08,
+     "hp": 3617,
+     "atk": 68,
+     "def": 20,
+     "xp": 1841,
+     "gold": 504
+    },
+    {
+     "city": "Emberridge",
+     "wild": "Emberridge Cinders",
+     "lvl": 38,
+     "boss": "Nyxvenn the Drowned",
+     "role": "Void Prophet",
+     "arch": "sorcerer",
+     "variant": "void",
+     "sig": [
+      "Cross Blast",
+      "Frenzy"
+     ],
+     "adorn": [
+      "runes",
+      "chains"
+     ],
+     "scale": 1.04,
+     "hp": 5058,
+     "atk": 72.8,
+     "def": 19,
+     "xp": 3147,
+     "gold": 516
+    },
+    {
+     "city": "Emberhold",
+     "wild": "Emberhold Scar",
+     "lvl": 38,
+     "boss": "Azkesh Ironjaw",
+     "role": "Mane Tyrant",
+     "arch": "beast",
+     "variant": "lion",
+     "sig": [
+      "Shard Burst",
+      "Shadow Step"
+     ],
+     "adorn": [
+      "wings",
+      "spikes"
+     ],
+     "scale": 0.99,
+     "hp": 2698,
+     "atk": 59.6,
+     "def": 16,
+     "xp": 1349,
+     "gold": 516
+    },
+    {
+     "city": "Glengate",
+     "wild": "Glengate Cinders",
+     "lvl": 38,
+     "boss": "Rukgath Grimhold",
+     "role": "Iron Juggernaut",
+     "arch": "golem",
+     "variant": "iron",
+     "sig": [
+      "Starfall",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "crown",
+      "flames"
+     ],
+     "scale": 0.95,
+     "hp": 4271,
+     "atk": 66.2,
+     "def": 22,
+     "xp": 1978,
+     "gold": 516
+    }
+   ]
+  },
+  {
+   "name": "The Prism Wastes",
+   "biome": "crystal",
+   "lvl": 40,
+   "foes": [
+    "mage",
+    "venom",
+    "puff",
+    "skeleton"
+   ],
+   "cities": [
+    {
+     "city": "Mistwall",
+     "wild": "Mistwall Spires",
+     "lvl": 40,
+     "boss": "Zuleth Oathbreaker",
+     "role": "Antlered King",
+     "arch": "beast",
+     "variant": "stag",
+     "sig": [
+      "Ward",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "halo",
+      "flames"
+     ],
+     "scale": 1.26,
+     "hp": 2832,
+     "atk": 62.1,
+     "def": 17,
+     "xp": 1416,
+     "gold": 540
+    },
+    {
+     "city": "Oakridge",
+     "wild": "Oakridge Shards",
+     "lvl": 40,
+     "boss": "Skarash Nightfang",
+     "role": "Prism Golem",
+     "arch": "golem",
+     "variant": "crystal",
+     "sig": [
+      "Ring of Force",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "flames",
+      "spikes"
+     ],
+     "scale": 1.22,
+     "hp": 4484,
+     "atk": 69,
+     "def": 23,
+     "xp": 2077,
+     "gold": 540
+    },
+    {
+     "city": "Larkmoor",
+     "wild": "Larkmoor Prism Fields",
+     "lvl": 40,
+     "boss": "Azvok the Hollow-Eyed",
+     "role": "Watcher",
+     "arch": "spirit",
+     "variant": "eye",
+     "sig": [
+      "Starfall",
+      "Vortex"
+     ],
+     "adorn": [
+      "spikes",
+      "tail"
+     ],
+     "scale": 1.17,
+     "hp": 4838,
+     "atk": 72.5,
+     "def": 19,
+     "xp": 3021,
+     "gold": 540
+    },
+    {
+     "city": "Fairmarsh",
+     "wild": "Fairmarsh Spires",
+     "lvl": 41,
+     "boss": "Vormok the Silent",
+     "role": "Troll King",
+     "arch": "warlord",
+     "variant": "troll",
+     "sig": [
+      "Ward",
+      "Cross Blast"
+     ],
+     "adorn": [
+      "wings",
+      "crown"
+     ],
+     "scale": 1.27,
+     "hp": 2597,
+     "atk": 59.8,
+     "def": 18,
+     "xp": 1256,
+     "gold": 552
+    },
+    {
+     "city": "Larkspire",
+     "wild": "Larkspire Spires",
+     "lvl": 41,
+     "boss": "Maleth the Weeping",
+     "role": "Gilded Paladin",
+     "arch": "knight",
+     "variant": "gold",
+     "sig": [
+      "Ring of Force",
+      "Vortex"
+     ],
+     "adorn": [
+      "wings",
+      "tail"
+     ],
+     "scale": 1.08,
+     "hp": 3986,
+     "atk": 73.9,
+     "def": 21,
+     "xp": 2029,
+     "gold": 552
+    },
+    {
+     "city": "Oakspire",
+     "wild": "Oakspire Shards",
+     "lvl": 41,
+     "boss": "Belgoth Stormcaller",
+     "role": "Void Prophet",
+     "arch": "sorcerer",
+     "variant": "void",
+     "sig": [
+      "Starfall",
+      "Shadow Step"
+     ],
+     "adorn": [
+      "crown",
+      "runes"
+     ],
+     "scale": 1.04,
+     "hp": 5436,
+     "atk": 77.4,
+     "def": 20,
+     "xp": 3382,
+     "gold": 552
+    },
+    {
+     "city": "Kingswell",
+     "wild": "Kingswell Prism Fields",
+     "lvl": 42,
+     "boss": "Kraion Ashborn",
+     "role": "Elder Drake",
+     "arch": "beast",
+     "variant": "drake",
+     "sig": [
+      "Regenerate",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "halo",
+      "runes"
+     ],
+     "scale": 0.99,
+     "hp": 2966,
+     "atk": 64.6,
+     "def": 18,
+     "xp": 1483,
+     "gold": 564
+    },
+    {
+     "city": "Highwick",
+     "wild": "Highwick Prism Fields",
+     "lvl": 42,
+     "boss": "Zulvenn the Patient",
+     "role": "Rime Colossus",
+     "arch": "golem",
+     "variant": "ice",
+     "sig": [
+      "Ring of Force",
+      "Shadow Step"
+     ],
+     "adorn": [
+      "flames",
+      "tail"
+     ],
+     "scale": 0.95,
+     "hp": 4697,
+     "atk": 71.8,
+     "def": 24,
+     "xp": 2175,
+     "gold": 564
+    },
+    {
+     "city": "Ivywell",
+     "wild": "Ivywell Prism Fields",
+     "lvl": 42,
+     "boss": "Skarrax Oathbreaker",
+     "role": "Abyssal Jelly",
+     "arch": "spirit",
+     "variant": "jelly",
+     "sig": [
+      "Meteor Fall",
+      "Frenzy"
+     ],
+     "adorn": [
+      "runes",
+      "tail"
+     ],
+     "scale": 1.26,
+     "hp": 5068,
+     "atk": 75.4,
+     "def": 20,
+     "xp": 3164,
+     "gold": 564
+    }
+   ]
+  },
+  {
+   "name": "Duskhollow",
+   "biome": "dusk",
+   "lvl": 44,
+   "foes": [
+    "skeleton",
+    "mage",
+    "wolf",
+    "venom"
+   ],
+   "cities": [
+    {
+     "city": "Saltbury",
+     "wild": "Saltbury Hollow",
+     "lvl": 44,
+     "boss": "Rarax Ironjaw",
+     "role": "Ossuary Golem",
+     "arch": "golem",
+     "variant": "bone",
+     "sig": [
+      "Shadow Step",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "wings",
+      "flames"
+     ],
+     "scale": 1.22,
+     "hp": 4910,
+     "atk": 74.6,
+     "def": 24,
+     "xp": 2274,
+     "gold": 588
+    },
+    {
+     "city": "Briarmoor",
+     "wild": "Briarmoor Barrows",
+     "lvl": 44,
+     "boss": "Brumire Ironjaw",
+     "role": "Masked Spirit",
+     "arch": "spirit",
+     "variant": "mask",
+     "sig": [
+      "Ring of Force",
+      "Shard Burst"
+     ],
+     "adorn": [
+      "crown",
+      "halo"
+     ],
+     "scale": 1.17,
+     "hp": 5297,
+     "atk": 78.3,
+     "def": 20,
+     "xp": 3308,
+     "gold": 588
+    },
+    {
+     "city": "Saltwick",
+     "wild": "Saltwick Hollow",
+     "lvl": 44,
+     "boss": "Sarrax Ashborn",
+     "role": "Pit Fiend",
+     "arch": "warlord",
+     "variant": "demon",
+     "sig": [
+      "Meteor Fall",
+      "Ward"
+     ],
+     "adorn": [
+      "crown",
+      "chains"
+     ],
+     "scale": 1.22,
+     "hp": 2778,
+     "atk": 63.4,
+     "def": 19,
+     "xp": 1344,
+     "gold": 588
+    },
+    {
+     "city": "Oakvale",
+     "wild": "Oakvale Barrows",
+     "lvl": 45,
+     "boss": "Ostthul Bonegrinder",
+     "role": "Shade Knight",
+     "arch": "knight",
+     "variant": "shadow",
+     "sig": [
+      "Shadow Step",
+      "Vortex"
+     ],
+     "adorn": [
+      "halo",
+      "chains"
+     ],
+     "scale": 1.08,
+     "hp": 4356,
+     "atk": 79.8,
+     "def": 23,
+     "xp": 2218,
+     "gold": 600
+    },
+    {
+     "city": "Jadereach",
+     "wild": "Jadereach Hollow",
+     "lvl": 45,
+     "boss": "Morvok Ironjaw",
+     "role": "Lich Lord",
+     "arch": "sorcerer",
+     "variant": "lich",
+     "sig": [
+      "Seeker Orbs",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "spikes",
+      "runes"
+     ],
+     "scale": 1.04,
+     "hp": 5940,
+     "atk": 83.6,
+     "def": 22,
+     "xp": 3696,
+     "gold": 600
+    },
+    {
+     "city": "Stonewall",
+     "wild": "Stonewall Gloom",
+     "lvl": 45,
+     "boss": "Zorlor the Cruel",
+     "role": "Alpha Wolf",
+     "arch": "beast",
+     "variant": "wolf",
+     "sig": [
+      "Meteor Fall",
+      "Starfall"
+     ],
+     "adorn": [
+      "tail",
+      "chains"
+     ],
+     "scale": 0.99,
+     "hp": 3168,
+     "atk": 68.4,
+     "def": 19,
+     "xp": 1584,
+     "gold": 600
+    },
+    {
+     "city": "Coldridge",
+     "wild": "Coldridge Gloom",
+     "lvl": 46,
+     "boss": "Skarash the Patient",
+     "role": "Iron Juggernaut",
+     "arch": "golem",
+     "variant": "iron",
+     "sig": [
+      "Call Minions",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "wings",
+      "runes"
+     ],
+     "scale": 0.95,
+     "hp": 5122,
+     "atk": 77.4,
+     "def": 25,
+     "xp": 2372,
+     "gold": 612
+    },
+    {
+     "city": "Dunspire",
+     "wild": "Dunspire Hollow",
+     "lvl": 46,
+     "boss": "Helvenn the Faithless",
+     "role": "Watcher",
+     "arch": "spirit",
+     "variant": "eye",
+     "sig": [
+      "Vortex",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "crown",
+      "spikes"
+     ],
+     "scale": 1.26,
+     "hp": 5527,
+     "atk": 81.3,
+     "def": 21,
+     "xp": 3451,
+     "gold": 612
+    },
+    {
+     "city": "Ashcrest",
+     "wild": "Ashcrest Hollow",
+     "lvl": 46,
+     "boss": "Torthul the Red",
+     "role": "Gnoll Packlord",
+     "arch": "warlord",
+     "variant": "gnoll",
+     "sig": [
+      "Shard Burst",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "halo",
+      "spikes"
+     ],
+     "scale": 1.27,
+     "hp": 2898,
+     "atk": 65.8,
+     "def": 20,
+     "xp": 1402,
+     "gold": 612
+    }
+   ]
+  },
+  {
+   "name": "The Eclipse Rim",
+   "biome": "void",
+   "lvl": 48,
+   "foes": [
+    "mage",
+    "skeleton",
+    "venom",
+    "wolf"
+   ],
+   "cities": [
+    {
+     "city": "Moonvale",
+     "wild": "Moonvale Abyss",
+     "lvl": 48,
+     "boss": "Ishdun the Weeping",
+     "role": "Watcher",
+     "arch": "spirit",
+     "variant": "eye",
+     "sig": [
+      "Call Minions",
+      "Vortex"
+     ],
+     "adorn": [
+      "flames",
+      "runes"
+     ],
+     "scale": 1.17,
+     "hp": 5756,
+     "atk": 84.2,
+     "def": 22,
+     "xp": 3594,
+     "gold": 636
+    },
+    {
+     "city": "Goldglen",
+     "wild": "Goldglen Abyss",
+     "lvl": 48,
+     "boss": "Sarrax Grimhold",
+     "role": "Pit Fiend",
+     "arch": "warlord",
+     "variant": "demon",
+     "sig": [
+      "Cross Blast",
+      "Ring Quake"
+     ],
+     "adorn": [
+      "spikes",
+      "chains"
+     ],
+     "scale": 1.22,
+     "hp": 3019,
+     "atk": 68.2,
+     "def": 21,
+     "xp": 1460,
+     "gold": 636
+    },
+    {
+     "city": "Stormridge",
+     "wild": "Stormridge Edge",
+     "lvl": 48,
+     "boss": "Mordun Grimhold",
+     "role": "Shade Knight",
+     "arch": "knight",
+     "variant": "shadow",
+     "sig": [
+      "Shard Burst",
+      "Regenerate"
+     ],
+     "adorn": [
+      "wings",
+      "halo"
+     ],
+     "scale": 1.08,
+     "hp": 4633,
+     "atk": 84.2,
+     "def": 24,
+     "xp": 2359,
+     "gold": 636
+    },
+    {
+     "city": "Ashhelm",
+     "wild": "Ashhelm Abyss",
+     "lvl": 49,
+     "boss": "Caeleth Grimhold",
+     "role": "Void Prophet",
+     "arch": "sorcerer",
+     "variant": "void",
+     "sig": [
+      "Call Minions",
+      "Shadow Step"
+     ],
+     "adorn": [
+      "wings",
+      "chains"
+     ],
+     "scale": 1.04,
+     "hp": 6444,
+     "atk": 89.8,
+     "def": 23,
+     "xp": 4010,
+     "gold": 648
+    },
+    {
+     "city": "Elderspire",
+     "wild": "Elderspire Rift",
+     "lvl": 49,
+     "boss": "Sargar Grimhold",
+     "role": "Elder Drake",
+     "arch": "beast",
+     "variant": "drake",
+     "sig": [
+      "Ward",
+      "Earth Lances"
+     ],
+     "adorn": [
+      "crown",
+      "tail"
+     ],
+     "scale": 0.99,
+     "hp": 3437,
+     "atk": 73.4,
+     "def": 20,
+     "xp": 1718,
+     "gold": 648
+    },
+    {
+     "city": "Highwatch",
+     "wild": "Highwatch Rift",
+     "lvl": 49,
+     "boss": "Brumire Stormcaller",
+     "role": "Prism Golem",
+     "arch": "golem",
+     "variant": "crystal",
+     "sig": [
+      "Shard Burst",
+      "Meteor Fall"
+     ],
+     "adorn": [
+      "halo",
+      "tail"
+     ],
+     "scale": 0.95,
+     "hp": 5442,
+     "atk": 81.6,
+     "def": 26,
+     "xp": 2520,
+     "gold": 648
+    },
+    {
+     "city": "Dawnrest",
+     "wild": "Dawnrest Edge",
+     "lvl": 50,
+     "boss": "Krakesh Ashborn",
+     "role": "Masked Spirit",
+     "arch": "spirit",
+     "variant": "mask",
+     "sig": [
+      "Starfall",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "flames",
+      "chains"
+     ],
+     "scale": 1.26,
+     "hp": 5986,
+     "atk": 87.2,
+     "def": 23,
+     "xp": 3738,
+     "gold": 660
+    },
+    {
+     "city": "Highport",
+     "wild": "Highport Rift",
+     "lvl": 50,
+     "boss": "Skareth the Patient",
+     "role": "Cinder Brute",
+     "arch": "warlord",
+     "variant": "ember",
+     "sig": [
+      "Ward",
+      "Vortex"
+     ],
+     "adorn": [
+      "runes",
+      "chains"
+     ],
+     "scale": 1.34,
+     "hp": 3139,
+     "atk": 70.6,
+     "def": 22,
+     "xp": 1518,
+     "gold": 660
+    },
+    {
+     "city": "Hollowspire",
+     "wild": "Hollowspire Edge",
+     "lvl": 50,
+     "boss": "Sarvenn the Hungry",
+     "role": "Blood Knight",
+     "arch": "knight",
+     "variant": "crimson",
+     "sig": [
+      "Ring of Force",
+      "Seeker Orbs"
+     ],
+     "adorn": [
+      "wings",
+      "spikes"
+     ],
+     "scale": 1.17,
+     "hp": 4818,
+     "atk": 87.2,
+     "def": 25,
+     "xp": 2453,
+     "gold": 660
+    }
+   ]
+  }
+ ]
+}

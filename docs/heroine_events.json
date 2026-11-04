@@ -1,0 +1,469 @@
+{
+ "heroines": [
+  {
+   "id": "mimi",
+   "name": "Mimi Tamaki",
+   "short": "Mimi",
+   "title": "Beastkin scout",
+   "age": 20,
+   "bio": "Born in Pawsridge, a beastkin settlement far to the south. Her mother, a famous scout, vanished on an expedition three years ago. Mimi left home to become an adventurer and find her.",
+   "goal": "Reach S-rank and find her mother.",
+   "flaw": "Reckless. Hides loneliness behind endless cheer.",
+   "where": "Eldoria, south-west of the plaza, beside the bounty board of the guild outpost.",
+   "join": "Offers to team up at your first meeting. Accept and she joins at once; refuse and ask her later.",
+   "special": "Rapid Volley: Fires three quick arrows at her target.",
+   "gifts": [
+    [
+     "Loves (+8)",
+     "Honey Cake, Duskberry Tart"
+    ],
+    [
+     "Likes (+4)",
+     "Star Candy, Ashen Wolf Pelt, Sunbell Bouquet"
+    ],
+    [
+     "Dislikes (-5)",
+     "Antidote, Goblin Fang"
+    ]
+   ],
+   "meet": [
+    "Let's team up.",
+    "She joins your party and gains friendship.",
+    "Maybe later.",
+    "No change; she waits in Eldoria."
+   ],
+   "topics": [
+    [
+     "Hey hey! If you could only eat one thing forever, what would it be?",
+     "Best: \"Honey cake.\" (+4 affection). Avoid: \"I do not care about food.\" (-3 affection)."
+    ],
+    [
+     "Is my tail too fluffy for a scout? It snags on everything.",
+     "Best: \"It is perfect.\" (+4 affection). Avoid: \"Shave it.\" (-5 affection)."
+    ],
+    [
+     "Mom used to say a scout should never look back. I look back all the time.",
+     "Best: \"Looking back is how you find your way home.\" (+5 trust). Avoid: \"Your mom sounds harsh.\" (-3 trust)."
+    ]
+   ],
+   "dates": [
+    [
+     "Sakura Hill",
+     "\"It is not weird. I can hear mine too.\" (+6)"
+    ],
+    [
+     "Plaza café",
+     "\"Let us share one big cake.\" (+6)"
+    ],
+    [
+     "Riverside (Woods)",
+     "\"I'll catch you if you fall in.\" (+6)"
+    ],
+    [
+     "Flower garden",
+     "\"Smell this one with me.\" (+6)"
+    ],
+    [
+     "Lakeside at sunset",
+     "\"It is beautiful. So are you.\" (+7)"
+    ],
+    [
+     "Picnic in Dawnmeadow",
+     "\"I made it for you.\" (+7)"
+    ],
+    [
+     "Stargazing",
+     "\"Then we will find her star together.\" (+7)"
+    ],
+    [
+     "Evening walk",
+     "\"Hold my hand so you do not get lost.\" (+6)"
+    ]
+   ],
+   "quest": [
+    [
+     "Unlock",
+     "Friendship 30, then choose \"Is something on your mind?\""
+    ],
+    [
+     "Step 1",
+     "Find the bell charm in the slime meadow, south of the woodland road in the Whispering Woods. It glints on the ground only while this quest is active."
+    ],
+    [
+     "Finish",
+     "Give it back (\"Return the bell charm\"). +25 trust, +8 affection. Scene: Mimi's bell (riverside)."
+    ]
+   ],
+   "confess": "Hey... can I say something? Without running away for once? I keep looking back, like Mom told me not to. But lately I only look back to check that you are still there. So... what are we?",
+   "kiss": "Hey... the wind stopped. Did you notice? Everything is so quiet. Partner... can I... no, never mind. Unless...?",
+   "propose": "Is that... a ring? For a scout who loses everything? Yes! Yes yes yes! Mom, I found my home!",
+   "wed": "I am wearing a dress! Me! Do not laugh. ...Okay, you can laugh a little. Forever and ever. Partner. Spouse. Mine.",
+   "eve": [
+    "What was the best part of your day?",
+    "Coming home to you."
+   ],
+   "anniv": "Guess what day it is! Our anniversary! I made a cake. I ate a corner. It is still a cake. Another season of you. Best season ever."
+  },
+  {
+   "id": "lyra",
+   "name": "Lyra Sylvaren",
+   "short": "Lyra",
+   "title": "Elf scholar-mage",
+   "age": 112,
+   "bio": "A scholar of Sylvaran, the elf village of the north. Exiled for reading forbidden starlore about the eclipse. Lives a thousand years, and has quietly started to fear it.",
+   "goal": "Prove the eclipse can be reversed.",
+   "flaw": "Hides every feeling behind logic.",
+   "where": "The Whispering Woods, beside the lantern in the eastern part of the forest.",
+   "join": "Joins once you hold the Sanctum Key or Grukk has fallen (\"Ask her to join you\").",
+   "special": "Moon Mend: Heals the whole party when anyone falls below half health.",
+   "gifts": [
+    [
+     "Loves (+8)",
+     "Weathered Tome, Lumen Crystal"
+    ],
+    [
+     "Likes (+4)",
+     "Moonleaf, Moonleaf Tea, Silk Ribbon"
+    ],
+    [
+     "Dislikes (-5)",
+     "Goblin Fang, Slime Gel"
+    ]
+   ],
+   "meet": [
+    "I could use a scholar.",
+    "+5 trust.",
+    "You are a bit creepy.",
+    "-2 affection."
+   ],
+   "topics": [
+    [
+     "Elves live a thousand years. Humans, eighty. Statistically, attachment is inefficient.",
+     "Best: \"Then make every year count.\" (+5 trust). Avoid: \"You are right. It is pointless.\" (-4 affection)."
+    ],
+    [
+     "Do you know what the moon is made of?",
+     "Best: \"Old light.\" (+4 affection). Avoid: \"Cheese.\" (-2 affection)."
+    ],
+    [
+     "In your old world, you stepped in front of a bus for a stranger. Why?",
+     "Best: \"It was the right thing to do.\" (+5 trust). Avoid: \"I do not remember.\" (1 friendship)."
+    ]
+   ],
+   "dates": [
+    [
+     "Sakura Hill",
+     "\"Then what are you looking at?\" (+6)"
+    ],
+    [
+     "Plaza café",
+     "\"Try the moonleaf blend with me.\" (+6)"
+    ],
+    [
+     "Riverside (Woods)",
+     "\"Then it will remember us.\" (+6)"
+    ],
+    [
+     "Flower garden",
+     "\"Which one is your favourite?\" (+6)"
+    ],
+    [
+     "Lakeside at sunset",
+     "\"Then let it lie a little longer.\" (+7)"
+    ],
+    [
+     "Picnic in Dawnmeadow",
+     "\"You put up a ward for our picnic?\" (+6)"
+    ],
+    [
+     "Stargazing",
+     "\"Maybe because you are not alone.\" (+7)"
+    ],
+    [
+     "Evening walk",
+     "\"Let us take the long way.\" (+6)"
+    ]
+   ],
+   "quest": [
+    [
+     "Unlock",
+     "Friendship 30, then choose \"Is something on your mind?\""
+    ],
+    [
+     "Step 1",
+     "Bring her 2 Lumen Crystals (Crystal Shards) from the Crystal Caverns. +10 trust."
+    ],
+    [
+     "Step 2",
+     "With Lyra in your party, examine the Moon Shrine in the hidden glade at night. Earlier in the day she asks to come back after dark."
+    ],
+    [
+     "Finish",
+     "Scene: Moonlit shrine. +20 trust, +8 affection."
+    ]
+   ],
+   "confess": "I have a hypothesis. My heart rate rises by twenty percent in your presence. I would like to test it. For the rest of your life, if you will allow it.",
+   "kiss": "In elven custom, a first kiss is recorded in the family histories. I would like to give the historians something to write.",
+   "propose": "A ring. Humans and their circles. ...It is perfect. Yes. A thousand times, yes.",
+   "wed": "A thousand years, and this is the day I will remember first. I take you, my brief and brilliant star.",
+   "eve": [
+    "Tell me something about your old world.",
+    "In Kochi, the rain smelled like the sea."
+   ],
+   "anniv": "By my count, it has been exactly one season since our wedding. I have stopped counting the years. But I will always count this."
+  },
+  {
+   "id": "serah",
+   "name": "Serah Valemont",
+   "short": "Serah",
+   "title": "Knight captain",
+   "age": 26,
+   "bio": "Captain of Eldoria's dwindling garrison. Disowned by her noble house for choosing the guard. Her mentor, Ser Galen, fell to the Eclipsed Sentinel in the caverns.",
+   "goal": "Avenge Ser Galen and keep Eldoria standing.",
+   "flaw": "Pride. Cannot accept help without a fight.",
+   "where": "Eldoria, on the east side of the village by the garrison supply crates.",
+   "join": "Joins only after Grukk the Warlord is defeated.",
+   "special": "Shield Bash: Dashes in, staggers the target and draws enemies to her.",
+   "gifts": [
+    [
+     "Loves (+8)",
+     "Honey Cake, Duskberry Tart"
+    ],
+    [
+     "Likes (+4)",
+     "Iron Ore, Sunbell Bouquet, Star Candy"
+    ],
+    [
+     "Dislikes (-5)",
+     "Slime Gel, Ashen Wolf Pelt"
+    ]
+   ],
+   "meet": [
+    "I am here to help.",
+    "+3 trust. She tells you to prove it against Grukk.",
+    "Nice to meet you, Captain.",
+    "+3 affection."
+   ],
+   "topics": [
+    [
+     "A soldier's sword should never be dull. Is yours?",
+     "Best: \"Could you check it for me?\" (+4 trust). Avoid: \"Swords are for brutes.\" (-4 affection)."
+    ],
+    [
+     "You did not see me at the bakery this morning. I was inspecting it.",
+     "Best: \"Your secret is safe with me.\" (+5 affection). Avoid: \"Captains should not eat sweets.\" (-3 affection)."
+    ],
+    [
+     "Ser Galen used to say a shield protects best when it is not afraid of breaking.",
+     "Best: \"Then let me be your shield, for once.\" (+4 affection). Avoid: \"Shields always break eventually.\" (-3 trust)."
+    ]
+   ],
+   "dates": [
+    [
+     "Sakura Hill",
+     "\"Like the company?\" (+6)"
+    ],
+    [
+     "Plaza café",
+     "\"Order your favourite. My treat.\" (+6)"
+    ],
+    [
+     "Riverside (Woods)",
+     "\"You've come a long way, Serah.\" (+6)"
+    ],
+    [
+     "Flower garden",
+     "\"Then let me give you the time.\" (+7)"
+    ],
+    [
+     "Lakeside at sunset",
+     "\"You do not have to stand guard tonight.\" (+7)"
+    ],
+    [
+     "Picnic in Dawnmeadow",
+     "\"Then we are safe. Sit with me.\" (+6)"
+    ],
+    [
+     "Stargazing",
+     "\"Count them with me.\" (+7)"
+    ],
+    [
+     "Evening walk",
+     "\"Take my arm. They will salute less.\" (+6)"
+    ]
+   ],
+   "quest": [
+    [
+     "Unlock",
+     "Friendship 30, then choose \"Is something on your mind?\""
+    ],
+    [
+     "Step 1",
+     "Defeat the Eclipsed Sentinel with Serah in your party."
+    ],
+    [
+     "Step 2",
+     "Talk to her and choose \"Spar with her\"."
+    ],
+    [
+     "Finish",
+     "Scene: Sparring at dawn (training yard). +20 trust, +8 affection."
+    ]
+   ],
+   "confess": "Listen carefully, because I will only say this once. Ser Galen said not to be afraid of breaking. So. I love you. There. Respond. Now.",
+   "kiss": "I have faced goblins, wolves and the Sentinel without flinching. So why am I shaking right now?",
+   "propose": "A ring?! You are supposed to ask the captain first! ...Permission granted. Yes.",
+   "wed": "I have stood guard at a hundred weddings. I never thought I would stand at my own. I swear my blade and my heart. Both are yours.",
+   "eve": [
+    "Do you ever miss being a nobody?",
+    "Never. Not with you."
+   ],
+   "anniv": "At ease. Today is not a drill day. It is our anniversary. I swore my blade and my heart. I would swear them again today."
+  },
+  {
+   "id": "noelle",
+   "name": "Noelle Arden",
+   "short": "Noelle",
+   "title": "Guild receptionist",
+   "age": 23,
+   "bio": "Once a C-rank adventurer with a party called the Lantern Four. Goblins ambushed them on the north road; she was the only one to walk home. She has not left the counter since.",
+   "goal": "Find the courage to adventure again.",
+   "flaw": "Freezes up and avoids every risk.",
+   "where": "Eldoria, at the guild outpost counter in the south-west of the village. Meeting her registers you with the guild.",
+   "join": "Never fights. Her story is about finding the courage to adventure again.",
+   "special": "None (non-combat).",
+   "gifts": [
+    [
+     "Loves (+8)",
+     "Sunbell Bouquet, Moonleaf Tea"
+    ],
+    [
+     "Likes (+4)",
+     "Silk Ribbon, Star Candy, Honey Cake"
+    ],
+    [
+     "Dislikes (-5)",
+     "Bone Shard, Goblin Fang"
+    ]
+   ],
+   "meet": null,
+   "topics": [
+    [
+     "Do you like tea or coffee? I am keeping a list. For the guild. Not for me.",
+     "Best: \"Whatever you'd make.\" (+5 affection). Avoid: \"Neither.\" (-1 affection)."
+    ],
+    [
+     "Some adventurers say I am too quiet for the counter...",
+     "Best: \"Quiet is calming. I like it.\" (+5 affection). Avoid: \"They are right.\" (-4 affection)."
+    ],
+    [
+     "I used to have a party. The Lantern Four. ...Never mind.",
+     "Best: \"You can tell me, whenever you are ready.\" (+6 trust). Avoid: \"Okay.\" (0 friendship)."
+    ]
+   ],
+   "dates": [
+    [
+     "Sakura Hill",
+     "\"Then let's tell them something good.\" (+6)"
+    ],
+    [
+     "Plaza café",
+     "\"Today, look at me instead.\" (+6)"
+    ],
+    [
+     "Riverside (Woods)",
+     "\"You're safe. I'm right here.\" (+6)"
+    ],
+    [
+     "Flower garden",
+     "\"Then today is the first time. With me.\" (+7)"
+    ],
+    [
+     "Lakeside at sunset",
+     "\"So am I. You look beautiful.\" (+7)"
+    ],
+    [
+     "Picnic in Dawnmeadow",
+     "\"You are adorable, Noelle.\" (+7)"
+    ],
+    [
+     "Stargazing",
+     "\"Let us name a new one. Together.\" (+7)"
+    ],
+    [
+     "Evening walk",
+     "\"They are friendly because you are smiling.\" (+6)"
+    ]
+   ],
+   "quest": [
+    [
+     "Unlock",
+     "Friendship 30, then choose \"Is something on your mind?\""
+    ],
+    [
+     "Step 1",
+     "Reach guild rank D. The quest updates the next time you talk to her."
+    ],
+    [
+     "Step 2",
+     "After Grukk falls, pick up the Lantern Dagger in Grukk's clearing in the Whispering Woods."
+    ],
+    [
+     "Finish",
+     "Give it back (\"Return her dagger\"). +22 trust, +8 affection. Scene: The fourth lantern (guild)."
+    ]
+   ],
+   "confess": "I-I have something to report. Not a bounty. A... a feeling. It has been growing every time you come to my counter. I do not want to just watch you leave anymore.",
+   "kiss": "Um... I have a request. Not a bounty. A personal... um. Could we... I mean... oh, I cannot say it!",
+   "propose": "A r-ring?! I need to sit down. I am sitting down. Yes!",
+   "wed": "I am not afraid anymore. Not of anything. Not with you.",
+   "eve": [
+    "Can we just... sit? Like this?",
+    "As long as you want."
+   ],
+   "anniv": "Happy anniversary! I made a commemorative stamp! It says FOREVER. In big letters."
+  }
+ ],
+ "shared": {
+  "camp": [
+   [
+    "Mimi + Lyra",
+    "Lyra, can I touch your ears? Just once. For science. Choices: \"They are very pretty ears.\" or \"Mimi, personal space.\""
+   ],
+   [
+    "Lyra + Serah",
+    "Your frost slowed my advance twice today. Choices: \"Lyra has a point.\" or \"Serah has a point.\" or \"You are both right. Combine them.\""
+   ],
+   [
+    "Serah + Mimi",
+    "*crunch* Choices: \"Split it three ways.\" or \"Mimi, give it back.\" or \"Serah, let her have it.\""
+   ],
+   [
+    "Mimi + Lyra + Serah",
+    "What does the dawn mean to you guys? No choice; everyone gains friendship."
+   ]
+  ],
+  "banter": [
+   [
+    "Mimi and Lyra",
+    "\"Lyra! Race you to the next tree!\" / \"Running is an inefficient use of mana.\""
+   ],
+   [
+    "Serah and Mimi",
+    "\"Mimi, stop chasing butterflies. We are on patrol.\" / \"I am patrolling the butterflies!\""
+   ],
+   [
+    "Lyra and Serah",
+    "\"Captain, your armor squeaks at a distracting frequency.\" / \"Then think louder.\""
+   ],
+   [
+    "Mimi and Serah",
+    "\"Do you think our leader likes cake or tarts more?\" / \"...Cake. I have done reconnaissance.\""
+   ],
+   [
+    "Lyra and Mimi",
+    "\"Mimi, you are humming again.\" / \"It helps me walk! Hum with me!\""
+   ]
+  ]
+ }
+}

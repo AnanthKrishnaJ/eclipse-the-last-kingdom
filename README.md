@@ -46,15 +46,18 @@ You wake in a divine space before Aurelia, goddess of the dawn. What you say to 
 - Companions greet you each day, react to rain, nightfall and danger, banter with each other and point out treasure.
 - Adventurers' Guild bounties, a cottage with cooking, decorating and a garden, plus a day–night cycle, weather and seasons.
 - Cinematic boss fights: letterboxed intros with roar shockwaves, glowing wind-ups, after-image trails on charges, leaps and blinks, impact craters, slow-motion phase changes with banners and phase pips, a shaking boss bar on hits, and a victory finisher with light pillars and shattering.
-- Six areas, three bosses, side quests, a hidden quest, crafting, and New Game+.
+- The story's six areas and three bosses, side quests, a hidden quest, crafting, and New Game+.
+- The Realms of Aurel: twelve provinces beyond the story, from farmland and autumn forest to desert, snowfields, volcanic ash and the void rift. 108 walled cities, each with an enterable guild, inn, tavern, smithy, apothecary, store and temple, townsfolk and a lantern, and its own wilds with monsters, chests and a boss lair. Waystones in every plaza, and in Solmere and Eldoria, link them; each province opens after three bosses of the one before it fall. Levels 4 to 50, with province gear sold by smiths and dropped by bosses.
+- 108 unique bosses: six bodies (warlords, knights, sorcerers, beasts, golems and spirits) in 33 forms, each boss with its own name, colours, size, two adornments and two of fourteen signature moves.
+- Hand-drawn boss models at twice the detail: Grukk the tusked warlord with horned helm, fur mantle and war axe; the Eclipsed Sentinel in layered plate with tower shield and flanged mace; the Hollow Sovereign with crystal crown, halo, ribcage core and orbiting shards. Each animates its own wind-ups, swings, charges and phase changes.
 - Three save slots kept in the browser with automatic backups and recovery, gamepad support and touch controls.
 - Settings for music, effects and ambience volume, and a Reduced screen-effects mode.
 
 ## Walkthrough
 
-A complete illustrated walkthrough of Chapter I is in [walkthrough.pdf](walkthrough.pdf): every act and boss with tactics and stats, all side quests and Moonshards, the heroines, party play, the peoples of Aurel and crafting, with in-game screenshots (in `docs/walkthrough/`).
+A complete illustrated walkthrough is in [walkthrough.pdf](walkthrough.pdf): every act and boss with tactics and stats, all side quests and Moonshards, the Realms of Aurel with all 108 cities and bosses, every heroine event (meetings, chat answers, gifts, personal quests, dates, festival, confession, first kiss, proposal, wedding, married life, campfire talks), party play and crafting, with in-game screenshots (in `docs/walkthrough/`).
 
-The guide's text lives in `docs/walkthrough.json`. After editing it, run `python tools/build_walkthrough.py` (needs `pip install reportlab`) to rebuild the PDF.
+The guide's text lives in `docs/walkthrough.json`. The heroine and realm chapters are generated from the game itself: run `node tools/heroine_events.js` and `node tools/realm_list.js` after changing the game, then `python tools/build_walkthrough.py` (needs `pip install reportlab`) to rebuild the PDF.
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the game is built and the phased improvement plan.
 
