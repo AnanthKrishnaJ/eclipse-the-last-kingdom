@@ -13,8 +13,9 @@ from reportlab.lib.enums import TA_CENTER
 from reportlab.lib.pagesizes import A4
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
-from reportlab.platypus import (BaseDocTemplate, Frame, KeepTogether, NextPageTemplate, PageBreak,
+from reportlab.platypus import (BaseDocTemplate, Frame, Image, KeepTogether, NextPageTemplate, PageBreak,
                                 PageTemplate, Paragraph, Spacer, Table, TableStyle)
+from reportlab.lib.utils import ImageReader
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = json.loads((ROOT / "docs" / "walkthrough.json").read_text(encoding="utf-8"))
@@ -31,6 +32,7 @@ S = {
     "li": ParagraphStyle("li", fontName="Times-Roman", fontSize=11, leading=14.5, textColor=INK, leftIndent=14, bulletIndent=3, spaceAfter=3),
     "td": ParagraphStyle("td", fontName="Times-Roman", fontSize=10, leading=13, textColor=INK),
     "tk": ParagraphStyle("tk", fontName="Times-Bold", fontSize=10, leading=13, textColor=HexColor("#4a2410")),
+    "cap": ParagraphStyle("cap", fontName="Times-Italic", fontSize=9.5, leading=12, textColor=MUTE, alignment=TA_CENTER, spaceAfter=8),
     "tip": ParagraphStyle("tip", fontName="Times-Italic", fontSize=10.5, leading=14, textColor=INK),
     "toc": ParagraphStyle("toc", fontName="Times-Roman", fontSize=12.5, leading=20, textColor=INK),
 }
@@ -44,7 +46,11 @@ def cover(c, doc):
     c.saveState()
     c.setFillColor(NIGHT)
     c.rect(0, 0, W, H, fill=1, stroke=0)
-    cx, cy = W / 2, H * .62
+    art = ROOT / "docs" / "walkthrough" / "races.jpg"
+    if art.exists():
+        aw = W * .74
+        c.drawImage(str(art), (W - aw) / 2, 30, aw, aw * 598 / 720, mask=None)
+    cx, cy = W / 2, H * .8
     for r, col in ((120, "#3a1e0c"), (104, "#7a4214"), (92, "#e3923f"), (86, "#f6c46d")):
         c.setFillColor(HexColor(col))
         c.circle(cx, cy, r, fill=1, stroke=0)
@@ -52,15 +58,15 @@ def cover(c, doc):
     c.circle(cx, cy, 82, fill=1, stroke=0)
     c.setFillColor(HexColor("#f1d48a"))
     c.setFont("Times-Bold", 50)
-    c.drawCentredString(cx, H * .36, "ECLIPSE")
+    c.drawCentredString(cx, H * .62, "ECLIPSE")
     c.setFont("Times-Bold", 17)
-    c.drawCentredString(cx, H * .36 - 30, "THE LAST KINGDOM")
+    c.drawCentredString(cx, H * .62 - 30, "THE LAST KINGDOM")
     c.setStrokeColor(GOLD)
     c.setLineWidth(.8)
-    c.line(cx - 120, H * .36 - 46, cx + 120, H * .36 - 46)
+    c.line(cx - 140, H * .62 - 46, cx + 140, H * .62 - 46)
     c.setFillColor(HexColor("#cbb88e"))
     c.setFont("Helvetica", 11)
-    c.drawCentredString(cx, H * .36 - 66, DATA["subtitle"])
+    c.drawCentredString(cx, H * .62 - 66, DATA["subtitle"])
     c.restoreState()
 
 
@@ -81,6 +87,17 @@ def page(c, doc):
 
 
 def block_flow(b):
+    if "img" in b:
+        path = ROOT / b["img"]
+        iw, ih = ImageReader(str(path)).getSize()
+        maxw, maxh = W - 52 * mm, 100 * mm
+        k = min(maxw / iw, maxh / ih)
+        im = Image(str(path), width=iw * k, height=ih * k)
+        frame = Table([[im]], colWidths=[iw * k + 6])
+        frame.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), 1.2, GOLD_D), ("BACKGROUND", (0, 0), (-1, -1), NIGHT),
+                                   ("LEFTPADDING", (0, 0), (-1, -1), 3), ("RIGHTPADDING", (0, 0), (-1, -1), 3),
+                                   ("TOPPADDING", (0, 0), (-1, -1), 3), ("BOTTOMPADDING", (0, 0), (-1, -1), 3)]))
+        return [Spacer(1, 4), KeepTogether([frame, Spacer(1, 3), Paragraph(esc(b.get("cap", "")), S["cap"])])]
     if "p" in b:
         return [Paragraph(esc(b["p"]), S["p"])]
     if "h" in b:

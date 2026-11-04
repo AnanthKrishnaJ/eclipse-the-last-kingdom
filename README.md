@@ -30,6 +30,10 @@ You wake in a divine space before Aurelia, goddess of the dawn. What you say to 
 - Bag page laid out as an equipment screen (paper doll) with attributes, a 24-slot inventory, filters, sorting, hover tooltips and item comparison.
 - Full character creation in tabs: name, gender, skin, eye colour and shape; 16 hairstyles, hair colour and headband; war paint, scars, glasses and earrings; outfit and coat dyes; and class. Live portrait, a turnable walking sprite and a randomizer.
 - Classic JRPG interface: blue windows with silver edges, a pointing-hand cursor, a pause menu with icons and a hero status panel, a dialogue window with portrait, and a hero medallion on the HUD.
+- Screen-wide polish: soft bloom on lights, colour grading by place and time of day (warm days, orange dusks, blue nights, violet caves), a vignette, light shafts through the forest canopy, and drifting dust, pollen, leaves, fireflies or crystal sparks.
+- Townsfolk of many peoples: humans, elves, dwarves, halflings, catfolk, foxfolk, wolfkin, rabbitfolk, orcs, dragonkin, demonkin and fae, each with their own ears, horns, tusks, tails, wings or scales.
+- Heroines stand out with a glow in their own colour, sparkles and a slightly taller frame.
+- Go solo: disband the party from the Party tab or the pause menu for Lone Wolf (+15% XP), and regroup the same companions later.
 - Every character sprite is drawn at twice the old resolution with smoothed edges and a soft rim light, idle breathing and a walk bob.
 - The protagonist: messy black hair over dark eyes, a white shirt under a gold-trimmed black coat with red lining and long coat-tails, crossing leather straps, a red sash, a blue-gem pendant and tall gold-cuffed boots. Character creation can swap the coat for class gear.
 - 16 hairstyles, from Messy and Wolf cut to Hime cut, Braid and Twin buns, each drawn for portraits and in-game sprites. Restyle any time at the Wardrobe's barber.
@@ -48,7 +52,7 @@ You wake in a divine space before Aurelia, goddess of the dawn. What you say to 
 
 ## Walkthrough
 
-A full walkthrough of Chapter I is in [walkthrough.pdf](walkthrough.pdf).
+A complete illustrated walkthrough of Chapter I is in [walkthrough.pdf](walkthrough.pdf): every act and boss with tactics and stats, all side quests and Moonshards, the heroines, party play, the peoples of Aurel and crafting, with in-game screenshots (in `docs/walkthrough/`).
 
 The guide's text lives in `docs/walkthrough.json`. After editing it, run `python tools/build_walkthrough.py` (needs `pip install reportlab`) to rebuild the PDF.
 
