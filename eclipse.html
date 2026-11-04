@@ -6082,6 +6082,121 @@ drawHumanoid=function(g,x,y,o){const s=o.scale||1,dir=o.dir||0,side=dir>=2,tm=o.
   if(dir!==1)drawW();
   g.restore()};
 
+
+/* ================= MODELS 2: hair strands and shine, napes, cloth shading, fantasy races ================= */
+const SHORT_HS=new Set(['messy','spiky','short','swept','slick','wolf','curly']);
+const RACES={
+  human:{label:'',skins:['#f6d6c0','#e8bc98','#d0a078','#a8704a','#7a4a2a']},
+  elf:{label:'Elf',skins:['#fbe6d8','#f0dcc8','#e6d2bc'],hair:['#e8e4dc','#c8b878','#bfd6ff','#2a3a2a','#8ad0a0'],flags:{elf:true}},
+  dwarf:{label:'Dwarf',skins:['#e8b896','#d09a74','#b8805a'],hair:['#a83a2a','#5a3a24','#2a1a14','#c8a060'],scale:.84,beard:true},
+  halfling:{label:'Halfling',skins:['#f6d6c0','#e8bc98'],hair:['#8a5a2a','#c8a060','#5a3a24'],scale:.76,hs:['curly','messy','bob']},
+  cat:{label:'Catfolk',skins:['#fbdcc4','#f0d0b8','#e8bc98'],hair:['#ff9a3a','#2a2a2a','#e8e4dc','#c88a4a'],flags:{kemono:true}},
+  fox:{label:'Foxfolk',skins:['#fbdcc4','#f0d0b8'],hair:['#e8742a','#d85a1a','#f0e0c8'],flags:{kemono:true}},
+  wolf:{label:'Wolfkin',skins:['#e8bc98','#d0a078','#a8704a'],hair:['#6a6a72','#3a3a42','#d8d0c0'],flags:{kemono:true}},
+  rabbit:{label:'Rabbitfolk',skins:['#fbe6d8','#f6d6c0'],hair:['#f4f0e6','#c8a888','#5a3a24'],ears:'rabbit'},
+  orc:{label:'Orc',skins:['#7aa05a','#6a8a4a','#8aa86a'],hair:['#1a1a14','#3a2a1a'],scale:1.08,tusks:true},
+  dragon:{label:'Dragonkin',skins:['#e8bc98','#d0a078'],hair:['#a8282a','#2a3a6a','#1a5a4a','#e0b84a'],horns:'dragon',tail:'dragon',scales:true},
+  demon:{label:'Demonkin',skins:['#c87a8a','#a85a7a','#d8a0b8'],hair:['#1a1a2a','#e8e4dc','#5a1a3a'],horns:'demon',tail:'demon'},
+  fairy:{label:'Fae',skins:['#fbe6d8','#e8f4f0'],hair:['#8ad0f0','#f0a8d8','#c8f0a8','#fff0a8'],scale:.72,wings:true,flags:{elf:true}}};
+const RACE_POOL=[['human',40],['elf',11],['dwarf',9],['cat',7],['fox',5],['wolf',5],['rabbit',4],['orc',6],['dragon',5],['demon',4],['halfling',3],['fairy',2]];
+const RACE_LINES={elf:'Your kind lives so briefly. It makes everything you do seem brave.',dwarf:'Good stone, good ale, good company. In that order.',halfling:'Second breakfast is not a joke. It is a schedule.',
+  cat:'My ears twitch when it is about to rain. They are twitching.',fox:'People say foxfolk are tricky. People say a lot of things.',wolf:'I can smell the woods on you. Pine and trouble.',rabbit:'I heard you coming from three streets away. Big boots.',
+  orc:'Yes, the tusks are real. No, you may not touch them.',dragon:'My grandmother could breathe fire. I mostly get hiccups.',demon:'The horns scare the children. Then they ask to hold my tail.',fairy:'I am small, not fragile. Remember the difference.'};
+function pickRace(R){let n=R()*RACE_POOL.reduce((a,b)=>a+b[1],0);for(const[k,w]of RACE_POOL){n-=w;if(n<=0)return k}return'human'}
+/* pixel helpers on a finished 24x35 frame */
+function hexOf(d,i){return'#'+((1<<24)|(d[i]<<16)|(d[i+1]<<8)|d[i+2]).toString(16).slice(1)}
+function spritePost(c,S,dir){const W=c.width,H=c.height,g=c.getContext('2d'),id=g.getImageData(0,0,W,H),d=id.data,side=dir>=2,back=dir===1;
+  const at=(x,y)=>(x<0||y<0||x>=W||y>=H)?-1:(y*W+x)*4,op=(x,y)=>{const i=at(x,y);return i>=0&&d[i+3]>0},col=(x,y)=>{const i=at(x,y);return i>=0&&d[i+3]?hexOf(d,i):null};
+  const set=(x,y,c)=>{const i=at(x,y);if(i<0||!c)return;const v=parseInt(c.slice(1),16);d[i]=v>>16&255;d[i+1]=v>>8&255;d[i+2]=v&255;d[i+3]=255};
+  const added=[];const put=(x,y,c,behind)=>{if(x<0||y<0||x>=W||y>=H)return;if(behind&&op(x,y))return;set(x,y,c);added.push([x,y])};
+  let top=H;for(let y=0;y<H&&top===H;y++)for(let x=0;x<W;x++)if(op(x,y)){top=y;break}
+  /* ---- hair: crown light, shine ring, strands, darker tips ---- */
+  if(S.hair&&!S.helm&&!S.skull){const hr=rampOf(S.hair),HS=new Set([hr.d,hr.m,hr.l,hr.h].map(s=>s.toLowerCase())),isH=(x,y)=>HS.has(col(x,y)||'');
+    const mask=[];for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(isH(x,y))mask.push([x,y]);
+    if(mask.length>6){const tops={};for(const[x,y]of mask)if(tops[x]==null||y<tops[x])tops[x]=y;
+      const sk=rampOf(S.skin||'#f6d6c0'),hs=S.hs||'short',shortCut=back&&SHORT_HS.has(hs)&&!S.hood&&!S.hat;
+      let bottom=0;for(const[x,y]of mask)if(x>=9&&x<=14&&y<22&&y>bottom)bottom=y;
+      for(const[x,y]of mask){const rel=y-tops[x];let c=hr.m;
+        if(rel<=0)c=hr.l;else if(rel===2||rel===3&&back){c=(x+y)%3?hr.h:hr.l}else if(rel===1)c=hr.l;
+        else{if((x*3+(y>>1))%7===0)c=hr.d;if(!isH(x,y+1)&&!op(x,y+1))c=hr.d;if(!side&&x>=16||side&&x<=6)c=c===hr.m?shade(hr.m,-.12):c}
+        if(isH(x,y+1)===false&&op(x,y+1)&&rel>3)c=hr.d;
+        set(x,y,c)}
+      if(shortCut&&bottom>12){for(let x=9;x<=14;x++){if(isH(x,bottom))set(x,bottom,x===9||x===14?sk.d:sk.m);if(isH(x,bottom-1))set(x,bottom-1,x%2?sk.d:hr.d)}
+        for(let x=7;x<=16;x++)if(isH(x,bottom)&&(x<9||x>14))set(x,bottom,hr.d)}
+      if(back&&!SHORT_HS.has(hs)){let lb=0;for(const[x,y]of mask)if(y>lb)lb=y;for(const[x,y]of mask)if(y===lb&&x%2===0)set(x,y,'#2a1622')}}}
+  /* ---- clothes: light from the left, shade on the right ---- */
+  if(S.top){const tr=rampOf(S.top);for(let y=top+14;y<H-2;y++)for(let x=0;x<W;x++){const c=col(x,y);if(c===tr.m.toLowerCase()){if(!side&&x>=14||side&&x>=13)set(x,y,shade(tr.m,-.14));else if(!side&&x<=9&&(x+y)%5===0)set(x,y,shade(tr.m,.1))}}}
+  /* ---- faces: cheeks ---- */
+  if(dir===0&&S.fem&&!S.helm){const sk=rampOf(S.skin||'#f6d6c0'),cy=top+11;for(const x of[8,15]){if(col(x,cy)===sk.m.toLowerCase())set(x,cy,mixC(sk.m,'#ff8aa0',.35))}}
+  /* ---- races ---- */
+  const race=S.race&&RACES[S.race];
+  if(race){const sk=rampOf(S.skin||'#f6d6c0'),hy=top;
+    if(race.tusks){if(!side){put(9,hy+12,'#f4ecd8');put(14,hy+12,'#f4ecd8')}else put(16,hy+12,'#f4ecd8')}
+    if(race.scales&&!back){const sc=shade(S.skin,-.18);if(!side){put(7,hy+10,sc);put(16,hy+10,sc);put(7,hy+11,sc);put(16,hy+11,sc)}else put(14,hy+10,sc)}
+    if(race.ears==='rabbit'){const hr=rampOf(S.hair);const ear=(x)=>{for(let j=1;j<=7;j++){put(x,hy-j+2,hr.m);put(x+1,hy-j+2,j>1&&j<7?'#f6a6ae':hr.l)}};if(!side){ear(7);ear(15)}else ear(10)}
+    if(race.horns==='dragon'){const H1='#4a3a3a',H2='#8a7a6a';const horn=(x,s)=>{put(x,hy+1,H1);put(x+s,hy,H1);put(x+s,hy-1,H2);put(x+2*s,hy-2,H2);put(x+2*s,hy-3,'#c8b8a0')};if(!side){horn(7,-1);horn(16,1)}else horn(9,-1)}
+    if(race.horns==='demon'){const H1='#2a1a24',H2='#7a2a3a';if(!side){put(8,hy,H1);put(8,hy-1,H2);put(7,hy-2,H2);put(15,hy,H1);put(15,hy-1,H2);put(16,hy-2,H2)}else{put(11,hy,H1);put(11,hy-1,H2);put(10,hy-2,H2)}}
+    if(race.tail){const tc=race.tail==='dragon'?shade(S.hair,-.1):'#3a1a2a',tip=race.tail==='dragon'?shade(S.hair,.2):'#c8303a';
+      if(dir===0){for(let j=0;j<6;j++)put(17+(j>>1),26-j,tc,true);put(20,21,tip,true)}
+      else if(back){for(let j=0;j<8;j++){put(11,23+j,tc);if(race.tail==='dragon'&&j<5)put(12,23+j,tc)}put(11,31,tip);put(12,31,tip)}
+      else{for(let j=0;j<6;j++){put(7-j,24+j,tc,true);if(race.tail==='dragon'&&j<4)put(7-j,25+j,tc,true)}put(1,30,tip,true);put(2,30,tip,true)}}
+    if(race.wings){const w1='#d8f0ff',w2='#a8d8f8';const wing=(x0,s)=>{for(let j=0;j<9;j++)for(let i=0;i<4-(j>5?2:0);i++)put(x0+s*i,15+j-(i>>1),i===3-(j>5?2:0)||j===0?w2:w1,true)};if(dir!==3)wing(4,-1),wing(19,1);else wing(4,-1)}
+    /* outline whatever we added */
+    for(const[x,y]of added)for(const[a,b]of[[1,0],[-1,0],[0,1],[0,-1]])if(!op(x+a,y+b))set(x+a,y+b,'#1e1020')}
+  g.putImageData(id,0,0);return c}
+const _buildSpriteM2=buildSprite;buildSprite=function(S,dir,fr,pose,blink){const r=RACES[S.race];if(r&&r.flags)S=Object.assign({},S,r.flags);return spritePost(_buildSpriteM2(S,dir,fr,pose,blink),S,dir)};
+/* races join the townsfolk */
+const _crowdPalM2=crowdPal;crowdPal=function(R,role){const p=_crowdPalM2(R,role),race=/Child/.test(role)?'human':pickRace(R),D=RACES[race],pk=a=>a[Math.floor(R()*a.length)];p.race=race;
+  p.skin=pk(D.skins);if(D.hair)p.hair=pk(D.hair);if(D.hs)p.hs=pk(D.hs);if(D.beard&&!p.fem)p.beard=p.hair;return p};
+const _addCrowdsM2=addCrowds;addCrowds=function(){_addCrowdsM2();for(const[k,d]of Object.entries(NPCDEF)){if(!k.startsWith('cr_')||!d.pal.race)continue;const D=RACES[d.pal.race];if(!D||!D.label)continue;
+  d.title=D.label+' '+d.title.charAt(0).toLowerCase()+d.title.slice(1);if(D.scale)d.scale=(d.scale||1)*D.scale;if(RACE_LINES[d.pal.race])d.lines=d.lines.concat([RACE_LINES[d.pal.race]])}};
+
+/* ================= HEROINES: glow outline, sparkles, a little taller ================= */
+const HERO_GLOW={mimi:'#ffd84a',lyra:'#7ff0ff',serah:'#ff6a7a',noelle:'#d89aff'};
+for(const[k,c]of Object.entries(HERO_GLOW))if(HEROINES[k]){HEROINES[k].pal.heroine=c;HEROINES[k].pal.fem=true;if(NPCDEF[k]&&NPCDEF[k].pal)NPCDEF[k].pal.heroine=c}
+const GLOWC=new Map();function glowOf(img,c){const k=c;let m=GLOWC.get(img);if(!m){m={};GLOWC.set(img,m)}if(m[k])return m[k];const s=mkCanvas(img.width,img.height),g=s.getContext('2d');g.drawImage(img,0,0);g.globalCompositeOperation='source-in';g.fillStyle=c;g.fillRect(0,0,s.width,s.height);return m[k]=s}
+const _drawHumM2=drawHumanoid;drawHumanoid=function(g,x,y,o){const hc=o.pal&&o.pal.heroine;if(!hc)return _drawHumM2(g,x,y,o);const tm=o.time!=null?o.time:G.t;
+  g.save();g.translate(Math.round(x),Math.round(y));g.globalCompositeOperation='lighter';const gr=g.createRadialGradient(0,0,0,0,0,12);gr.addColorStop(0,hc+'55');gr.addColorStop(1,hc+'00');g.fillStyle=gr;g.beginPath();g.ellipse(0,0,12,4,0,0,TAU);g.fill();g.restore();
+  /* glow outline: draw the tinted sprite around the real one */
+  const real=g.drawImage;let first=null;g.drawImage=function(img,...a){if(!first&&img.width===48&&a.length===4){first=img;const gl=glowOf(img,hc);g.save();g.globalAlpha*=.85;for(const[dx,dy]of[[.5,0],[-.5,0],[0,.5],[0,-.5]])real.call(g,gl,a[0]+dx,a[1]+dy,a[2],a[3]);g.restore()}return real.call(g,img,...a)};
+  try{_drawHumM2(g,x,y,Object.assign({},o,{scale:(o.scale||1)*1.06}))}finally{g.drawImage=real}
+  g.save();g.globalCompositeOperation='lighter';for(let i=0;i<3;i++){const a=tm*1.3+i*2.1,r=9+Math.sin(tm*2+i)*2,px=x+Math.cos(a)*r,py=y-16+Math.sin(a*1.3)*12,k=(Math.sin(tm*4+i*1.7)+1)/2;if(k<.25)continue;g.fillStyle=hc;g.globalAlpha=k*.9;g.fillRect(px-.5,py-1.5,1,3);g.fillRect(px-1.5,py-.5,3,1);g.fillStyle='#ffffff';g.fillRect(px-.5,py-.5,1,1)}g.restore()};
+
+/* ================= BUILDINGS 2: depth on every facade, props at every door, beams in every interior ================= */
+const _genHouseB2=genHouse;genHouse=function(h){const r=_genHouseB2(h);const c=h.cv;if(!c||c._b2)return r;c._b2=true;const g=c.getContext('2d'),W=c.width,H=c.height;
+  const id=g.getImageData(0,0,W,H),d=id.data,a=(x,y)=>x>=0&&y>=0&&x<W&&y<H&&d[(y*W+x)*4+3]>0,edge=[];
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){if(!a(x,y))continue;if(!a(x-1,y)||!a(x+1,y)||!a(x,y-1))edge.push((y*W+x)*4)}for(const i of edge){d[i]*=.72;d[i+1]*=.7;d[i+2]*=.76}g.putImageData(id,0,0);
+  g.save();g.globalCompositeOperation='source-atop';const gr=g.createLinearGradient(0,0,0,H);gr.addColorStop(0,'rgba(255,236,200,.10)');gr.addColorStop(.6,'rgba(0,0,0,0)');gr.addColorStop(1,'rgba(20,8,30,.28)');g.fillStyle=gr;g.fillRect(0,0,W,H);
+  const gx=g.createLinearGradient(0,0,W,0);gx.addColorStop(0,'rgba(255,240,210,.06)');gx.addColorStop(1,'rgba(20,8,30,.12)');g.fillStyle=gx;g.fillRect(0,0,W,H);g.restore();return r};
+Object.assign(NEWOBJ,{
+  flowerpot:(g,o,t)=>{const[x,y,F]=fq(g,o);g.fillStyle='rgba(20,8,24,.28)';g.fillRect(x-5,y-1,10,3);F(-4,-6,8,6,'#a8583a');F(-5,-7,10,2,'#c8784a');const cs=o.c||['#ff7aa8','#ffd84a','#ff6a4a','#c89aff'][o.tx%4];
+    for(let i=0;i<5;i++){F(-4+i*2,-9-(i%2)*2,1,3,'#3a8a3a');F(-5+i*2,-11-(i%2)*2-Math.round(Math.sin(t*2+i)*.4),3,2,cs);F(-4+i*2,-11-(i%2)*2,1,1,'#fff3c0')}},
+  doorlamp:(g,o,t,nf)=>{const[x,y,F]=fq(g,o);F(-1,-30,2,4,'#2a1a14');F(-3,-27,6,6,'#3a2a1a');F(-2,-26,4,4,nf>.35?'#ffd27a':'#e8d0a0');if(nf>.35){g.save();g.globalCompositeOperation='lighter';g.fillStyle=`rgba(255,200,110,${.22*nf})`;g.beginPath();g.arc(x,y-24,14+Math.sin(t*6+x),0,TAU);g.fill();g.restore()}},
+  bush:(g,o,t)=>{const[x,y,F]=fq(g,o);g.fillStyle='rgba(20,8,24,.3)';g.beginPath();g.ellipse(x,y,8,3,0,0,TAU);g.fill();const cs=['#2f7a34','#3a8a3a','#4a9a4a'];[[-4,-6,5],[3,-6,5],[0,-9,6]].forEach(([a,b,r],i)=>{g.fillStyle=cs[i];g.beginPath();g.arc(x+a,y+b-Math.sin(t+i+x)*.3,r,0,TAU);g.fill()});F(-2,-12,2,1,'#6aba5a');F(2,-9,1,1,'#ffd84a')}});
+const _buildWorldB2=buildWorld;buildWorld=function(){_buildWorldB2();
+  for(const m of Object.values(G.maps)){if(m.interior||!m.houses||!m.houses.length)continue;const busy=new Set(m.objs.map(o=>o.tx+','+o.ty));
+    const free=(x,y)=>x>0&&y>0&&x<m.w-1&&y<m.h-1&&!solidT(m,x,y)&&!busy.has(x+','+y)&&!m.houses.some(h=>x>=h.tx&&x<h.tx+h.w&&y>=h.ty&&y<h.ty+h.h);
+    for(const h of m.houses){if(!h.door)continue;const dy=h.door.y+1,R=mulberry32(h.tx*13+h.ty*7);
+      for(const s of[-1,1]){const x=h.door.x+s*(h.w>4?2:1);if(free(x,dy)&&R()<.85){addObj(m,R()<.6?'flowerpot':'bush',x,dy,{hide:()=>true});busy.add(x+','+dy)}}
+      const lx=h.door.x+1;if(m.id!=='kochi'){const o=addObj(m,'doorlamp',lx,h.door.y,{hide:()=>true});o.y=(h.door.y+1)*T+2}
+      for(const cx of[h.tx-1,h.tx+h.w]){const yy=h.ty+h.h-1;if(free(cx,yy)&&R()<.45){addObj(m,'bush',cx,yy,{hide:()=>true});busy.add(cx+','+yy)}}}}};
+const _genTilesB2=genTiles;genTiles=function(){_genTilesB2();
+  tileSet('iwtop',(g,v)=>{g.fillStyle='#2e2228';g.fillRect(0,0,16,16);g.fillStyle='#3e2e30';g.fillRect(0,0,16,2);g.fillStyle='#4a3428';for(let y=3;y<14;y+=5){g.fillRect(0,y,16,3);g.fillStyle='#5a4030';g.fillRect(0,y,16,1);g.fillStyle='#4a3428'}g.fillStyle='#1a1418';g.fillRect(0,14,16,2);if(v%2){g.fillStyle='#6a5040';g.fillRect(7,4,2,1)}},151)};
+
+/* ================= PARTY: disband and go solo, regroup later ================= */
+function goSolo(){if(!(G.partyIds||[]).length){toast('You are already travelling alone.');return}syncPartyHp();G.lastParty=G.partyIds.slice();G.partyIds=[];buildParty();refreshNpcs();AudioSys.play('ui');
+  toast('Party disbanded. Your companions wait at their usual places. Lone Wolf: +15% XP while solo.','q')}
+function regroup(){const ids=(G.lastParty||[]).filter(k=>rel(k).recruited).slice(0,3);if(!ids.length){toast('Nobody to regroup with. Recruit companions first.','bad');return}G.partyIds=ids;G.lastParty=null;buildParty();refreshNpcs();AudioSys.play('ui');toast('The party is back together: '+ids.map(k=>H(k).short).join(', ')+'.','q')}
+const _renderPartyS=renderParty;renderParty=function(B){_renderPartyS(B);const solo=!(G.partyIds||[]).length,can=(G.lastParty||[]).some(k=>rel(k).recruited);
+  const bar=document.createElement('div');bar.className='row-btns';bar.style.cssText='justify-content:flex-start;margin:0 0 10px';
+  bar.innerHTML=solo?`<button class="btn sm" data-solo="regroup" ${can?'':'disabled'}>Regroup party</button><span class="hint" style="align-self:center">Travelling solo · Lone Wolf +15% XP</span>`:`<button class="btn ghost sm" data-solo="solo">Disband party · go solo</button>`;
+  B.insertBefore(bar,B.firstChild);bar.querySelector('[data-solo]').onclick=e=>{e.currentTarget.dataset.solo==='solo'?goSolo():regroup();renderParty(B)}};
+const _gainXpS=Player.prototype.gainXp;Player.prototype.gainXp=function(n){if(!(G.partyIds||[]).length&&G.rel&&Object.values(G.rel).some(r=>r.recruited))n=Math.round(n*1.15);return _gainXpS.call(this,n)};
+const _serializeS=serialize;serialize=function(){return Object.assign(_serializeS(),{lastParty:G.lastParty||null})};
+const _startFromS=startFrom;startFrom=function(d,slot){G.lastParty=d.lastParty||null;return _startFromS(d,slot)};
+{const pm=$('.pause-pnl .pmenu'),b=document.createElement('button');b.dataset.p='solo';const lbl=()=>{const solo=!(G.partyIds||[]).length;b.innerHTML=`<img src="${iconUrl('pm_solo','heart','#f1d48a')}" alt="">${solo?'Regroup party':'Go solo'}`;b.hidden=solo&&!(G.lastParty||[]).length};
+  pm.insertBefore(b,pm.querySelector('[data-p=save]'));b.onclick=()=>{(G.partyIds||[]).length?goSolo():regroup();lbl()};const _op=openPause;openPause=function(){_op();lbl()}}
+
 boot();
 </script>
 
