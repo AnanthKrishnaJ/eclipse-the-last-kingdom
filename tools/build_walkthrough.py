@@ -2,12 +2,10 @@
 
     python tools/build_walkthrough.py
 
-Writes walkthrough.pdf at the repo root (served next to eclipse.html) and
-refreshes the in-game copy between the WALKTHROUGH-DATA markers in eclipse.html.
+Writes walkthrough.pdf at the repo root.
 Requires: pip install reportlab
 """
 import json
-import re
 from pathlib import Path
 
 from reportlab.lib.colors import HexColor
@@ -127,17 +125,6 @@ def build_pdf(out):
     doc.build(story)
 
 
-def inject_game(html_path):
-    text = html_path.read_text(encoding="utf-8")
-    data = json.dumps(DATA, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
-    new = f"/*WALKTHROUGH-DATA*/const WALKTHROUGH={data};/*/WALKTHROUGH-DATA*/"
-    pat = re.compile(r"/\*WALKTHROUGH-DATA\*/.*?/\*/WALKTHROUGH-DATA\*/", re.S)
-    if not pat.search(text):
-        raise SystemExit("WALKTHROUGH-DATA markers not found in eclipse.html")
-    html_path.write_text(pat.sub(lambda _: new, text), encoding="utf-8", newline="")
-
-
 if __name__ == "__main__":
     build_pdf(ROOT / "walkthrough.pdf")
-    inject_game(ROOT / "eclipse.html")
-    print("Wrote walkthrough.pdf and refreshed the in-game walkthrough.")
+    print("Wrote walkthrough.pdf")

@@ -47,9 +47,9 @@ You wake in a divine space before Aurelia, goddess of the dawn. What you say to 
 
 ## Walkthrough
 
-A full walkthrough is in [walkthrough.pdf](walkthrough.pdf). It is also built into the game: choose **Walkthrough** on the title screen or in the pause menu, where a button downloads the PDF.
+A full walkthrough of Chapter I is in [walkthrough.pdf](walkthrough.pdf).
 
-The guide's text lives in `docs/walkthrough.json`. After editing it, run `python tools/build_walkthrough.py` (needs `pip install reportlab`) to rebuild the PDF and the in-game copy.
+The guide's text lives in `docs/walkthrough.json`. After editing it, run `python tools/build_walkthrough.py` (needs `pip install reportlab`) to rebuild the PDF.
 
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the game is built and the phased improvement plan.
 
