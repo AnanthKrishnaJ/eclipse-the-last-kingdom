@@ -1,0 +1,245 @@
+{
+  "title": "Eclipse: The Last Kingdom",
+  "subtitle": "Official Walkthrough · Chapter I: The Fading Light",
+  "sections": [
+    {
+      "id": "basics",
+      "title": "Before You Begin",
+      "blocks": [
+        {"p": "This guide follows the main story from the monsoon night in Kakkanad to the fall of the Hollow Sovereign, then covers side quests, the hidden quest, companions and the post-game. Directions use the in-game map (M): north is up."},
+        {"h": "Difficulty"},
+        {"list": [
+          "Easy: weaker, slower enemies and faster healing. Best for the story.",
+          "Normal: the intended balance. Dawn's Grace revives you once a day.",
+          "Hard: tougher enemies that wind up faster; slower natural healing.",
+          "Extreme: enemies nearly twice as strong; potions and healing are weaker.",
+          "Hell: no Dawn's Grace and no natural healing.",
+          "Impossible: one life. No revives of any kind, and dying erases the save."
+        ]},
+        {"h": "Default controls"},
+        {"table": [
+          ["Move / run", "WASD or arrows, hold Shift to run"],
+          ["Attack, talk", "Left click, J or Space (hold for a heavy attack)"],
+          ["Dodge / block", "K / L, or hold right click"],
+          ["Skills", "1 to 4"],
+          ["Powers", "Z, X, C, V"],
+          ["Burst Art", "R (when the burst gauge is full)"],
+          ["Potion", "Q"],
+          ["Interact", "E"],
+          ["Bag, skills, journal, map", "I, T, O, M"],
+          ["Pause", "Esc"]
+        ]},
+        {"tip": "Every control can be rebound under Pause > Controls. Touch screens get an on-screen stick and buttons, and gamepads work too."}
+      ]
+    },
+    {
+      "id": "kochi",
+      "title": "Prologue: Monsoon Night",
+      "kicker": "Kakkanad, outside Infopark",
+      "blocks": [
+        {"p": "It is 7:30 on a rainy evening and the office cab has left without you. Your quest, Monsoon Night, is simple: cross at the zebra crossing and catch the bus by Hotel Annapoorna. There is no rush, and what you do here has lasting effects."},
+        {"h": "Things worth doing first"},
+        {"list": [
+          "Chandran's tea stall: buy a chaya.",
+          "Talk to Mani the security guard, Rasheed at the juice shop, Babu the auto driver (try haggling), and the people waiting at the bus stop.",
+          "The kalari: speak with Unni and take the short lesson. Finishing the drill unlocks a hidden power later.",
+          "Meet Thomas and his daughter Meenu, who has a duck umbrella. Remember her."
+        ]},
+        {"h": "The incident"},
+        {"p": "At the stop, a gust tears Meenu's umbrella away and she runs into the road as a bus comes. A reaction prompt appears. Move at once to save her. Hesitating changes the scene and costs you a hidden power."},
+        {"tip": "Traffic drives on the left and will honk and brake for you. Use the zebra crossing anyway."}
+      ]
+    },
+    {
+      "id": "divine",
+      "title": "The Divine Space",
+      "kicker": "Aurelia, goddess of the dawn",
+      "blocks": [
+        {"p": "You wake before Aurelia. Your answers matter. Two dialogue choices award hidden powers:"},
+        {"list": [
+          "Ask \"What is eating your sun?\" and then press her with \"You are avoiding the question.\"",
+          "Choose \"(Say nothing. Just listen to the silence.)\""
+        ]},
+        {"h": "The four hidden powers"},
+        {"table": [
+          ["Kalari", "Finish Unni's lesson at the kalari in Kochi."],
+          ["Saved Meenu", "React in time during the incident."],
+          ["Asked about the eclipse", "Press Aurelia on the question she avoids."],
+          ["Fell quiet", "Choose silence when she speaks."]
+        ]},
+        {"h": "Choosing your powers"},
+        {"p": "You have seven soul points for up to three of the 112 powers (Elemental, Physical, Magical, Summoning and Special; Common to Divine). Use the filters, search and compare views. Spend every point and Fate's Gacha drops one bonus gift from the powers you did not take. The Random gifts button picks three valid gifts for you."},
+        {"tip": "A good first set is one ranged attack, one movement or defensive power, and one passive. Powers level with use and evolve at level 5."}
+      ]
+    },
+    {
+      "id": "dawnmeadow",
+      "title": "Act 1: A New Life",
+      "kicker": "Dawnmeadow",
+      "blocks": [
+        {"p": "You are reborn in plain clothes with no weapon, armor or coin. Quest A New Life asks you to survive your first hours. You can gather materials or defeat meadow creatures (Meadow Puffs and Horn Beetles), whichever you prefer."},
+        {"h": "Primitive crafting"},
+        {"table": [
+          ["Flint Knife", "2 Smooth Stone, 1 Sturdy Branch, 1 Plant Fiber"],
+          ["Branch Club", "3 Sturdy Branch, 1 Plant Fiber"],
+          ["Walking Staff", "2 Sturdy Branch, 1 Smooth Stone"],
+          ["Woven Grass Vest", "5 Plant Fiber"],
+          ["Herb Poultice", "1 Moonleaf, 1 Plant Fiber (heals 45)"],
+          ["Berry Mash", "3 Berries (heals 25)"]
+        ]},
+        {"tip": "With bare hands, hold attack to throw a Smooth Stone. That is a safe way to soften Horn Beetles before they charge."},
+        {"p": "When the first stage is done, a merchant's cart waits on the east road. Ask the merchant for a ride to the city."}
+      ]
+    },
+    {
+      "id": "solmere",
+      "title": "Act 2: Solmere, City of Guilds",
+      "blocks": [
+        {"p": "Find the Adventurers' Guild. It is the largest and tallest building in the city. Register with Noelle at the counter to receive your adventurer card and finish A New Life."},
+        {"list": [
+          "Every building can be entered: inn, tavern, grocer, bakery, clothier, smithy and armory, apothecary, general store, temple, town hall and barracks.",
+          "The guild board holds bounties and named elite hunts. Clearing them raises your rank from F upward and unlocks the rank-gated Guild Shop.",
+          "Old saves without powers can claim them at the Solmere temple.",
+          "Carts connect Dawnmeadow, Solmere and Eldoria."
+        ]},
+        {"p": "The guildmaster sends you east to Eldoria, the last lit village. Take the cart."}
+      ]
+    },
+    {
+      "id": "eldoria",
+      "title": "Act 3: Eldoria",
+      "kicker": "Main quest: The Fading Light",
+      "blocks": [
+        {"p": "Speak with Elder Maren on the steps of the Elder Hall. She explains that the Crystal Caverns were sealed with a crescent key, which the goblin warlord Grukk took along with the Whispering Woods."},
+        {"h": "Prepare before leaving"},
+        {"list": [
+          "Pick up the side quests from Tobin, Ysra, Widow Elsbeth and Brannoc (see Side Quests).",
+          "Meet Mimi near the farm road; she joins your party right away.",
+          "Serah stands by the east gate. She will not join until Grukk is dead.",
+          "Read the notice board, and check behind the northern cottages for something glimmering (Moonshard 1)."
+        ]},
+        {"p": "Leave through the east gate into the Whispering Woods."}
+      ]
+    },
+    {
+      "id": "woods",
+      "title": "Act 4: The Whispering Woods",
+      "blocks": [
+        {"p": "The sign at the western entrance reads: north to the goblin warlord, north-east to the old mine road and the Crystal Caverns. Light the Woodland Lantern on the main path and the Riverside Lantern by the river for fast travel."},
+        {"h": "Points of interest"},
+        {"list": [
+          "Bog Slimes gather in the south-west, with a chest of potions there.",
+          "Ashen Wolves den in the south-east, past the river. Moonshard 2 lies among the bones nearby.",
+          "The old battlefield to the south has restless skeletons, soldiers' graves and a chest with a Copper Ring.",
+          "The goblin camp to the east has a chest with an Iron Sword, 2 Health Potions and 40 gold.",
+          "Lyra studies by the river near the Riverside Lantern."
+        ]},
+        {"h": "Boss: Grukk the Warlord"},
+        {"p": "His clearing lies north of the forest road, past the river bend. HP 430."},
+        {"list": [
+          "He swings a wide cleaver at close range. Dodge sideways rather than back.",
+          "He roars before he charges. Stand in front of a tree, then roll away at the last moment. If he hits the tree he is dazed: punish him.",
+          "In his second phase he attacks faster. Keep a potion ready on Q."
+        ]},
+        {"p": "Grukk drops the Sanctum Key and Grukk's Cleaver. Return to the north-east of the woods and use the key on the rune door."}
+      ]
+    },
+    {
+      "id": "caverns",
+      "title": "Act 5: The Crystal Caverns",
+      "blocks": [
+        {"p": "Light the Cavern Mouth Lantern right away, and the Crystal Hall Lantern further in. Expect venom slimes (carry antidotes), skeletons and blinking cultist mages. Close on mages quickly."},
+        {"list": [
+          "Iron Ore nodes sit in the south-eastern halls. Strike a node three times to mine it.",
+          "A cracked wall blocks the far north-west passage. Attack it to break through: Moonshard 3 and a secret chest (Mana Charm, Greater Potion, 60 gold) wait beyond.",
+          "A chest in the far east room holds 2 Greater Potions and 3 Crystal Shards."
+        ]},
+        {"h": "Boss: The Eclipsed Sentinel"},
+        {"p": "Guardian of the inner sanctum, in the stone hall north of the crystal rooms. HP 660."},
+        {"list": [
+          "Its shield blocks every blow from the front. Circle it and hit from the side or back.",
+          "Freezing powers stop its guard entirely.",
+          "Watch for the quake wind-up and roll out of the ring."
+        ]},
+        {"p": "It drops the Bulwark Plate and the iron gate grinds open."},
+        {"h": "Final boss: The Hollow Sovereign"},
+        {"p": "Crown of the fading sun, beyond the iron gate. HP 1100."},
+        {"list": [
+          "Keep moving through its rings of light. Standing still is how you lose.",
+          "It fades and summons help. Clear the adds, then return to the Sovereign.",
+          "Save your Burst Art and strongest powers for its final phase."
+        ]},
+        {"p": "Return to Elder Maren in Eldoria to finish The Fading Light (600 XP, 300 gold)."}
+      ]
+    },
+    {
+      "id": "side",
+      "title": "Side Quests",
+      "blocks": [
+        {"table": [
+          ["Slime Trouble (Tobin)", "Slay 6 Bog Slimes in the woods. Reward: 80 gold, 2 Health Potions, 60 XP."],
+          ["A Cloak of Ash (Ysra)", "Collect 4 Ashen Wolf Pelts from the south-east den. Reward: Wolfhide Cloak, 90 XP."],
+          ["The Lost Locket (Elsbeth)", "Pip says the trees by the old north path look wrong. Reward: Silver Brooch, 120 XP."],
+          ["Ore for the Forge (Brannoc)", "Bring 5 Iron Ore from the caverns or from the barrow dead. Reward: Warden's Oath pattern, a free upgrade, 100 XP."]
+        ]},
+        {"h": "Finding the locket"},
+        {"p": "From the west entrance of the woods, follow the small path north. Where it ends, two columns of pines look slightly different. Walk straight through them into a hidden glade with the Moon Shrine. The locket is in the chest beside it."}
+      ]
+    },
+    {
+      "id": "hidden",
+      "title": "Hidden Quest: Whispers in Stone",
+      "blocks": [
+        {"p": "Examine the Moon Shrine in the hidden glade (see The Lost Locket) to start it. Collect the three Moonshards:"},
+        {"list": [
+          "Eldoria: behind a cottage at the north side of the village.",
+          "Whispering Woods: near the wolf den in the south-east.",
+          "Crystal Caverns: behind the cracked wall in the north-west."
+        ]},
+        {"p": "Bring them back to the shrine for the Eclipse Pendant and 250 XP."}
+      ]
+    },
+    {
+      "id": "crafting",
+      "title": "Alchemy and the Forge",
+      "blocks": [
+        {"table": [
+          ["Health Potion", "2 Moonleaf, 1 Slime Gel"],
+          ["Mana Potion", "2 Moonleaf, 1 Crystal Shard"],
+          ["Antidote", "1 Moonleaf, 1 Goblin Tooth"],
+          ["Greater Potion", "1 Health Potion, 2 Moonleaf, 1 Crystal Shard, 10 gold"],
+          ["Iron Sword", "3 Iron Ore, 30 gold"],
+          ["Leather Armor", "2 Wolf Pelt, 20 gold"],
+          ["Chain Mail", "4 Iron Ore, 2 Bone Shard, 60 gold"],
+          ["Warden's Blade", "5 Iron Ore, 2 Crystal Shard, 1 Wolf Pelt, 120 gold (after Ore for the Forge)"]
+        ]}
+      ]
+    },
+    {
+      "id": "companions",
+      "title": "Companions and Bonds",
+      "blocks": [
+        {"table": [
+          ["Mimi Tamaki (20)", "Beastkin scout in Eldoria. Joins any time. Loves Honey Cake and Berry Tart."],
+          ["Lyra Sylvaren (112)", "Elf mage in the woods. Joins once you hold the Sanctum Key. Loves Old Tomes and Crystal Shards."],
+          ["Serah Valemont (26)", "Knight captain at Eldoria's east gate. Joins after Grukk falls. Loves Honey Cake and Berry Tart."],
+          ["Noelle Arden (23)", "Guild receptionist. Loves Sunbells and Herbal Tea."]
+        ]},
+        {"list": [
+          "Talk once a day, give gifts they like, and finish their personal quests. Gifts alone never complete a romance.",
+          "Relationships run through ten stages from Stranger to Married life, with dates at eight locations.",
+          "A second partner needs your current partner's honest agreement (high trust and affection)."
+        ]}
+      ]
+    },
+    {
+      "id": "post",
+      "title": "Hidden Skills and New Game+",
+      "blocks": [
+        {"p": "200 hidden skills are learned by doing, never chosen: survive poison, hunt slimes, throw stones, walk in the rain, parry at night. Check the Hidden Skills tab for progress. 25 of them keep their names secret until you find them."},
+        {"p": "After the final boss you can start New Game+. Enemies are stronger, and you keep your level, gear and skills."},
+        {"tip": "Rest at lanterns often, save in all three slots before bosses, and remember that Dawn's Grace only works once a day (and not at all on Hell or Impossible)."}
+      ]
+    }
+  ]
+}

@@ -45,6 +45,12 @@ You wake in a divine space before Aurelia, goddess of the dawn. What you say to 
 - Three save slots kept in the browser with automatic backups and recovery, gamepad support and touch controls.
 - Settings for music, effects and ambience volume, and a Reduced screen-effects mode.
 
+## Walkthrough
+
+A full walkthrough is in [walkthrough.pdf](walkthrough.pdf). It is also built into the game: choose **Walkthrough** on the title screen or in the pause menu, where a button downloads the PDF.
+
+The guide's text lives in `docs/walkthrough.json`. After editing it, run `python tools/build_walkthrough.py` (needs `pip install reportlab`) to rebuild the PDF and the in-game copy.
+
 See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for how the game is built and the phased improvement plan.
 
 ## Controls
